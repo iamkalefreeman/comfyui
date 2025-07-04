@@ -117,4 +117,4 @@ RUN sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py ||
 EXPOSE 8188
 
 # Command to start ComfyUI
-CMD ["python", "main.py", "--listen", "0.0.0.0", "--port", "8188", "--enable-cors-header", "--extra-model-paths-config", "/opt/ComfyUI/models", "--dont-upcast-sampling"]
+CMD ["python", "main.py", "--listen", "0.0.0.0", "--port", "8188", "--enable-cors-header", "--extra-model-paths-config", "/opt/ComfyUI/models"]
