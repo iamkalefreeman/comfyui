@@ -38,7 +38,7 @@ RUN wget -O ${CLIP_DIR}/clip_l.safetensors https://huggingface.co/comfyanonymous
 RUN wget -O ${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors
 
 # Set permissions for model files
-# RUN chmod -R 755 ${MODEL_DIR}
+# RUN chmod -R 644 ${MODEL_DIR}/*.safetensors
 
 # Install Python dependencies for FP8, LoRA, and custom nodes
 RUN pip install --no-cache-dir \
@@ -69,9 +69,6 @@ RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt ]; then p
 RUN git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus
 RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus/requirements.txt; else echo "No requirements.txt for ComfyUI_IPAdapter_plus"; fi
 
-#RUN git clone https://github.com/Kosinkadink/ComfyUI-Advanced-Control.git /opt/ComfyUI/custom_nodes/ComfyUI-Advanced-Control
-#RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-Advanced-Control/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Advanced-Control/requirements.txt; else echo "No requirements.txt for ComfyUI-Advanced-Control"; fi
-
 RUN git clone https://github.com/Fannovel16/ComfyUI-VideoHelperSuite.git /opt/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite
 RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite/requirements.txt; else echo "No requirements.txt for ComfyUI-VideoHelperSuite"; fi
 
@@ -87,17 +84,29 @@ RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_essentials/requirements.txt ]; the
 RUN git clone https://github.com/jags111/efficiency-nodes-comfyui.git /opt/ComfyUI/custom_nodes/efficiency-nodes-comfyui
 RUN if [ -f /opt/ComfyUI/custom_nodes/efficiency-nodes-comfyui/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/efficiency-nodes-comfyui/requirements.txt; else echo "No requirements.txt for efficiency-nodes-comfyui"; fi
 
-RUN git clone https://github.com/kijai/ComfyUI-DepthAnythingV2.git /opt/ComfyUI/custom_nodes/ComfyUI-Depth-Anything
+RUN git clone https://github.com/kijai/ComfyUI-DepthAnythingV2.git /opt/ComfyUI/custom_nodes/ComfyUI-DepthAnythingV2
 RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-DepthAnythingV2/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-DepthAnythingV2/requirements.txt; else echo "No requirements.txt for ComfyUI-DepthAnythingV2"; fi
 
 RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git /opt/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale
 RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale/requirements.txt; else echo "No requirements.txt for ComfyUI_UltimateSDUpscale"; fi
 
-#RUN git clone https://github.com/kohya-ss/ComfyUI-LoRA.git /opt/ComfyUI/custom_nodes/ComfyUI-LoRA
-#RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-LoRA/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-LoRA/requirements.txt; else echo "No requirements.txt for ComfyUI-LoRA"; fi
-
 RUN git clone https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git /opt/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation
 RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/requirements.txt; else echo "No requirements.txt for ComfyUI-Frame-Interpolation"; fi
+
+RUN git clone https://github.com/yolain/ComfyUI-Easy-Use.git /opt/ComfyUI/custom_nodes/ComfyUI-Easy-Use
+RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-Easy-Use/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Easy-Use/requirements.txt; else echo "No requirements.txt for ComfyUI-Easy-Use"; fi
+
+RUN git clone https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git /opt/ComfyUI/custom_nodes/ComfyUI_tinyterraNodes
+RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_tinyterraNodes/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_tinyterraNodes/requirements.txt; else echo "No requirements.txt for ComfyUI_tinyterraNodes"; fi
+
+RUN git clone https://github.com/rgthree/rgthree-comfy.git /opt/ComfyUI/custom_nodes/rgthree-comfy
+RUN if [ -f /opt/ComfyUI/custom_nodes/rgthree-comfy/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/rgthree-comfy/requirements.txt; else echo "No requirements.txt for rgthree-comfy"; fi
+
+RUN git clone https://github.com/gseth/ControlAltAI-Nodes.git /opt/ComfyUI/custom_nodes/ControlAltAI-Nodes
+RUN if [ -f /opt/ComfyUI/custom_nodes/ControlAltAI-Nodes/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ControlAltAI-Nodes/requirements.txt; else echo "No requirements.txt for ControlAltAI-Nodes"; fi
+
+RUN git clone https://github.com/EvilBT/ComfyUI_SLK_joy_caption_two.git /opt/ComfyUI/custom_nodes/ComfyUI_SLK_joy_caption_two
+RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_SLK_joy_caption_two/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_SLK_joy_caption_two/requirements.txt; else echo "No requirements.txt for ComfyUI_SLK_joy_caption_two"; fi
 
 # Set permissions for custom nodes
 RUN chmod -R 755 /opt/ComfyUI/custom_nodes
@@ -117,4 +126,5 @@ RUN sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py ||
 EXPOSE 8188
 
 # Command to start ComfyUI
-CMD ["python", "main.py", "--listen", "0.0.0.0", "--port", "8188", "--enable-cors-header", "--extra-model-paths-config", "/opt/ComfyUI/models"]
+#CMD ["python", "main.py", "--listen", "0.0.0.0", "--port", "8188", "--enable-cors-header"]
+CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
