@@ -38,36 +38,51 @@ RUN pip install --no-cache-dir \
     peft
 
 # Install ComfyUI-GGUF for GGUF/FP8 model support
-RUN git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt
+RUN git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt
 
-# Install essential and additional custom nodes, including LoRA and modern replacements
-RUN mkdir -p /opt/ComfyUI/custom_nodes ${LORA_DIR} && \
-    git clone https://github.com/ltdrdata/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager && \
-    git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus && \
-    git clone https://github.com/Kosinkadink/ComfyUI-Advanced-Control.git /opt/ComfyUI/custom_nodes/ComfyUI-Advanced-Control && \
-    git clone https://github.com/Fannovel16/ComfyUI-VideoHelperSuite.git /opt/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite && \
-    git clone https://github.com/WASasquatch/was-node-suite-comfyui.git /opt/ComfyUI/custom_nodes/was-node-suite-comfyui && \
-    git clone https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git /opt/ComfyUI/custom_nodes/ComfyUI-Inspire-Pack && \
-    git clone https://github.com/cubiq/ComfyUI_essentials.git /opt/ComfyUI/custom_nodes/ComfyUI_essentials && \
-    git clone https://github.com/jags111/efficiency-nodes-comfyui.git /opt/ComfyUI/custom_nodes/efficiency-nodes-comfyui && \
-    git clone https://github.com/Glyfnet/ComfyUI-Depth-Anything.git /opt/ComfyUI/custom_nodes/ComfyUI-Depth-Anything && \
-    git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git /opt/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale && \
-    git clone https://github.com/kohya-ss/ComfyUI-LoRA.git /opt/ComfyUI/custom_nodes/ComfyUI-LoRA && \
-    git clone https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git /opt/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Advanced-Control/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/was-node-suite-comfyui/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Inspire-Pack/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_essentials/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/efficiency-nodes-comfyui/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Depth-Anything/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-LoRA/requirements.txt && \
-    pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/requirements.txt && \
-    chmod -R 755 /opt/ComfyUI/custom_nodes
+# Create directories for custom nodes and LoRA
+RUN mkdir -p /opt/ComfyUI/custom_nodes ${LORA_DIR}
+
+# Install custom nodes individually
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt
+
+RUN git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus/requirements.txt
+
+RUN git clone https://github.com/Kosinkadink/ComfyUI-Advanced-Control.git /opt/ComfyUI/custom_nodes/ComfyUI-Advanced-Control
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Advanced-Control/requirements.txt
+
+RUN git clone https://github.com/Fannovel16/ComfyUI-VideoHelperSuite.git /opt/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite/requirements.txt
+
+RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git /opt/ComfyUI/custom_nodes/was-node-suite-comfyui
+RUN pip install -r /opt/ComfyUI/custom_nodes/was-node-suite-comfyui/requirements.txt
+
+RUN git clone https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git /opt/ComfyUI/custom_nodes/ComfyUI-Inspire-Pack
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Inspire-Pack/requirements.txt
+
+RUN git clone https://github.com/cubiq/ComfyUI_essentials.git /opt/ComfyUI/custom_nodes/ComfyUI_essentials
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_essentials/requirements.txt
+
+RUN git clone https://github.com/jags111/efficiency-nodes-comfyui.git /opt/ComfyUI/custom_nodes/efficiency-nodes-comfyui
+RUN pip install -r /opt/ComfyUI/custom_nodes/efficiency-nodes-comfyui/requirements.txt
+
+RUN git clone https://github.com/Glyfnet/ComfyUI-Depth-Anything.git /opt/ComfyUI/custom_nodes/ComfyUI-Depth-Anything
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Depth-Anything/requirements.txt
+
+RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git /opt/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale/requirements.txt
+
+RUN git clone https://github.com/kohya-ss/ComfyUI-LoRA.git /opt/ComfyUI/custom_nodes/ComfyUI-LoRA
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-LoRA/requirements.txt
+
+RUN git clone https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git /opt/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation
+RUN pip install -r /opt/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/requirements.txt
+
+# Set permissions for custom nodes
+RUN chmod -R 755 /opt/ComfyUI/custom_nodes
 
 # Download Flux.1 Kontext Dev FP8 model files from Hugging Face and set permissions
 RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR} && \
