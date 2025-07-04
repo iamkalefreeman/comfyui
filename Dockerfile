@@ -42,7 +42,7 @@ RUN wget -O ${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.
 
 # Install Python dependencies for FP8, LoRA, and custom nodes
 RUN pip install --no-cache-dir \
-    torch>=2.6.0 \
+    torch>=2.7.1 \
     transformers \
     bitsandbytes \
     accelerate \
