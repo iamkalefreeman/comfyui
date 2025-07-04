@@ -37,6 +37,9 @@ RUN wget -O ${CLIP_DIR}/clip_l.safetensors https://huggingface.co/comfyanonymous
 # Download CLIP model (t5xxl)
 RUN wget -O ${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors?download=true
 
+# Download more models
+RUN wget -O ${DIFFUSION_DIR}/redKFm00NSFWEditorFP8.Wtdk.safetensors https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors
+
 # Set permissions for model files
 # RUN chmod -R 644 ${MODEL_DIR}/*.safetensors
 
