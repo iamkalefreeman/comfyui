@@ -38,8 +38,7 @@ RUN wget -O ${CLIP_DIR}/clip_l.safetensors https://huggingface.co/comfyanonymous
 RUN wget -O ${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors
 
 # Set permissions for model files
-RUN chmod -R 644 ${MODEL_DIR}/*.safetensors && \
-    chmod -R 755 ${MODEL_DIR}
+RUN chmod -R 755 ${MODEL_DIR}
 
 # Install Python dependencies for FP8, LoRA, and custom nodes
 RUN pip install --no-cache-dir \
