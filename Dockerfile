@@ -108,6 +108,9 @@ RUN if [ -f /opt/ComfyUI/custom_nodes/ControlAltAI-Nodes/requirements.txt ]; the
 RUN git clone https://github.com/EvilBT/ComfyUI_SLK_joy_caption_two.git /opt/ComfyUI/custom_nodes/ComfyUI_SLK_joy_caption_two
 RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_SLK_joy_caption_two/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_SLK_joy_caption_two/requirements.txt; else echo "No requirements.txt for ComfyUI_SLK_joy_caption_two"; fi
 
+RUN git clone https://github.com/bananasss00/ComfyUI_bitsandbytes_NF4-Lora.git /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora
+RUN if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt ]; then pip install -r /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt; else echo "No requirements.txt for ComfyUI_bitsandbytes_NF4-Lora"; fi
+
 # Set permissions for custom nodes
 RUN chmod -R 755 /opt/ComfyUI/custom_nodes
 
