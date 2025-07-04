@@ -24,10 +24,10 @@ RUN apt-get update && apt-get install -y \
 
 # Download Flux.1 Kontext Dev FP8 model files from Hugging Face and set permissions
 RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR} && \
-    wget -O ${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/flux1-dev-kontext_fp8_scaled.safetensors && \
-    wget -O ${VAE_DIR}/ae.safetensors https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/ae.safetensors && \
-    wget -O ${CLIP_DIR}/clip_l.safetensors https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/clip_l.safetensors && \
-    wget -O ${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
+    wget -O ${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors?download=true && \
+    wget -O ${VAE_DIR}/ae.safetensors https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors && \
+    wget -O ${CLIP_DIR}/clip_l.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/raw/main/clip_l.safetensors && \
+    wget -O ${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors && \
     chmod -R 644 ${MODEL_DIR}/*.safetensors && \
     chmod -R 755 ${MODEL_DIR}
 
