@@ -127,4 +127,4 @@ EXPOSE 8188
 
 # Command to start ComfyUI
 #CMD ["python", "main.py", "--listen", "0.0.0.0", "--port", "8188", "--enable-cors-header"]
-CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch --listen 0.0.0.0 --port 8188 --enable-cors-header"]
+CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
