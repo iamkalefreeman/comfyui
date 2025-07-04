@@ -40,7 +40,7 @@ RUN wget -O ${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.
 # Set permissions for model files
 # RUN chmod -R 644 ${MODEL_DIR}/*.safetensors
 
-# Install Python dependencies for FP8, LoRA, custom nodes, and xformers
+# Install Python dependencies for FP8, LoRA, and custom nodes
 RUN pip install --no-cache-dir \
     torch>=2.6.0 \
     transformers \
@@ -53,8 +53,7 @@ RUN pip install --no-cache-dir \
     numpy \
     scipy \
     tqdm \
-    peft \
-    xformers
+    peft
 
 # Install ComfyUI-GGUF for GGUF/FP8 model support
 RUN git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF
@@ -122,6 +121,9 @@ RUN chmod -R 755 /opt/ComfyUI/custom_nodes
 
 # Disable safety filters to allow NSFW input/output
 RUN sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py || echo "safety_checker not found in main.py"
+
+RUN pip install --no-cache-dir \
+  xformers
 
 # Expose the ComfyUI port
 EXPOSE 8188
