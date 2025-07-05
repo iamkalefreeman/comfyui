@@ -98,6 +98,7 @@ RUN git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nod
 # Disable safety filters to allow NSFW input/output
 RUN sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py || echo "safety_checker not found in main.py"
 
+RUN  mkdir -p /workflows
 COPY ../workflows /opt/ComfyUI/workflows/
 COPY ../workflows /workflows/
 
