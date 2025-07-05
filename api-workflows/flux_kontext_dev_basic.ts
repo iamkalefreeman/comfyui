@@ -54,22 +54,22 @@ const RequestSchema = z.object({
     .default(2.5)
     .describe("FLUX-specific guidance parameter"),
   unet_name: z
-    .enum(["redKFm00NSFWEditorFP8.Wtdk.safetensors", "flux1-dev-kontext_fp8_scaled.safetensors"])
+    .string()
     .optional()
     .default("redKFm00NSFWEditorFP8.Wtdk.safetensors")
     .describe("Name of the UNET diffusion model to use"),
-  clip_1_name: z
-    .enum(["clip_l.safetensors", "t5xxl_fp8_e4m3fn_scaled.safetensors"])
+  clip_l_name: z
+    .string()
     .optional()
     .default("clip_l.safetensors")
-    .describe("Name of the primary CLIP model"),
-  clip_2_name: z
-    .enum(["clip_l.safetensors", "t5xxl_fp8_e4m3fn_scaled.safetensors"])
+    .describe("Name of the primary CLIP (L) model"),
+  clip_t5xxl_name: z
+    .string()
     .optional()
     .default("t5xxl_fp8_e4m3fn_scaled.safetensors")
-    .describe("Name of the secondary CLIP model"),
+    .describe("Name of the secondary CLIP (T5-XXL) model"),
   vae_name: z
-    .enum(["ae.safetensors"])
+    .string()
     .optional()
     .default("ae.safetensors")
     .describe("Name of the VAE model to use"),
@@ -139,8 +139,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "38": {
       inputs: {
-        clip_name1: input.clip_1_name,
-        clip_name2: input.clip_2_name,
+        clip_name1: input.clip_l_name,
+        clip_name2: input.clip_t5xxl_name,
         type: "flux",
         device: "default",
       },
@@ -221,7 +221,7 @@ const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
   summary: "FLUX Image-to-Image",
-  description: "Image editing workflow using the FLUX (Kontext) model",
+  description: "Image editing workflow using the FLUX (Kontext) model.",
 };
 
 export default workflow;
