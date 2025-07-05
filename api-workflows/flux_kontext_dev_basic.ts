@@ -1,6 +1,7 @@
 import { z } from "zod";
+// This gets evaluated in the context of src/workflows, so imports must be relative to that directory
+import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
-import { ComfyPrompt } from "@/types/ComfyPrompt";
 
 let diffusion_model: any = config.models.diffusion_models.enum.optional();
 if (config.warmupCkpt) {
@@ -34,13 +35,6 @@ if (
 let vae_model: any = config.models.vae.enum.optional();
 if (config.models.vae.enum.options.includes("ae.safetensors")) {
   vae_model = vae_model.default("ae.safetensors");
-}
-
-interface Workflow {
-  RequestSchema: z.ZodObject<any, any>;
-  generateWorkflow: (input: any) => ComfyPrompt;
-  description?: string;
-  summary?: string;
 }
 
 const RequestSchema = z.object({
