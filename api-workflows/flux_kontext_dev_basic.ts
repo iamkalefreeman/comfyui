@@ -53,20 +53,23 @@ const RequestSchema = z.object({
     .optional()
     .default(2.5)
     .describe("FLUX-specific guidance parameter"),
-  unet_name: config.models.diffusion_models.enum
+  unet_name: z
+    .enum(["redKFm00NSFWEditorFP8.Wtdk.safetensors", "flux1-dev-kontext_fp8_scaled.safetensors"])
     .optional()
     .default("redKFm00NSFWEditorFP8.Wtdk.safetensors")
     .describe("Name of the UNET diffusion model to use"),
-  clip_1_name: config.models.clips.enum
+  clip_1_name: z
+    .enum(["clip_l.safetensors", "t5xxl_fp8_e4m3fn_scaled.safetensors"])
     .optional()
     .default("clip_l.safetensors")
     .describe("Name of the primary CLIP model"),
-  clip_2_name: config.models.clips.enum
-    .string()
+  clip_2_name: z
+    .enum(["clip_l.safetensors", "t5xxl_fp8_e4m3fn_scaled.safetensors"])
     .optional()
     .default("t5xxl_fp8_e4m3fn_scaled.safetensors")
     .describe("Name of the secondary CLIP model"),
-  vae_name: config.models.vae.enum
+  vae_name: z
+    .enum(["ae.safetensors"])
     .optional()
     .default("ae.safetensors")
     .describe("Name of the VAE model to use"),
