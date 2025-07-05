@@ -1,4 +1,4 @@
-FROM brandnewx/comfyui-kontext-flux:latest
+FROM brandnewx/comfyui-kontext-flux:base-latest
 
 EXPOSE 8188
 EXPOSE 3000
