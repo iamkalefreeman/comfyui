@@ -12,6 +12,8 @@ Your job is to convert a json workflow graph for ai image generation into a type
 # Example Output
 
 import { z } from "zod";
+// This gets evaluated in the context of src/workflows, so imports must be relative to that directory
+import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
 
 let checkpoint: any = config.models.checkpoints.enum.optional();
