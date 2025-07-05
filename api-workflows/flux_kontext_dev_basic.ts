@@ -3,35 +3,23 @@ import { z } from "zod";
 import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
 
-const ComfyNodeSchema = z.object({
-  inputs: z.any(),
-  class_type: z.string(),
-  _meta: z.any().optional(),
-});
-
-type ComfyNode = z.infer<typeof ComfyNodeSchema>;
-
-interface Workflow {
-  RequestSchema: z.ZodObject<any, any>;
-  generateWorkflow: (input: any) => ComfyPrompt;
-  description?: string;
-  summary?: string;
-}
+// This workflow uses a specific FLUX UNET model. We assume a corresponding enum exists in the config.
+// The name 'checkpoint' is used for user-facing consistency.
+const checkpoint = (config.models as any).flux_unets?.enum
+  .optional()
+  .default("redKFm00NSFWEditorFP8.Wtdk.safetensors");
 
 const RequestSchema = z.object({
+  image: z
+    .string()
+    .describe(
+      "Input image to use as a reference (URL or base64 encoded string)"
+    ),
   prompt: z
     .string()
     .default("remove clothes")
     .describe("The positive prompt for image generation"),
-  image: z
-    .string()
-    .describe("The reference image to use for context (URL or base64)"),
-  guidance_scale: z
-    .number()
-    .min(0)
-    .max(10)
-    .default(2.5)
-    .describe("The guidance scale for the FLUX model"),
+  checkpoint: checkpoint.describe("The FLUX UNET model to use for generation"),
   seed: z
     .number()
     .int()
@@ -51,8 +39,10 @@ const RequestSchema = z.object({
     .min(0)
     .max(20)
     .optional()
-    .default(1)
-    .describe("Classifier-free guidance scale for the KSampler"),
+    .default(2.5)
+    .describe(
+      "Guidance scale, controlling how closely the image adheres to the prompt"
+    ),
   sampler_name: config.samplers
     .optional()
     .default("euler")
@@ -67,7 +57,9 @@ const RequestSchema = z.object({
     .max(1)
     .optional()
     .default(1)
-    .describe("Denoising strength"),
+    .describe(
+      "Denoising strength. 1.0 means the original image's content is fully replaced."
+    ),
 });
 
 type InputType = z.infer<typeof RequestSchema>;
@@ -91,14 +83,14 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
       class_type: "VAEDecode",
       _meta: {
-        title: "VAE Decode",
+        title: "VAEDecode",
       },
     },
     "31": {
       inputs: {
         seed: input.seed,
         steps: input.steps,
-        cfg: input.cfg_scale,
+        cfg: 1,
         sampler_name: input.sampler_name,
         scheduler: input.scheduler,
         denoise: input.denoise,
@@ -114,7 +106,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "35": {
       inputs: {
-        guidance: input.guidance_scale,
+        guidance: input.cfg_scale,
         conditioning: ["177", 0],
       },
       class_type: "FluxGuidance",
@@ -124,8 +116,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "37": {
       inputs: {
-        unet_name: "flux1-dev-kontext_fp8_scaled.safetensors",
-        id_name: "default",
+        unet_name: input.checkpoint,
       },
       class_type: "UNETLoader",
       _meta: {
@@ -134,10 +125,9 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "38": {
       inputs: {
-        clip_l_name: "clip_l.safetensors",
-        clip_g_name: "t5xxl_fp8_e4m3fn_scaled.safetensors",
-        id_name: "flux",
-        clip_l_id_name: "default",
+        clip1_name: "clip_l.safetensors",
+        clip2_name: "t5xxl_fp8_e4m3fn_scaled.safetensors",
+        text_encoder_type: "flux",
       },
       class_type: "DualCLIPLoader",
       _meta: {
@@ -194,6 +184,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "142": {
       inputs: {
         image: input.image,
+        upload: "image",
       },
       class_type: "LoadImage",
       _meta: {
@@ -216,9 +207,9 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "FLUX Kontext",
+  summary: "FLUX dev Image-to-Image",
   description:
-    "A FLUX-based workflow that uses a reference image to provide context for the generation, similar to an IP-Adapter. It combines the reference image's content with a text prompt to generate a new image.",
+    "An image-to-image workflow using the FLUX.1-dev model. It takes an input image and a prompt to generate a new image. This version uses separate loaders for the UNET, VAE, and CLIP models, and a specific `FluxGuidance` node for CFG scaling. The default settings are configured for NSFW-style image editing.",
 };
 
 export default workflow;
