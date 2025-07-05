@@ -3,23 +3,11 @@ import { z } from "zod";
 import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
 
-// This workflow uses a specific FLUX UNET model. We assume a corresponding enum exists in the config.
-// The name 'checkpoint' is used for user-facing consistency.
-const checkpoint = (config.models as any).flux_unets?.enum
-  .optional()
-  .default("redKFm00NSFWEditorFP8.Wtdk.safetensors");
-
 const RequestSchema = z.object({
-  image: z
-    .string()
-    .describe(
-      "Input image to use as a reference (URL or base64 encoded string)"
-    ),
   prompt: z
     .string()
-    .default("remove clothes")
-    .describe("The positive prompt for image generation"),
-  checkpoint: checkpoint.describe("The FLUX UNET model to use for generation"),
+    .describe("The positive prompt describing the desired edit"),
+  image: z.string().describe("The input image to be edited (url or base64)"),
   seed: z
     .number()
     .int()
@@ -39,10 +27,8 @@ const RequestSchema = z.object({
     .min(0)
     .max(20)
     .optional()
-    .default(2.5)
-    .describe(
-      "Guidance scale, controlling how closely the image adheres to the prompt"
-    ),
+    .default(1)
+    .describe("Classifier-free guidance scale"),
   sampler_name: config.samplers
     .optional()
     .default("euler")
@@ -57,9 +43,24 @@ const RequestSchema = z.object({
     .max(1)
     .optional()
     .default(1)
-    .describe(
-      "Denoising strength. 1.0 means the original image's content is fully replaced."
-    ),
+    .describe("Denoising strength"),
+  guidance: z
+    .number()
+    .min(0)
+    .max(10)
+    .optional()
+    .default(2.5)
+    .describe("FLUX-specific guidance parameter"),
+  unet_name: config.models.unets.enum.describe(
+    "Name of the UNET diffusion model to use"
+  ),
+  vae_name: config.models.vaes.enum.describe("Name of the VAE model to use"),
+  clip_name1: config.models.clips.enum.describe(
+    "Name of the primary CLIP model (clip_l)"
+  ),
+  clip_name2: config.models.clips.enum.describe(
+    "Name of the secondary CLIP model (t5xxl)"
+  ),
 });
 
 type InputType = z.infer<typeof RequestSchema>;
@@ -83,14 +84,14 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
       class_type: "VAEDecode",
       _meta: {
-        title: "VAEDecode",
+        title: "VAE Decode",
       },
     },
     "31": {
       inputs: {
         seed: input.seed,
         steps: input.steps,
-        cfg: 1,
+        cfg: input.cfg_scale,
         sampler_name: input.sampler_name,
         scheduler: input.scheduler,
         denoise: input.denoise,
@@ -106,7 +107,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "35": {
       inputs: {
-        guidance: input.cfg_scale,
+        guidance: input.guidance,
         conditioning: ["177", 0],
       },
       class_type: "FluxGuidance",
@@ -116,18 +117,20 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "37": {
       inputs: {
-        unet_name: input.checkpoint,
+        unet_name: input.unet_name,
+        weight_dtype: "default",
       },
       class_type: "UNETLoader",
       _meta: {
-        title: "UNETLoader",
+        title: "Load Diffusion Model",
       },
     },
     "38": {
       inputs: {
-        clip1_name: "clip_l.safetensors",
-        clip2_name: "t5xxl_fp8_e4m3fn_scaled.safetensors",
-        text_encoder_type: "flux",
+        clip_name1: input.clip_name1,
+        clip_name2: input.clip_name2,
+        type: "flux",
+        device: "default",
       },
       class_type: "DualCLIPLoader",
       _meta: {
@@ -136,16 +139,16 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "39": {
       inputs: {
-        vae_name: "ae.safetensors",
+        vae_name: input.vae_name,
       },
       class_type: "VAELoader",
       _meta: {
-        title: "VAELoader",
+        title: "Load VAE",
       },
     },
     "42": {
       inputs: {
-        image: ["142", 0],
+        image: ["189", 0],
       },
       class_type: "FluxKontextImageScale",
       _meta: {
@@ -159,7 +162,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
       class_type: "VAEEncode",
       _meta: {
-        title: "VAEEncode",
+        title: "VAE Encode",
       },
     },
     "135": {
@@ -173,22 +176,11 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "136": {
       inputs: {
-        filename_prefix: "ComfyUI",
         images: ["8", 0],
       },
       class_type: "SaveImage",
       _meta: {
         title: "Save Image",
-      },
-    },
-    "142": {
-      inputs: {
-        image: input.image,
-        upload: "image",
-      },
-      class_type: "LoadImage",
-      _meta: {
-        title: "Load Image",
       },
     },
     "177": {
@@ -201,15 +193,24 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         title: "ReferenceLatent",
       },
     },
+    "189": {
+      inputs: {
+        image: input.image,
+      },
+      class_type: "LoadImage",
+      _meta: {
+        title: "Load Image",
+      },
+    },
   };
 }
 
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "FLUX dev Image-to-Image",
+  summary: "FLUX Image Edit",
   description:
-    "An image-to-image workflow using the FLUX.1-dev model. It takes an input image and a prompt to generate a new image. This version uses separate loaders for the UNET, VAE, and CLIP models, and a specific `FluxGuidance` node for CFG scaling. The default settings are configured for NSFW-style image editing.",
+    "An image-to-image workflow using the FLUX model (Kontext) for prompt-based editing of an existing image.",
 };
 
 export default workflow;
