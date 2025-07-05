@@ -100,7 +100,7 @@ RUN sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py ||
 
 RUN  mkdir -p /workflows
 COPY ./workflows /opt/ComfyUI/workflows
-COPY ./workflows /workflows
+COPY ./api-workflows /workflows
 
 # Expose the ComfyUI port
 EXPOSE 8188
