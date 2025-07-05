@@ -41,6 +41,9 @@ RUN git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git /opt/ComfyUI/c
 # RUN wget -O ${UNET_DIR}/flux1-kontext-dev-Q3_K_S.gguf https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/flux1-kontext-dev-Q3_K_S.gguf?download=true && \
 #     chmod 644 ${UNET_DIR}/*.gguf
 
+RUN  mkdir -p /workflows
+COPY ./api-workflows /workflows
+
 # Expose the ComfyUI port
 EXPOSE 8188
 
