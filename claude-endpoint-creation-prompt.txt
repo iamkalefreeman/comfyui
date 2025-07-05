@@ -1,3 +1,4 @@
+# Instructions
 Your job is to convert a json workflow graph for ai image generation into a typescript function for used by SaladTechnologies/comfyui-api.
 - You should define a type for the input, using Zod for validation.
 - You should use `.describe` to describe each parameter to the best of your ability.
@@ -5,6 +6,8 @@ Your job is to convert a json workflow graph for ai image generation into a type
 - Do not extrapolate enum values. Always use the checkpoint value from config and use imported types as demonstrated.
 - Use snake_case for multi-word parameters.
 - LoadImage inputs will always be accepted as either a url or base64 encoded string
+- Do not use zod.enum() or z.enum(). Use z.string() instead.
+- For SaveImage class-type node, make sure to include property filename_prefix: "ComfyUI"
 - Parse default values.
 - Only output the typescript, with no additional commentary.
 
