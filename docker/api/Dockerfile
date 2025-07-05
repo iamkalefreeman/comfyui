@@ -1,5 +1,8 @@
 FROM brandnewx/comfyui-kontext-flux:base-latest
 
+RUN  mkdir -p /workflows
+COPY ./api-workflows /workflows
+
 EXPOSE 8188
 EXPOSE 3000
 
