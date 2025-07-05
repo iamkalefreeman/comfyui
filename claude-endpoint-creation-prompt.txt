@@ -1,5 +1,5 @@
 # Instructions
-Your job is to convert a json workflow graph for ai image generation into a typescript function.
+Your job is to convert a json workflow graph for ai image generation into a typescript function for used by SaladTechnologies/comfyui-api.
 - You should define a type for the input, using Zod for validation.
 - You should use `.describe` to describe each parameter to the best of your ability.
 - Filename prefix is always set by the system in a different location.
