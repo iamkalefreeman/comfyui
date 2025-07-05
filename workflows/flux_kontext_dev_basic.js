@@ -38,13 +38,6 @@ if (config.warmupCkpt) {
   vae_model = vae_model.default("ae.safetensors");
 }
 
-interface Workflow {
-  RequestSchema: z.ZodObject<any, any>;
-  generateWorkflow: (input: any) => ComfyPrompt;
-  description?: string;
-  summary?: string;
-}
-
 const RequestSchema = z.object({
   prompt: z.string().describe("The editing instruction or prompt"),
   image_1: z
