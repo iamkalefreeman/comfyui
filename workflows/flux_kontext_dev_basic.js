@@ -1,6 +1,7 @@
 import { z } from "zod";
+// This gets evaluated in the context of src/workflows, so imports must be relative to that directory
+import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
-import { ComfyPrompt } from "@/types/ComfyPrompt";
 
 let checkpoint: any = config.models.diffusion_models.enum.optional();
 if (config.warmupCkpt) {
