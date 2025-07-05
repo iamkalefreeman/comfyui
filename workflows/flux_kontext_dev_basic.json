@@ -79,12 +79,12 @@
           {
             "name": "clip_l.safetensors",
             "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors",
-            "directory": "text_encoders"
+            "directory": "clip"
           },
           {
             "name": "t5xxl_fp8_e4m3fn_scaled.safetensors",
             "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors",
-            "directory": "text_encoders"
+            "directory": "clip"
           }
         ]
       },
