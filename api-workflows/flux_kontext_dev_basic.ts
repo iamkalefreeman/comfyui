@@ -6,8 +6,10 @@ import config from "../config";
 const RequestSchema = z.object({
   prompt: z
     .string()
-    .describe("The positive prompt describing the desired edit"),
-  image: z.string().describe("The input image to be edited (url or base64)"),
+    .optional()
+    .default("remove clothes")
+    .describe("The positive prompt for image generation/editing"),
+  image: z.string().describe("Input image for editing (url or base64)"),
   seed: z
     .number()
     .int()
@@ -51,16 +53,22 @@ const RequestSchema = z.object({
     .optional()
     .default(2.5)
     .describe("FLUX-specific guidance parameter"),
-  unet_name: config.models.unets.enum.describe(
-    "Name of the UNET diffusion model to use"
-  ),
-  vae_name: config.models.vaes.enum.describe("Name of the VAE model to use"),
-  clip_name1: config.models.clips.enum.describe(
-    "Name of the primary CLIP model (clip_l)"
-  ),
-  clip_name2: config.models.clips.enum.describe(
-    "Name of the secondary CLIP model (t5xxl)"
-  ),
+  unet_name: config.models.unets.enum
+    .optional()
+    .default("redKFm00NSFWEditorFP8.Wtdk.safetensors")
+    .describe("Name of the UNET diffusion model to use"),
+  clip_l_name: config.models.clips.enum
+    .optional()
+    .default("clip_l.safetensors")
+    .describe("Name of the primary CLIP (L) model"),
+  clip_t5xxl_name: config.models.clips.enum
+    .optional()
+    .default("t5xxl_fp8_e4m3fn_scaled.safetensors")
+    .describe("Name of the secondary CLIP (T5-XXL) model"),
+  vae_name: config.models.vaes.enum
+    .optional()
+    .default("ae.safetensors")
+    .describe("Name of the VAE model to use"),
 });
 
 type InputType = z.infer<typeof RequestSchema>;
@@ -127,8 +135,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "38": {
       inputs: {
-        clip_name1: input.clip_name1,
-        clip_name2: input.clip_name2,
+        clip_name1: input.clip_l_name,
+        clip_name2: input.clip_t5xxl_name,
         type: "flux",
         device: "default",
       },
@@ -208,9 +216,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "FLUX Image Edit",
-  description:
-    "An image-to-image workflow using the FLUX model (Kontext) for prompt-based editing of an existing image.",
+  summary: "FLUX Image-to-Image",
+  description: "Image editing workflow using the FLUX (Kontext) model.",
 };
 
 export default workflow;
