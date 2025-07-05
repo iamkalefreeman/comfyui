@@ -3,66 +3,24 @@ import { z } from "zod";
 import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
 
-let diffusion_model: any = config.models.diffusion_models.enum.optional();
-if (config.warmupCkpt) {
-  diffusion_model = diffusion_model.default(config.warmupCkpt);
-} else if (
-  config.models.diffusion_models.enum.options.includes(
-    "flux1-dev-kontext_fp8_scaled.safetensors"
-  )
-) {
-  diffusion_model = diffusion_model.default(
-    "flux1-dev-kontext_fp8_scaled.safetensors"
-  );
-}
+const ComfyNodeSchema = z.object({
+  inputs: z.any(),
+  class_type: z.string(),
+  _meta: z.any().optional(),
+});
 
-let clip_l_model: any = config.models.text_encoders.enum.optional();
-if (
-  config.models.text_encoders.enum.options.includes("clip_l.safetensors")
-) {
-  clip_l_model = clip_l_model.default("clip_l.safetensors");
-}
+type ComfyNode = z.infer<typeof ComfyNodeSchema>;
 
-let clip_g_model: any = config.models.text_encoders.enum.optional();
-if (
-  config.models.text_encoders.enum.options.includes(
-    "t5xxl_fp8_e4m3fn_scaled.safetensors"
-  )
-) {
-  clip_g_model = clip_g_model.default("t5xxl_fp8_e4m3fn_scaled.safetensors");
-}
-
-let vae_model: any = config.models.vae.enum.optional();
-if (config.models.vae.enum.options.includes("ae.safetensors")) {
-  vae_model = vae_model.default("ae.safetensors");
+interface Workflow {
+  RequestSchema: z.ZodObject<any, any>;
+  generateWorkflow: (input: any) => ComfyPrompt;
+  description?: string;
+  summary?: string;
 }
 
 const RequestSchema = z.object({
-  prompt: z
-    .string()
-    .describe("The editing instruction or prompt, e.g., 'Change the background to a beach'"),
-  image_1: z
-    .string()
-    .describe(
-      "The first image to use as context (can be a URL or base64 encoded string)"
-    ),
-  image_2: z
-    .string()
-    .optional()
-    .describe(
-      "The second image to stitch with the first one (can be a URL or base64 encoded string)"
-    ),
-  stitch_direction: z
-    .enum(["right", "left", "bottom", "top"])
-    .optional()
-    .default("right")
-    .describe("Direction to stitch the second image relative to the first"),
-  feathering: z
-    .number()
-    .min(0)
-    .optional()
-    .default(0)
-    .describe("The amount of feathering to apply at the seam of stitched images"),
+  image: z.string().describe("The input image to edit, as a URL or base64 encoded string"),
+  prompt: z.string().default("remove clothes").describe("A text prompt describing the desired edit or change to the image"),
   seed: z
     .number()
     .int()
@@ -82,8 +40,15 @@ const RequestSchema = z.object({
     .min(0)
     .max(20)
     .optional()
+    .default(1)
+    .describe("Classifier-Free Guidance scale, controlling how strongly the prompt influences the generation"),
+  guidance: z
+    .number()
+    .min(0)
+    .max(20)
+    .optional()
     .default(2.5)
-    .describe("Classifier-free guidance scale"),
+    .describe("Guidance scale for the FLUX model, controlling how strongly the reference image influences the generation"),
   sampler_name: config.samplers
     .optional()
     .default("euler")
@@ -98,25 +63,33 @@ const RequestSchema = z.object({
     .max(1)
     .optional()
     .default(1)
-    .describe("Denoising strength"),
-  diffusion_model,
-  clip_l_model,
-  clip_g_model,
-  vae_model,
+    .describe("Denoising strength. A value of 1.0 means the original image's latent is fully replaced by the new generation"),
+  unet_name: z
+    .string()
+    .default("redKFm00NSFWEditorFP8.Wtdk.safetensors")
+    .describe("Name of the UNET model file to use"),
+  clip_name1: z
+    .string()
+    .default("clip_l.safetensors")
+    .describe("Name of the first CLIP model file (clip_l) to use"),
+  clip_name2: z
+    .string()
+    .default("t5xxl_fp8_e4m3fn_scaled.safetensors")
+    .describe("Name of the second CLIP model file (t5xxl) to use"),
+  vae_name: z
+    .string()
+    .default("ae.safetensors")
+    .describe("Name of the VAE model file to use"),
 });
 
 type InputType = z.infer<typeof RequestSchema>;
 
 function generateWorkflow(input: InputType): ComfyPrompt {
-  const image_2_enabled = !!input.image_2;
-
-  const image_source = image_2_enabled ? ["146", 0] : ["142", 0];
-
-  const workflow: ComfyPrompt = {
+  return {
     "6": {
       inputs: {
         text: input.prompt,
-        clip: ["38", 0],
+        clip: ["38", 1],
       },
       class_type: "CLIPTextEncode",
       _meta: {
@@ -137,7 +110,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       inputs: {
         seed: input.seed,
         steps: input.steps,
-        cfg: 1,
+        cfg: input.cfg_scale,
         sampler_name: input.sampler_name,
         scheduler: input.scheduler,
         denoise: input.denoise,
@@ -153,7 +126,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "35": {
       inputs: {
-        guidance: input.cfg_scale,
+        guidance: input.guidance,
         conditioning: ["177", 0],
       },
       class_type: "FluxGuidance",
@@ -163,8 +136,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "37": {
       inputs: {
-        unet_name: input.diffusion_model,
-        lora_name: "default",
+        unet_name: input.unet_name,
+        weight_dtype: "default",
       },
       class_type: "UNETLoader",
       _meta: {
@@ -173,10 +146,10 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "38": {
       inputs: {
-        clip_l: input.clip_l_model,
-        clip_g: input.clip_g_model,
-        type_l: "flux",
-        type_g: "default",
+        clip_name1: input.clip_name1,
+        clip_name2: input.clip_name2,
+        type: "flux",
+        device: "default",
       },
       class_type: "DualCLIPLoader",
       _meta: {
@@ -185,7 +158,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "39": {
       inputs: {
-        vae_name: input.vae_model,
+        vae_name: input.vae_name,
       },
       class_type: "VAELoader",
       _meta: {
@@ -194,7 +167,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "42": {
       inputs: {
-        image: image_source,
+        image: ["146", 0],
       },
       class_type: "FluxKontextImageScale",
       _meta: {
@@ -232,11 +205,33 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "142": {
       inputs: {
-        image: input.image_1,
+        image: input.image,
       },
       class_type: "LoadImage",
       _meta: {
-        title: "Load Image 1",
+        title: "Load Image",
+      },
+    },
+    "146": {
+      inputs: {
+        direction: "right",
+        match_image_size: true,
+        spacing_width: 0,
+        spacing_color": "white",
+        image1: ["142", 0],
+      },
+      class_type: "ImageStitch",
+      _meta: {
+        title: "Image Stitch",
+      },
+    },
+    "173": {
+      inputs: {
+        images: ["42", 0],
+      },
+      class_type: "PreviewImage",
+      _meta: {
+        title: "Preview Image",
       },
     },
     "177": {
@@ -250,43 +245,13 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
     },
   };
-
-  if (image_2_enabled) {
-    workflow["146"] = {
-      inputs: {
-        direction: input.stitch_direction,
-        feathering_enabled: true,
-        feathering: input.feathering,
-        blending_mode: "normal",
-        background_color: "white",
-        image1: ["142", 0],
-        image2: ["147", 0],
-      },
-      class_type: "ImageStitch",
-      _meta: {
-        title: "ImageStitch",
-      },
-    };
-    workflow["147"] = {
-      inputs: {
-        image: input.image_2 as string,
-      },
-      class_type: "LoadImage",
-      _meta: {
-        title: "Load Image 2",
-      },
-    };
-  }
-
-  return workflow;
 }
 
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "FLUX.1 Kontext Image Editing",
-  description:
-    "Uses an image (or two stitched images) as context for a text-based edit. This workflow is ideal for modifying existing images, changing backgrounds, transferring styles, and more, while maintaining consistency with the original context.",
+  summary: "FLUX Image Editing",
+  description: "An advanced image editing workflow using the FLUX model. It takes an input image and a text prompt to modify the image, using the original image as a reference.",
 };
 
 export default workflow;
