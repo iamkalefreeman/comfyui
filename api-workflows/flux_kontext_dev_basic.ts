@@ -57,15 +57,15 @@ const RequestSchema = z.object({
     .optional()
     .default("redKFm00NSFWEditorFP8.Wtdk.safetensors")
     .describe("Name of the UNET diffusion model to use"),
-  clip_l_name: config.models.clips.enum
+  clip_1_name: config.models.clips.enum
     .optional()
     .default("clip_l.safetensors")
-    .describe("Name of the primary CLIP (L) model"),
-  clip_t5xxl_name: config.models.clips.enum
+    .describe("Name of the primary CLIP model"),
+  clip_2_name: config.models.clips.enum
     .string()
     .optional()
     .default("t5xxl_fp8_e4m3fn_scaled.safetensors")
-    .describe("Name of the secondary CLIP (T5-XXL) model"),
+    .describe("Name of the secondary CLIP model"),
   vae_name: config.models.vae.enum
     .optional()
     .default("ae.safetensors")
@@ -136,8 +136,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "38": {
       inputs: {
-        clip_name1: input.clip_l_name,
-        clip_name2: input.clip_t5xxl_name,
+        clip_name1: input.clip_1_name,
+        clip_name2: input.clip_2_name,
         type: "flux",
         device: "default",
       },
@@ -218,7 +218,7 @@ const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
   summary: "FLUX Image-to-Image",
-  description: "Image editing workflow using the FLUX (Kontext) model.",
+  description: "Image editing workflow using the FLUX (Kontext) model",
 };
 
 export default workflow;
