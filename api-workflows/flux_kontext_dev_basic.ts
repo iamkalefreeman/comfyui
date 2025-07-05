@@ -189,6 +189,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "136": {
       inputs: {
         images: ["8", 0],
+        filename_prefix: "kontext123",
       },
       class_type: "SaveImage",
       _meta: {
