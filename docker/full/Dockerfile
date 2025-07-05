@@ -1,4 +1,4 @@
-FROM brandnewx/comfyui-kontext-flux:latest
+FROM brandnewx/comfyui-kontext-flux:base-latest
 
 # Install custom nodes with requirements.txt checks
 RUN git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus && \
