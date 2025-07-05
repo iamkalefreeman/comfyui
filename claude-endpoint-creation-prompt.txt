@@ -6,7 +6,7 @@ Your job is to convert a json workflow graph for ai image generation into a type
 - Do not extrapolate enum values. Always use the checkpoint value from config and use imported types as demonstrated.
 - Use snake_case for multi-word parameters.
 - LoadImage inputs will always be accepted as either a url or base64 encoded string
-- Parse widgets_values.
+- Parse widgets_values where exists.
 - Only output the typescript, with no additional commentary.
 
 
