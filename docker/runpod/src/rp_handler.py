@@ -86,6 +86,7 @@ def run_inference(endpoint, body):
         if response.status_code != 200:
             print(f"Request failed - reason: HTTP_{response.status_code} {response.text}")
             raise ValueError(f"{error_message}. Raw response: {response.text}")
+        response.raise_for_status()
         return response.json()
     except requests.exceptions.JSONDecodeError:
         raise ValueError(f"Invalid JSON response from server")
