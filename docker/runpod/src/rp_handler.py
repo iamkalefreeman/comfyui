@@ -58,10 +58,10 @@ def validate_input(job_input):
         except json.JSONDecodeError:
             return None, "Invalid JSON format in input"
 
-    # Validate 'workflow' in input
-    workflow = job_input.get("workflow")
-    if workflow is None:
-        return None, "Missing 'workflow' parameter"
+    # Validate 'endpoint' in input
+    endpoint = job_input.get("endpoint")
+    if endpoint is None:
+        return None, "Missing 'endpoint' parameter"
 
     # Validate 'body' in input, if provided
     body = job_input.get("body")
@@ -69,13 +69,13 @@ def validate_input(job_input):
         return None, "Missing 'body' parameter"
 
     # Return validated data and no error
-    return {"workflow": workflow, "body": body}, None
+    return {"endpoint": endpoint, "body": body}, None
 
-def run_inference(workflow, body):
+def run_inference(endpoint, body):
     '''
     Run inference on a request.
     '''
-    response = cog_session.post(url=f'{LOCAL_URL}/{workflow}',
+    response = cog_session.post(url=f'{LOCAL_URL}/{endpoint}',
                                 json=body, timeout=TIMEOUT)
 
     if response.status_code != 200:
@@ -92,10 +92,10 @@ def handler(event):
         return {"error": error_message}
 
     # Extract validated data
-    workflow = validated_data.get("workflow")
+    endpoint = validated_data.get("endpoint")
     body = validated_data.get("body")
     
-    json = run_inference(workflow, body)
+    json = run_inference(endpoint, body)
 
     return json["output"]
 
