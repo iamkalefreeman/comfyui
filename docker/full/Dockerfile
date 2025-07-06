@@ -50,3 +50,4 @@ EXPOSE 3000
 
 # Command to start ComfyUI
 CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
+ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
