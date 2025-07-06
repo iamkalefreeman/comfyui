@@ -38,7 +38,7 @@ def wait_for_service(url, max_attempts=120):
         except Exception as err:
             print("Error: ", err)
 
-        time.sleep(0.2)
+        time.sleep(1)
         attempts += 1
     raise Exception("Service failed to become ready after maximum attempts")
 
