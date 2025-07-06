@@ -16,7 +16,9 @@ RUN pip install runpod
 
 ADD ./docker/runpod/src /app
 
-#CMD ["/opt/venv/bin/python3", "-u", "/rp_handler.py"]
+RUN set -xe && \
+    chmod -R +x /app
+
 CMD         ["/app/start.sh"]
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
 
