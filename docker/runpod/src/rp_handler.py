@@ -1,40 +1,46 @@
 import time
 import subprocess
 import os
-
+import json
+import logging
 import runpod
 import requests
 from requests.adapters import HTTPAdapter, Retry
 
-TIMEOUT = int(os.environ.get("RUNPOD_REQUEST_TIMEOUT", "600"))
+# Environment variable handling
+try:
+    TIMEOUT = int(os.environ.get("RUNPOD_REQUEST_TIMEOUT", "600"))
+except ValueError:
+    TIMEOUT = 600
 
-LOCAL_URL = "http://127.0.0.1:3000"
+LOCAL_URL = os.environ.get("API_URL", "http://127.0.0.1:3000")
 
 cog_session = requests.Session()
-retries = Retry(total=10, backoff_factor=0.1, status_forcelist=[502, 503, 504])
+retries = Retry(total=10, backoff_factor=1.0, status_forcelist=[502, 503, 504])
 cog_session.mount('http://', HTTPAdapter(max_retries=retries))
-
 
 # ---------------------------------------------------------------------------- #
 #                              Automatic Functions                             #
 # ---------------------------------------------------------------------------- #
-def wait_for_service(url):
+def wait_for_service(url, max_attempts=120):
     '''
     Check if the service is ready to receive requests.
     '''
-    while True:
+    attempts = 0
+    while attempts < max_attempts:
         try:
-            health = requests.get(url, timeout=120)
+            health = requests.get(url, timeout=1)
             if health.status_code == 200:
                 time.sleep(1)
                 return
-
         except requests.exceptions.RequestException:
             print("Service not ready yet. Retrying...")
         except Exception as err:
             print("Error: ", err)
 
         time.sleep(0.2)
+        attempts += 1
+    raise Exception("Service failed to become ready after maximum attempts")
 
 def validate_input(job_input):
     """
@@ -75,18 +81,23 @@ def run_inference(endpoint, body):
     '''
     Run inference on a request.
     '''
-    response = cog_session.post(url=f'{LOCAL_URL}/{endpoint}',
-                                json=body, timeout=TIMEOUT)
-
-    if response.status_code != 200:
-        print("Request failed - reason :", response.status_code, response.text)
-
-    return response.json()
+    try:
+        response = cog_session.post(url=f'{LOCAL_URL}/{endpoint}', json=body, timeout=TIMEOUT)
+        if response.status_code != 200:
+            logger.error("Request failed - reason: %s %s", response.status_code, response.text)
+            return {"error": f"Request failed with status {response.status_code}: {response.text}"}
+        return response.json()
+    except requests.exceptions.JSONDecodeError:
+        return {"error": "Invalid JSON response from server"}
+    except requests.exceptions.RequestException as e:
+        return {"error": f"Request failed: {str(e)}"}
 
 def handler(job):
     '''
     This is the handler function that will be called by the serverless.
     '''
+    if not isinstance(job, dict) or "input" not in job or "id" not in job:
+        return {"error": "Invalid job format: missing 'input' or 'id'"}
     job_input = job["input"]
     job_id = job["id"]
     validated_data, error_message = validate_input(job_input)
@@ -98,9 +109,7 @@ def handler(job):
     body = validated_data.get("body")
     
     response_data = run_inference(endpoint, body)
-
     return response_data
-
 
 if __name__ == "__main__":
     wait_for_service(url=f'{LOCAL_URL}/health')
