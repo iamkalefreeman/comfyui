@@ -7,3 +7,6 @@ function custom_terminate() {
     exit 0
 }
 
+/opt/ComfyUI/comfyui-api &
+
+python3 -u /app/rp_handler.py
