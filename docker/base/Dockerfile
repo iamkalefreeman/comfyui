@@ -34,6 +34,12 @@ RUN wget -O ${VAE_DIR}/ae.safetensors https://huggingface.co/Comfy-Org/Lumina_Im
 # Set permissions for model files (commented out to avoid unnecessary operation)
 # RUN chmod -R 644 ${MODEL_DIR}/*.safetensors
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    software-properties-common \
+    curl \
+    openssh-server \
+    dumb-init
+
 # Install Python dependencies in one layer for FP8, LoRA, and custom nodes
 RUN pip install --no-cache-dir \
     torch>=2.7.1 \
@@ -71,3 +77,4 @@ EXPOSE 8188
 
 # Command to start ComfyUI
 CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
+ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
