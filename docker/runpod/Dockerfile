@@ -14,6 +14,9 @@ RUN apt-get update && apt-get upgrade -y && \
 # Install runpod within the virtual environment
 RUN pip install runpod
 
-ADD ./docker/runpod/rp_handler.py /rp_handler.py
+ADD ./docker/runpod/src /app
 
-CMD ["/opt/venv/bin/python3", "-u", "/rp_handler.py"]
+#CMD ["/opt/venv/bin/python3", "-u", "/rp_handler.py"]
+CMD         ["/app/start.sh"]
+ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
+
