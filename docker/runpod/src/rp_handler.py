@@ -96,8 +96,8 @@ def handler(job):
     '''
     This is the handler function that will be called by the serverless.
     '''
-    if not isinstance(job, dict) or "input" not in job or "id" not in job:
-        return {"error": "Invalid job format: missing 'input' or 'id'"}
+    if not isinstance(job, dict) or "input" not in job:
+        return {"error": "Invalid job format: missing 'input'"}
     job_input = job["input"]
     validated_data, error_message = validate_input(job_input)
     if error_message:
