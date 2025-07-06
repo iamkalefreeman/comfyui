@@ -65,7 +65,7 @@ def validate_input(job_input):
 
     # Validate 'body' in input, if provided
     body = job_input.get("body")
-    if body is not None:
+    if body is None:
         return None, "Missing 'body' parameter"
 
     # Return validated data and no error
@@ -83,10 +83,12 @@ def run_inference(endpoint, body):
 
     return response.json()
 
-def handler(event):
+def handler(job):
     '''
     This is the handler function that will be called by the serverless.
     '''
+    job_input = job["input"]
+    job_id = job["id"]
     validated_data, error_message = validate_input(job_input)
     if error_message:
         return {"error": error_message}
@@ -95,9 +97,9 @@ def handler(event):
     endpoint = validated_data.get("endpoint")
     body = validated_data.get("body")
     
-    json = run_inference(endpoint, body)
+    response_data = run_inference(endpoint, body)
 
-    return json["output"]
+    return response_data
 
 
 if __name__ == "__main__":
