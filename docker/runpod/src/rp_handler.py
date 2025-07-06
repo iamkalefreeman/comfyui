@@ -8,7 +8,7 @@ from requests.adapters import HTTPAdapter, Retry
 
 TIMEOUT = int(os.environ.get("RUNPOD_REQUEST_TIMEOUT", "600"))
 
-LOCAL_URL = "http://127.0.0.1:5000"
+LOCAL_URL = "http://127.0.0.1:3000"
 
 cog_session = requests.Session()
 retries = Retry(total=10, backoff_factor=0.1, status_forcelist=[502, 503, 504])
@@ -63,7 +63,7 @@ def handler(event):
 
 
 if __name__ == "__main__":
-    wait_for_service(url=f'{LOCAL_URL}/health-check')
+    wait_for_service(url=f'{LOCAL_URL}/health')
 
     print("Cog API Service is ready. Starting RunPod serverless handler...")
 
