@@ -25,9 +25,7 @@ def wait_for_service(url):
     while True:
         try:
             health = requests.get(url, timeout=120)
-            status = health.json()["status"]
-
-            if status == "READY":
+            if health.status_code == 200:
                 time.sleep(1)
                 return
 
