@@ -99,7 +99,6 @@ def handler(job):
     if not isinstance(job, dict) or "input" not in job or "id" not in job:
         return {"error": "Invalid job format: missing 'input' or 'id'"}
     job_input = job["input"]
-    job_id = job["id"]
     validated_data, error_message = validate_input(job_input)
     if error_message:
         return {"error": error_message}
