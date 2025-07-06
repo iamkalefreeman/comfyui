@@ -103,8 +103,7 @@ def handler(job):
 
     # Extract validated data
     endpoint = validated_data["endpoint"]
-    body = validated_data.get["body"]
-    
+    body = validated_data["body"]
     response_data = run_inference(endpoint, body)
     return response_data
 
