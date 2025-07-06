@@ -105,8 +105,8 @@ def handler(job):
         return {"error": error_message}
 
     # Extract validated data
-    endpoint = validated_data.get("endpoint")
-    body = validated_data.get("body")
+    endpoint = validated_data["endpoint"]
+    body = validated_data.get["body"]
     
     response_data = run_inference(endpoint, body)
     return response_data
