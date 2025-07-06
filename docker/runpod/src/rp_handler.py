@@ -38,26 +38,66 @@ def wait_for_service(url):
 
         time.sleep(0.2)
 
+def validate_input(job_input):
+    """
+    Validates the input for the handler function.
 
-def run_inference(inference_request):
+    Args:
+        job_input (dict): The input data to validate.
+
+    Returns:
+        tuple: A tuple containing the validated data and an error message, if any.
+               The structure is (validated_data, error_message).
+    """
+    # Validate if job_input is provided
+    if job_input is None:
+        return None, "Please provide input"
+
+    # Check if input is a string and try to parse it as JSON
+    if isinstance(job_input, str):
+        try:
+            job_input = json.loads(job_input)
+        except json.JSONDecodeError:
+            return None, "Invalid JSON format in input"
+
+    # Validate 'workflow' in input
+    workflow = job_input.get("workflow")
+    if workflow is None:
+        return None, "Missing 'workflow' parameter"
+
+    # Validate 'body' in input, if provided
+    body = job_input.get("body")
+    if body is not None:
+        return None, "Missing 'body' parameter"
+
+    # Return validated data and no error
+    return {"workflow": workflow, "body": body}, None
+
+def run_inference(workflow, body):
     '''
     Run inference on a request.
     '''
-    response = cog_session.post(url=f'{LOCAL_URL}/predictions',
-                                json=inference_request, timeout=TIMEOUT)
+    response = cog_session.post(url=f'{LOCAL_URL}/{workflow}',
+                                json=body, timeout=TIMEOUT)
 
     if response.status_code != 200:
         print("Request failed - reason :", response.status_code, response.text)
 
     return response.json()
 
-
 def handler(event):
     '''
     This is the handler function that will be called by the serverless.
     '''
+    validated_data, error_message = validate_input(job_input)
+    if error_message:
+        return {"error": error_message}
 
-    json = run_inference({"input": event["input"]})
+    # Extract validated data
+    workflow = validated_data.get("workflow")
+    body = validated_data.get("body")
+    
+    json = run_inference(workflow, body)
 
     return json["output"]
 
