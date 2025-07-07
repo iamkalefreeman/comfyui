@@ -39,7 +39,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     openssh-server \
     dumb-init \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies in one layer for FP8, LoRA, and custom nodes
 RUN pip install --no-cache-dir \
