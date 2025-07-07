@@ -1,4 +1,4 @@
-FROM brandnewx/comfyui-kontext-flux:api-latest
+FROM brandnewx/comfyui-kontext-flux:salad-api-latest
 
 ENV RUNPOD_REQUEST_TIMEOUT=120
 
