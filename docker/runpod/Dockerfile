@@ -5,11 +5,12 @@ ENV RUNPOD_REQUEST_TIMEOUT=120
 # Install necessary packages and Python 3.10
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-        software-properties-common \
-        curl \
-        git \
-        openssh-server \
-        dumb-init
+    software-properties-common \
+    curl \
+    git \
+    openssh-server \
+    dumb-init \
+    && rm -rf /var/lib/apt/lists/* \
 
 # Install runpod within the virtual environment
 RUN pip install runpod
