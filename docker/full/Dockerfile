@@ -1,4 +1,4 @@
-FROM brandnewx/comfyui-kontext-flux:base-latest
+FROM brandnewx/comfyui-kontext-flux:salad-api-latest
 
 # Install custom nodes with requirements.txt checks
 RUN git clone https://github.com/Comfy-Org/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager && \
@@ -42,9 +42,6 @@ RUN git clone https://github.com/Comfy-Org/ComfyUI-Manager.git /opt/ComfyUI/cust
 # Optionally, download GGUF model for lower VRAM systems
 # RUN wget -O ${UNET_DIR}/flux1-kontext-dev-Q3_K_S.gguf https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/flux1-kontext-dev-Q3_K_S.gguf?download=true && \
 #     chmod 644 ${UNET_DIR}/*.gguf
-
-RUN  mkdir -p /workflows
-COPY ./api-workflows /workflows
 
 # Expose the ComfyUI port
 EXPOSE 8188
