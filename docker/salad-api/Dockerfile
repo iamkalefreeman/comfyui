@@ -1,4 +1,6 @@
-FROM brandnewx/comfyui-kontext-flux:base-latest
+ARG BASE_IMAGE
+
+FROM $BASE_IMAGE
 
 RUN  mkdir -p /workflows
 COPY ./api-workflows /workflows
