@@ -1,4 +1,6 @@
-FROM brandnewx/comfyui-kontext-flux:salad-api-latest
+ARG BASE_IMAGE
+
+FROM $BASE_IMAGE
 
 ENV RUNPOD_REQUEST_TIMEOUT=120
 
