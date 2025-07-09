@@ -1,6 +1,6 @@
 ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui-kontext-flux:salad-api-latest
 
-FROM $BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 # Install custom nodes with requirements.txt checks
 RUN git clone https://github.com/Comfy-Org/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager && \
