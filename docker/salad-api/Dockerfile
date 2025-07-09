@@ -1,4 +1,4 @@
-ARG BASE_IMAGE
+ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui-kontext-flux:base-latest
 
 FROM $BASE_IMAGE
 
