@@ -1,7 +1,7 @@
-ARG BASE_TAG=comfy0.3.43-api1.9.1-torch2.7.1-cuda12.6-runtime
+ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.43-api1.9.1-torch2.7.1-cuda12.6-runtime
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM ghcr.io/saladtechnologies/comfyui-api:$BASE_TAG
+FROM $BASE_IMAGE
 
 # Set working directory
 WORKDIR /opt/ComfyUI
