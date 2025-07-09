@@ -85,7 +85,7 @@ def run_inference(endpoint, body):
         response = cog_session.post(url=f'{LOCAL_URL}/{endpoint}', json=body, timeout=TIMEOUT)
         if response.status_code != 200:
             print(f"Request failed - reason: HTTP_{response.status_code} {response.text}")
-            raise ValueError(f"{error_message}. Raw response: {response.text}")
+            raise ValueError(f"Request failed - reason: HTTP_{response.status_code} {response.text}")
         response.raise_for_status()
         return response.json()
     except requests.exceptions.JSONDecodeError:
