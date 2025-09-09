@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.43-api1.9.1-torch2.7.1-cuda12.6-runtime
+ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM $BASE_IMAGE
@@ -52,7 +52,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install Python dependencies in one layer for FP8, LoRA, and custom nodes
 RUN pip install --no-cache-dir \
-    torch>=2.7.1 \
+    torch>=2.8.0 \
     transformers \
     bitsandbytes \
     accelerate \
