@@ -10,8 +10,23 @@ ARG COMFYUI_PORT_HOST=8188
 ARG STARTUP_CHECK_MAX_TRIES=30
 ARG PYTHONUNBUFFERED=1
 
+FROM $BASE_image AS base
+
+RUN set -xe \
+    && apt-get update && apt-get install -y --no-install-recommends \
+      aria2 \
+      wget \
+      git \
+      software-properties-common \
+      curl \
+      openssh-server \
+      dumb-init \
+      fmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM $BASE_IMAGE AS kontext-models
+FROM base AS kontext-models
 
 # Environment variables
 ARG MODEL_DIR
@@ -34,7 +49,7 @@ RUN wget -O ${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors https://hu
 
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM $BASE_IMAGE AS qwen-models
+FROM base AS qwen-models
 
 # Environment variables
 ARG MODEL_DIR
@@ -63,10 +78,7 @@ RUN wget -O {LORA_DIR}/clothesTryonQwenEdit.3dlg.safetensors https://tigersjay.c
     
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM $BASE_IMAGE AS comfyui
-
-# Set working directory
-WORKDIR /opt/ComfyUI
+FROM base AS comfyui
 
 # Environment variables
 ARG MODEL_DIR
@@ -80,25 +92,8 @@ ARG COMFYUI_PORT_HOST
 ARG STARTUP_CHECK_MAX_TRIES
 ARG PYTHONUNBUFFERED
 
-# Install system dependencies and create model directories in one layer
-RUN set -xe \
-    && apt-get update && apt-get install -y --no-install-recommends \
-      wget \
-      git \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
-
-# Set permissions for model files (commented out to avoid unnecessary operation)
-# RUN chmod -R 644 ${MODEL_DIR}/*.safetensors
-
-RUN set -xe \
-    && apt-get update && apt-get install -y --no-install-recommends \
-      software-properties-common \
-      curl \
-      openssh-server \
-      dumb-init \
-      fmpeg \
-    && rm -rf /var/lib/apt/lists/*
+# Set working directory
+WORKDIR /opt/ComfyUI
 
 # Install Python dependencies in one layer for FP8, LoRA, and custom nodes
 RUN set -xe \
