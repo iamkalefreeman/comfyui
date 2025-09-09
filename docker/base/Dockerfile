@@ -14,8 +14,6 @@ ARG \
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM $BASE_IMAGE AS kontext-models
 
-RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
-
 # Environment variables
 ENV \
   MODEL_DIR=${MODEL_DIR} \
@@ -25,6 +23,8 @@ ENV \
   CLIP_DIR=${CLIP_DIR} \
   UNET_DIR=${UNET_DIR} \
   LORA_DIR=${LORA_DIR}
+
+RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
 # Download models in parallel to reduce build time
 RUN wget -O ${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors?download=true & \
