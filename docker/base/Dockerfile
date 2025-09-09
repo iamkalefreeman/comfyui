@@ -1,5 +1,5 @@
-ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime
-ENV \
+ARG \
+  BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime \
   MODEL_DIR=/opt/ComfyUI/models \
   CHECKPOINT_DIR=/opt/ComfyUI/models/checkpoints \
   DIFFUSION_DIR=/opt/ComfyUI/models/diffusion_models \
