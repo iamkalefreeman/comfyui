@@ -1,28 +1,28 @@
 ARG \
   BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime \
-  MODEL_DIR=/opt/ComfyUI/models \
-  CHECKPOINT_DIR=/opt/ComfyUI/models/checkpoints \
-  DIFFUSION_DIR=/opt/ComfyUI/models/diffusion_models \
-  VAE_DIR=/opt/ComfyUI/models/vae \
-  CLIP_DIR=/opt/ComfyUI/models/clip \
-  UNET_DIR=/opt/ComfyUI/models/unet \
-  LORA_DIR=/opt/ComfyUI/models/loras \
-  COMFYUI_PORT_HOST=8188 \
-  STARTUP_CHECK_MAX_TRIES=30 \
-  PYTHONUNBUFFERED=1
+  MODEL_DIR_ARG=/opt/ComfyUI/models \
+  CHECKPOINT_DIR_ARG=/opt/ComfyUI/models/checkpoints \
+  DIFFUSION_DIR_ARG=/opt/ComfyUI/models/diffusion_models \
+  VAE_DIR_ARG=/opt/ComfyUI/models/vae \
+  CLIP_DIR_ARG=/opt/ComfyUI/models/clip \
+  UNET_DIR_ARG=/opt/ComfyUI/models/unet \
+  LORA_DIR_ARG=/opt/ComfyUI/models/loras \
+  COMFYUI_PORT_HOST_ARG=8188 \
+  STARTUP_CHECK_MAX_TRIES_ARG=30 \
+  PYTHONUNBUFFERED_ARG=1
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM $BASE_IMAGE AS kontext-models
 
 # Environment variables
 ENV \
-  MODEL_DIR=${MODEL_DIR} \
-  CHECKPOINT_DIR=${CHECKPOINT_DIR} \
-  DIFFUSION_DIR=${DIFFUSION_DIR} \
-  VAE_DIR=${VAE_DIR} \
-  CLIP_DIR=${CLIP_DIR} \
-  UNET_DIR=${UNET_DIR} \
-  LORA_DIR=${LORA_DIR}
+  MODEL_DIR=${MODEL_DIR_ARG} \
+  CHECKPOINT_DIR=${CHECKPOINT_DIR_ARG} \
+  DIFFUSION_DIR=${DIFFUSION_DIR_ARG} \
+  VAE_DIR=${VAE_DIR_ARG} \
+  CLIP_DIR=${CLIP_DIR_ARG} \
+  UNET_DIR=${UNET_DIR_ARG} \
+  LORA_DIR=${LORA_DIR_ARG}
 
 RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
@@ -40,13 +40,13 @@ FROM $BASE_IMAGE AS qwen-models
 
 # Environment variables
 ENV \
-  MODEL_DIR=${MODEL_DIR} \
-  CHECKPOINT_DIR=${CHECKPOINT_DIR} \
-  DIFFUSION_DIR=${DIFFUSION_DIR} \
-  VAE_DIR=${VAE_DIR} \
-  CLIP_DIR=${CLIP_DIR} \
-  UNET_DIR=${UNET_DIR} \
-  LORA_DIR=${LORA_DIR}
+  MODEL_DIR=${MODEL_DIR_ARG} \
+  CHECKPOINT_DIR=${CHECKPOINT_DIR_ARG} \
+  DIFFUSION_DIR=${DIFFUSION_DIR_ARG} \
+  VAE_DIR=${VAE_DIR_ARG} \
+  CLIP_DIR=${CLIP_DIR_ARG} \
+  UNET_DIR=${UNET_DIR_ARG} \
+  LORA_DIR=${LORA_DIR_ARG}
 
 RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
@@ -73,16 +73,16 @@ WORKDIR /opt/ComfyUI
 
 # Environment variables
 ENV \
-  MODEL_DIR=${MODEL_DIR} \
-  CHECKPOINT_DIR=${CHECKPOINT_DIR} \
-  DIFFUSION_DIR=${DIFFUSION_DIR} \
-  VAE_DIR=${VAE_DIR} \
-  CLIP_DIR=${CLIP_DIR} \
-  UNET_DIR=${UNET_DIR} \
-  LORA_DIR=${LORA_DIR} \
-  COMFYUI_PORT_HOST=${COMFYUI_PORT_HOST} \
-  STARTUP_CHECK_MAX_TRIES=${STARTUP_CHECK_MAX_TRIES} \
-  PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
+  MODEL_DIR=${MODEL_DIR_ARG} \
+  CHECKPOINT_DIR=${CHECKPOINT_DIR_ARG} \
+  DIFFUSION_DIR=${DIFFUSION_DIR_ARG} \
+  VAE_DIR=${VAE_DIR_ARG} \
+  CLIP_DIR=${CLIP_DIR_ARG} \
+  UNET_DIR=${UNET_DIR_ARG} \
+  LORA_DIR=${LORA_DIR_ARG}
+  COMFYUI_PORT_HOST=${COMFYUI_PORT_HOST_ARG} \
+  STARTUP_CHECK_MAX_TRIES=${STARTUP_CHECK_MAX_TRIES_ARG} \
+  PYTHONUNBUFFERED=${PYTHONUNBUFFERED_ARG}
 
 # Install system dependencies and create model directories in one layer
 RUN set -xe \
