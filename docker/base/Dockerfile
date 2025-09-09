@@ -21,7 +21,7 @@ RUN set -xe \
       curl \
       openssh-server \
       dumb-init \
-      fmpeg \
+      ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 
