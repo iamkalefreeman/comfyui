@@ -50,8 +50,9 @@ out=${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors
 https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors
 out=${DIFFUSION_DIR}/redKFm00NSFWEditorFP8.Wtdk.safetensors
 EOF
-&& aria2c -x 16 -s 16 -j 5 -i /tmp/downloads.txt \
-&& rm /tmp/downloads.txt
+RUN set -xe \
+    && aria2c -x 16 -s 16 -j 4 -i /tmp/downloads.txt \
+    && rm /tmp/downloads.txt
 
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
@@ -76,8 +77,9 @@ out=${CLIP_DIR}/qwen_2.5_vl_7b_fp8_scaled.safetensors
 https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true
 out=${LORA_DIR}/Qwen-Image-Lightning-4steps-V1.0.safetensors
 EOF
-&& aria2c -x 16 -s 16 -j 4 -i /tmp/downloads.txt \
-&& rm /tmp/downloads.txt
+RUN set -xe \
+    && aria2c -x 16 -s 16 -j 4 -i /tmp/downloads.txt \
+    && rm /tmp/downloads.txt
 
 # Download QWEN Loras
 RUN cat > /tmp/downloads.txt << 'EOF'
@@ -93,8 +95,9 @@ out=${LORA_DIR}/ootdColour193600.yz3z.safetensors
 https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors
 out=${LORA_DIR}/qwenRealNud3s.r69Z.safetensors
 EOF
-&& aria2c -x 16 -s 16 -j 4 -i /tmp/downloads.txt \
-&& rm /tmp/downloads.txt
+RUN set -xe \
+    && aria2c -x 16 -s 16 -j 4 -i /tmp/downloads.txt \
+    && rm /tmp/downloads.txt
 
 
     
