@@ -1,29 +1,24 @@
 ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime
+ENV MODEL_DIR=/opt/ComfyUI/models
+ENV CHECKPOINT_DIR=${MODEL_DIR}/checkpoints
+ENV DIFFUSION_DIR=${MODEL_DIR}/diffusion_models
+ENV VAE_DIR=${MODEL_DIR}/vae
+ENV CLIP_DIR=${MODEL_DIR}/clip
+ENV UNET_DIR=${MODEL_DIR}/unet
+ENV LORA_DIR=${MODEL_DIR}/loras
+ENV COMFYUI_PORT_HOST=8188
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM $BASE_IMAGE
-
-# Set working directory
-WORKDIR /opt/ComfyUI
+FROM $BASE_IMAGE AS kontext-models
 
 # Environment variables
-ENV MODEL_DIR=/opt/ComfyUI/models \
-    CHECKPOINT_DIR=${MODEL_DIR}/checkpoints \
-    DIFFUSION_DIR=${MODEL_DIR}/diffusion_models \
-    VAE_DIR=${MODEL_DIR}/vae \
-    CLIP_DIR=${MODEL_DIR}/clip \
-    UNET_DIR=${MODEL_DIR}/unet \
-    LORA_DIR=${MODEL_DIR}/lora \
-    COMFYUI_PORT_HOST=8188 \
-    STARTUP_CHECK_MAX_TRIES=30 \
-    PYTHONUNBUFFERED=1
-
-# Install system dependencies and create model directories in one layer
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget \
-    git \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
+ENV MODEL_DIR
+ENV CHECKPOINT_DIR
+ENV DIFFUSION_DIR
+ENV VAE_DIR
+ENV CLIP_DIR
+ENV UNET_DIR
+ENV LORA_DIR
 
 # Download models in parallel to reduce build time
 RUN wget -O ${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors?download=true & \
@@ -32,6 +27,19 @@ RUN wget -O ${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors https://hu
     wget -O ${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors?download=true & \
     wget -O ${DIFFUSION_DIR}/redKFm00NSFWEditorFP8.Wtdk.safetensors https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors & \
     wait
+
+
+# Use a CUDA-enabled base image with PyTorch and necessary dependencies
+FROM $BASE_IMAGE AS qwen-models
+
+# Environment variables
+ENV MODEL_DIR
+ENV CHECKPOINT_DIR
+ENV DIFFUSION_DIR
+ENV VAE_DIR
+ENV CLIP_DIR
+ENV UNET_DIR
+ENV LORA_DIR
 
 # Download QWEN models in parallel to reduce build time
 RUN wget -O ${DIFFUSION_DIR}/qwen_image_edit_fp8_e4m3fn.safetensors https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors?download=true & \
@@ -46,6 +54,35 @@ RUN wget -O {LORA_DIR}/clothesTryonQwenEdit.3dlg.safetensors https://tigersjay.c
     wget -O {LORA_DIR}/ootdColour193600.yz3z.safetensors https://tigersjay.com/static/ootdColour193600.yz3z.safetensors & \
     wget -O {LORA_DIR}/qwenRealNud3s.r69Z.safetensors https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors & \
     wait
+    
+
+# Use a CUDA-enabled base image with PyTorch and necessary dependencies
+FROM $BASE_IMAGE AS kontext
+
+# Set working directory
+WORKDIR /opt/ComfyUI
+
+# Environment variables
+ENV MODEL_DIR
+ENV CHECKPOINT_DIR
+ENV DIFFUSION_DIR
+ENV VAE_DIR
+ENV CLIP_DIR
+ENV UNET_DIR
+ENV LORA_DIR
+ENV COMFYUI_PORT_HOST
+
+ENV STARTUP_CHECK_MAX_TRIES=30
+ENV PYTHONUNBUFFERED=1
+
+# Install system dependencies and create model directories in one layer
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+    git \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
+    
+COPY --from=kontext-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
 
 # Set permissions for model files (commented out to avoid unnecessary operation)
 # RUN chmod -R 644 ${MODEL_DIR}/*.safetensors
