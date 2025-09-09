@@ -64,7 +64,8 @@ RUN set -xe \
     && aria2c --out=${LORA_DIR}/clothesTryonQwenEdit.3dlg.safetensors 'https://tigersjay.com/static/clothesTryonQwenEdit.3dlg.safetensors' \
     && aria2c --out=${LORA_DIR}/extractOutfitV3.xWyV.safetensors 'https://tigersjay.com/static/extractOutfitV3.xWyV.safetensors' \
     && aria2c --out=${LORA_DIR}/ootdColour193600.yz3z.safetensors 'https://tigersjay.com/static/ootdColour193600.yz3z.safetensors' \
-    && aria2c --out=${LORA_DIR}/qwenRealNud3s.r69Z.safetensors 'https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors'
+    && aria2c --out=${LORA_DIR}/qwenRealNud3s.r69Z.safetensors 'https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors' \
+    && wait
 
 
     
