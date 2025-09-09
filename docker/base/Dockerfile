@@ -40,6 +40,13 @@ RUN wget -O ${DIFFUSION_DIR}/qwen_image_edit_fp8_e4m3fn.safetensors https://hugg
     wget -O ${LORA_DIR}/Qwen-Image-Lightning-4steps-V1.0.safetensors https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true  & \
     wait
 
+# Download QWEN Loras
+RUN wget -O {LORA_DIR}/clothesTryonQwenEdit.3dlg.safetensors https://tigersjay.com/static/clothesTryonQwenEdit.3dlg.safetensors & \
+    wget -O {LORA_DIR}/extractOutfitV3.xWyV.safetensors https://tigersjay.com/static/extractOutfitV3.xWyV.safetensors & \
+    wget -O {LORA_DIR}/ootdColour193600.yz3z.safetensors https://tigersjay.com/static/ootdColour193600.yz3z.safetensors & \
+    wget -O {LORA_DIR}/qwenRealNud3s.r69Z.safetensors https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors & \
+    wait
+
 # Set permissions for model files (commented out to avoid unnecessary operation)
 # RUN chmod -R 644 ${MODEL_DIR}/*.safetensors
 
