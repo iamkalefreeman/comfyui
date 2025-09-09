@@ -36,11 +36,11 @@ RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 # Download models in parallel to reduce build time
 RUN set -xe \
     && aria2c --out=${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors "https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors?download=true" \
-    && aria2c --out=${VAE_DIR}/ae.safetensors "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors?download=true" \
-    && aria2c --out=${CLIP_DIR}/clip_l.safetensors "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors?download=true" \
-    && aria2c --out=${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors?download=true" \
-    && aria2c --out=${DIFFUSION_DIR}/redKFm00NSFWEditorFP8.Wtdk.safetensors "https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors" \
-    && wait
+    & aria2c --out=${VAE_DIR}/ae.safetensors "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors?download=true" \
+    & aria2c --out=${CLIP_DIR}/clip_l.safetensors "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors?download=true" \
+    & aria2c --out=${CLIP_DIR}/t5xxl_fp8_e4m3fn_scaled.safetensors "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors?download=true" \
+    & aria2c --out=${DIFFUSION_DIR}/redKFm00NSFWEditorFP8.Wtdk.safetensors "https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors" \
+    & wait
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM base AS qwen-models
@@ -54,18 +54,18 @@ RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
 RUN set -xe \
     && aria2c --out=${DIFFUSION_DIR}/qwen_image_edit_fp8_e4m3fn.safetensors 'https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors?download=true' \
-    && aria2c --out=${VAE_DIR}/qwen_image_vae.safetensors 'https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true' \
-    && aria2c --out=${CLIP_DIR}/qwen_2.5_vl_7b_fp8_scaled.safetensors 'https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true' \
-    && aria2c --out=${LORA_DIR}/Qwen-Image-Lightning-4steps-V1.0.safetensors 'https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true' \
-    && wait
+    & aria2c --out=${VAE_DIR}/qwen_image_vae.safetensors 'https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true' \
+    & aria2c --out=${CLIP_DIR}/qwen_2.5_vl_7b_fp8_scaled.safetensors 'https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true' \
+    & aria2c --out=${LORA_DIR}/Qwen-Image-Lightning-4steps-V1.0.safetensors 'https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true' \
+    & wait
 
 # Download QWEN Loras
 RUN set -xe \
     && aria2c --out=${LORA_DIR}/clothesTryonQwenEdit.3dlg.safetensors 'https://tigersjay.com/static/clothesTryonQwenEdit.3dlg.safetensors' \
-    && aria2c --out=${LORA_DIR}/extractOutfitV3.xWyV.safetensors 'https://tigersjay.com/static/extractOutfitV3.xWyV.safetensors' \
-    && aria2c --out=${LORA_DIR}/ootdColour193600.yz3z.safetensors 'https://tigersjay.com/static/ootdColour193600.yz3z.safetensors' \
-    && aria2c --out=${LORA_DIR}/qwenRealNud3s.r69Z.safetensors 'https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors' \
-    && wait
+    & aria2c --out=${LORA_DIR}/extractOutfitV3.xWyV.safetensors 'https://tigersjay.com/static/extractOutfitV3.xWyV.safetensors' \
+    & aria2c --out=${LORA_DIR}/ootdColour193600.yz3z.safetensors 'https://tigersjay.com/static/ootdColour193600.yz3z.safetensors' \
+    & aria2c --out=${LORA_DIR}/qwenRealNud3s.r69Z.safetensors 'https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors' \
+    & wait
 
 
     
