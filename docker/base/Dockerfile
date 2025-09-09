@@ -141,6 +141,15 @@ ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
 
 FROM comfyui AS comfyui-kontext
 
+ENV \
+  MODEL_DIR=${MODEL_DIR_ARG} \
+  CHECKPOINT_DIR=${CHECKPOINT_DIR_ARG} \
+  DIFFUSION_DIR=${DIFFUSION_DIR_ARG} \
+  VAE_DIR=${VAE_DIR_ARG} \
+  CLIP_DIR=${CLIP_DIR_ARG} \
+  UNET_DIR=${UNET_DIR_ARG} \
+  LORA_DIR=${LORA_DIR_ARG}
+
 COPY --from=kontext-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
 COPY --from=kontext-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
 COPY --from=kontext-models ${VAE_DIR} ${VAE_DIR}
@@ -149,6 +158,15 @@ COPY --from=kontext-models ${UNET_DIR} ${UNET_DIR}
 COPY --from=kontext-models ${LORA_DIR} ${LORA_DIR}
 
 FROM comfyui AS comfyui-qwen
+
+ENV \
+  MODEL_DIR=${MODEL_DIR_ARG} \
+  CHECKPOINT_DIR=${CHECKPOINT_DIR_ARG} \
+  DIFFUSION_DIR=${DIFFUSION_DIR_ARG} \
+  VAE_DIR=${VAE_DIR_ARG} \
+  CLIP_DIR=${CLIP_DIR_ARG} \
+  UNET_DIR=${UNET_DIR_ARG} \
+  LORA_DIR=${LORA_DIR_ARG}
 
 COPY --from=qwen-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
 COPY --from=qwen-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
