@@ -10,7 +10,7 @@ ARG COMFYUI_PORT_HOST=8188
 ARG STARTUP_CHECK_MAX_TRIES=30
 ARG PYTHONUNBUFFERED=1
 
-FROM $BASE_image AS base
+FROM $BASE_IMAGE AS base
 
 RUN set -xe \
     && apt-get update && apt-get install -y --no-install-recommends \
