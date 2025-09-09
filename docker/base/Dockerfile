@@ -29,13 +29,7 @@ RUN set -xe \
 FROM base AS kontext-models
 
 # Environment variables
-ARG MODEL_DIR
-ARG CHECKPOINT_DIR
-ARG DIFFUSION_DIR
-ARG VAE_DIR=
-ARG CLIP_DIR
-ARG UNET_DIR
-ARG LORA_DIR
+ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
 RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
@@ -48,17 +42,13 @@ RUN wget -O ${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors https://hu
     wait
 
 
+
+
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM base AS qwen-models
 
 # Environment variables
-ARG MODEL_DIR
-ARG CHECKPOINT_DIR
-ARG DIFFUSION_DIR
-ARG VAE_DIR=
-ARG CLIP_DIR
-ARG UNET_DIR
-ARG LORA_DIR
+ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
 RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
@@ -75,22 +65,15 @@ RUN wget -O {LORA_DIR}/clothesTryonQwenEdit.3dlg.safetensors https://tigersjay.c
     wget -O {LORA_DIR}/ootdColour193600.yz3z.safetensors https://tigersjay.com/static/ootdColour193600.yz3z.safetensors & \
     wget -O {LORA_DIR}/qwenRealNud3s.r69Z.safetensors https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors & \
     wait
+
+
     
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM base AS comfyui
 
 # Environment variables
-ARG MODEL_DIR
-ARG CHECKPOINT_DIR
-ARG DIFFUSION_DIR
-ARG VAE_DIR=
-ARG CLIP_DIR
-ARG UNET_DIR
-ARG LORA_DIR
-ARG COMFYUI_PORT_HOST
-ARG STARTUP_CHECK_MAX_TRIES
-ARG PYTHONUNBUFFERED
+ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED
 
 # Set working directory
 WORKDIR /opt/ComfyUI
@@ -130,15 +113,11 @@ CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
 
 
+
+
 FROM comfyui AS comfyui-kontext
 
-ARG MODEL_DIR
-ARG CHECKPOINT_DIR
-ARG DIFFUSION_DIR
-ARG VAE_DIR=
-ARG CLIP_DIR
-ARG UNET_DIR
-ARG LORA_DIR
+ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
 COPY --from=kontext-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
 COPY --from=kontext-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
@@ -147,15 +126,12 @@ COPY --from=kontext-models ${CLIP_DIR} ${CLIP_DIR}
 COPY --from=kontext-models ${UNET_DIR} ${UNET_DIR}
 COPY --from=kontext-models ${LORA_DIR} ${LORA_DIR}
 
+
+
+
 FROM comfyui AS comfyui-qwen
 
-ARG MODEL_DIR
-ARG CHECKPOINT_DIR
-ARG DIFFUSION_DIR
-ARG VAE_DIR=
-ARG CLIP_DIR
-ARG UNET_DIR
-ARG LORA_DIR
+ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
 COPY --from=qwen-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
 COPY --from=qwen-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
