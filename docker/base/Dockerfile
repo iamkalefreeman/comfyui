@@ -14,6 +14,8 @@ ARG \
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM $BASE_IMAGE AS kontext-models
 
+RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
+
 # Environment variables
 ENV \
   MODEL_DIR=${MODEL_DIR} \
@@ -46,9 +48,11 @@ ENV \
   UNET_DIR=${UNET_DIR} \
   LORA_DIR=${LORA_DIR}
 
+RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
+
 # Download QWEN models in parallel to reduce build time
 RUN wget -O ${DIFFUSION_DIR}/qwen_image_edit_fp8_e4m3fn.safetensors https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors?download=true & \
-    wget -O ${VAE_DIR}/qwen_image_ae.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true & \
+    wget -O ${VAE_DIR}/qwen_image_vae.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true & \
     wget -O ${CLIP_DIR}/qwen_2.5_vl_7b_fp8_scaled.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true & \
     wget -O ${LORA_DIR}/Qwen-Image-Lightning-4steps-V1.0.safetensors https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true  & \
     wait
@@ -62,7 +66,7 @@ RUN wget -O {LORA_DIR}/clothesTryonQwenEdit.3dlg.safetensors https://tigersjay.c
     
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM $BASE_IMAGE AS kontext
+FROM $BASE_IMAGE AS comfyui
 
 # Set working directory
 WORKDIR /opt/ComfyUI
@@ -81,43 +85,41 @@ ENV \
   PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
 
 # Install system dependencies and create model directories in one layer
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget \
-    git \
+RUN set -xe \
+    && apt-get update && apt-get install -y --no-install-recommends \
+      wget \
+      git \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
-    
-COPY --from=kontext-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
 
 # Set permissions for model files (commented out to avoid unnecessary operation)
 # RUN chmod -R 644 ${MODEL_DIR}/*.safetensors
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    software-properties-common \
-    curl \
-    openssh-server \
-    dumb-init \
+RUN set -xe \
+    && apt-get update && apt-get install -y --no-install-recommends \
+      software-properties-common \
+      curl \
+      openssh-server \
+      dumb-init \
+      fmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies in one layer for FP8, LoRA, and custom nodes
-RUN pip install --no-cache-dir \
-    torch>=2.8.0 \
-    transformers \
-    bitsandbytes \
-    accelerate \
-    safetensors \
-    huggingface_hub \
-    opencv-python \
-    Pillow \
-    numpy \
-    scipy \
-    tqdm \
-    peft \
-    xformers
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+RUN set -xe \
+    && pip install --no-cache-dir \
+      torch>=2.8.0 \
+      transformers \
+      bitsandbytes \
+      accelerate \
+      safetensors \
+      huggingface_hub \
+      opencv-python \
+      Pillow \
+      numpy \
+      scipy \
+      tqdm \
+      peft \
+      xformers
 
 # Install ComfyUI-GGUF and custom nodes with requirements.txt checks
 RUN git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF && \
@@ -135,3 +137,22 @@ EXPOSE 8188
 # Command to start ComfyUI
 CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
+
+
+FROM comfyui AS comfyui-kontext
+
+COPY --from=kontext-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
+COPY --from=kontext-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
+COPY --from=kontext-models ${VAE_DIR} ${VAE_DIR}
+COPY --from=kontext-models ${CLIP_DIR} ${CLIP_DIR}
+COPY --from=kontext-models ${UNET_DIR} ${UNET_DIR}
+COPY --from=kontext-models ${LORA_DIR} ${LORA_DIR}
+
+FROM comfyui AS comfyui-qwen
+
+COPY --from=qwen-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
+COPY --from=qwen-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
+COPY --from=qwen-models ${VAE_DIR} ${VAE_DIR}
+COPY --from=qwen-models ${CLIP_DIR} ${CLIP_DIR}
+COPY --from=qwen-models ${UNET_DIR} ${UNET_DIR}
+COPY --from=qwen-models ${LORA_DIR} ${LORA_DIR}
