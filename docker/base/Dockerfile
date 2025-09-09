@@ -37,7 +37,7 @@ RUN wget -O ${DIFFUSION_DIR}/flux1-dev-kontext_fp8_scaled.safetensors https://hu
 RUN wget -O ${DIFFUSION_DIR}/qwen_image_edit_fp8_e4m3fn.safetensors https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors?download=true & \
     wget -O ${VAE_DIR}/qwen_image_ae.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true & \
     wget -O ${CLIP_DIR}/qwen_2.5_vl_7b_fp8_scaled.safetensors https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true & \
-    wget -O ${LORA_DIR}/Qwen-Image-Lightning-4steps-V1.0.safetensors https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true 
+    wget -O ${LORA_DIR}/Qwen-Image-Lightning-4steps-V1.0.safetensors https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true  & \
     wait
 
 # Set permissions for model files (commented out to avoid unnecessary operation)
