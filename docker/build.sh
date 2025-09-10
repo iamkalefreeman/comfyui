@@ -1,8 +1,8 @@
 #!bin/bash -xe
 
   date_version=$(date +'%d-%m-%Y-%H-%M')
-  docker_account=YOUR_DOCKER_HUB_ACCOUNT_HERE
-  working_dir="/var/dockers/comfyui/code"
+  docker_account=${DOCKER_ACCOUNT:-YOUR_DOCKER_ACCOUNT_HERE}
+  working_dir==${WORKING_DIR:-"/var/dockers/comfyui/code"}
 
   cd ./code
   git pull
