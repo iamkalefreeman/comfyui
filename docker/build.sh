@@ -22,7 +22,7 @@ docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:kontext-ba
 docker push "${docker_account}/comfyui:kontext-salad-api-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 
-docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:kontext-salad-api-latest" \
+docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:kontext-base-latest" \
   -t "${docker_account}/comfyui:kontext-runpod-${date_version}" \
   -t "${docker_account}/comfyui:kontext-runpod-latest" "${working_dir}" \
   -f "${working_dir}/docker/runpod/Dockerfile"
@@ -54,7 +54,7 @@ docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-
 docker push "${docker_account}/comfyui:qwen-salad-api-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 
-docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-salad-api-latest" \
+docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   -t "${docker_account}/comfyui:qwen-runpod-${date_version}" \
   -t "${docker_account}/comfyui:qwen-runpod-latest" "${working_dir}" \
   -f "${working_dir}/docker/runpod/Dockerfile"
