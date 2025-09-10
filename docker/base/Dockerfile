@@ -31,7 +31,7 @@ FROM base AS kontext-models
 # Environment variables
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
-RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
+RUN set -xe && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
 # Download models in parallel to reduce build time
 ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
@@ -64,7 +64,7 @@ FROM base AS qwen-models
 # Environment variables
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
-RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
+RUN set -xe && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
 # Download QWEN models in parallel to reduce build time
 ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
@@ -135,12 +135,13 @@ RUN set -xe \
       xformers
 
 # Install ComfyUI-GGUF and custom nodes with requirements.txt checks
-RUN git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF && \
-    if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt; else echo "No requirements.txt for ComfyUI-GGUF"; fi && \
-    chmod -R 755 /opt/ComfyUI/custom_nodes
+RUN set -xe \
+    && git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF \
+    && if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt; else echo "No requirements.txt for ComfyUI-GGUF"; fi \
+    && chmod -R 755 /opt/ComfyUI/custom_nodes
 
 # Disable safety filters to allow NSFW input/output
-RUN sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py || echo "safety_checker not found in main.py"
+RUN set -xe && sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py || echo "safety_checker not found in main.py"
 
 COPY ./example_workflows /opt/ComfyUI/example_workflows
 
