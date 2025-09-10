@@ -41,11 +41,11 @@ RUN set -xe && \
     chmod -R 755 /opt/ComfyUI/custom_nodes
 
 # Optionally, download a sample LoRA model for Flux.1 (example LoRA, replace with desired model)
-# RUN wget -O ${LORA_DIR}/example_lora.safetensors https://huggingface.co/<user>/<lora-model>/resolve/main/<lora-model>.safetensors && \
+# RUN set -xe && wget -O ${LORA_DIR}/example_lora.safetensors https://huggingface.co/<user>/<lora-model>/resolve/main/<lora-model>.safetensors && \
 #     chmod 644 ${LORA_DIR}/*.safetensors
 
 # Optionally, download GGUF model for lower VRAM systems
-# RUN wget -O ${UNET_DIR}/flux1-kontext-dev-Q3_K_S.gguf https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/flux1-kontext-dev-Q3_K_S.gguf?download=true && \
+# RUN set -xe && wget -O ${UNET_DIR}/flux1-kontext-dev-Q3_K_S.gguf https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/flux1-kontext-dev-Q3_K_S.gguf?download=true && \
 #     chmod 644 ${UNET_DIR}/*.gguf
 
 # Expose the ComfyUI port
