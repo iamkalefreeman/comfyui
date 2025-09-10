@@ -3,10 +3,6 @@
   date_version=$(date +'%d-%m-%Y-%H-%M')
   docker_account=${DOCKER_ACCOUNT:-YOUR_DOCKER_ACCOUNT_HERE}
   working_dir==${WORKING_DIR:-"/var/dockers/comfyui/code"}
-
-  cd ./code
-  git pull
-  cd ..
  
   docker buildx build --target kontext-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
   [[ "$?" -ne 0 ]] && echo "Error!" && return 11
