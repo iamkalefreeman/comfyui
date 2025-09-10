@@ -55,6 +55,10 @@ COPY ./api-workflows /workflows
 EXPOSE 8188
 EXPOSE 3000
 
-# Command to start ComfyUI
-CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
+## Command to start ComfyUI
+# CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
+
+# Set CMD to launch the comfyui-api binary. The comfyui-api binary will launch ComfyUI as a child process.
+CMD ["./comfyui-api"]
+
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
