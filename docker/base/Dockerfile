@@ -34,13 +34,29 @@ ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
 # Download models in parallel to reduce build time
-RUN set -xe \
-    && aria2c --dir="${DIFFUSION_DIR}" --out="flux1-dev-kontext_fp8_scaled.safetensors" "https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors?download=true" \
-    & aria2c --dir="${VAE_DIR}" --out="ae.safetensors" "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors?download=true" \
-    & aria2c --dir="${CLIP_DIR}" --out="clip_l.safetensors" "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors?download=true" \
-    & aria2c --dir="${CLIP_DIR}" --out="t5xxl_fp8_e4m3fn_scaled.safetensors" "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors?download=true" \
-    & aria2c --dir="${DIFFUSION_DIR}" --out="redKFm00NSFWEditorFP8.Wtdk.safetensors" "https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors" \
-    & wait
+ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors?download=true
+  dir=${DIFFUSION_DIR}
+  out=flux1-dev-kontext_fp8_scaled.safetensors
+
+https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors?download=true
+  dir=${VAE_DIR}
+  out=ae.safetensors
+
+https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors?download=true
+  dir=${CLIP_DIR}
+  out=clip_l.safetensors
+
+https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors?download=true
+  dir=${CLIP_DIR}
+  out=t5xxl_fp8_e4m3fn_scaled.safetensors
+
+https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors
+  dir=${DIFFUSION_DIR}
+  out=redKFm00NSFWEditorFP8.Wtdk.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM base AS qwen-models
@@ -51,23 +67,45 @@ ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 RUN mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
 # Download QWEN models in parallel to reduce build time
+ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors?download=true
+  dir=${DIFFUSION_DIR}
+  out=qwen_image_edit_fp8_e4m3fn.safetensors
 
-RUN set -xe \
-    && aria2c --dir="${DIFFUSION_DIR}" --out="qwen_image_edit_fp8_e4m3fn.safetensors" 'https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors?download=true' \
-    & aria2c --dir="${VAE_DIR}" --out="qwen_image_vae.safetensors" 'https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true' \
-    & aria2c --dir="${CLIP_DIR}" --out="qwen_2.5_vl_7b_fp8_scaled.safetensors" 'https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true' \
-    & aria2c --dir="${DIFFUSION_DIR}" --out="Qwen-Image-Lightning-4steps-V1.0.safetensors" 'https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true' \
-    & wait
+https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true
+  dir=${VAE_DIR}
+  out=qwen_image_vae.safetensors
+
+https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true
+  dir=${CLIP_DIR}
+  out=qwen_2.5_vl_7b_fp8_scaled.safetensors
+
+https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true
+  dir=${DIFFUSION_DIR}
+  out=Qwen-Image-Lightning-4steps-V1.0.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
 # Download QWEN Loras
-RUN set -xe \
-    && aria2c --dir="${LORA_DIR}" --out="clothesTryonQwenEdit.3dlg.safetensors" 'https://tigersjay.com/static/clothesTryonQwenEdit.3dlg.safetensors' \
-    & aria2c --dir="${LORA_DIR}" --out="extractOutfitV3.xWyV.safetensors" 'https://tigersjay.com/static/extractOutfitV3.xWyV.safetensors' \
-    & aria2c --dir="${LORA_DIR}" --out="ootdColour193600.yz3z.safetensors" 'https://tigersjay.com/static/ootdColour193600.yz3z.safetensors' \
-    & aria2c --dir="${LORA_DIR}" --out="qwenRealNud3s.r69Z.safetensors" 'https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors' \
-    & wait
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://tigersjay.com/static/clothesTryonQwenEdit.3dlg.safetensors
+  dir=${LORA_DIR}
+  out=clothesTryonQwenEdit.3dlg.safetensors
 
+https://tigersjay.com/static/extractOutfitV3.xWyV.safetensors
+  dir=${LORA_DIR}
+  out=extractOutfitV3.xWyV.safetensors
 
+https://tigersjay.com/static/ootdColour193600.yz3z.safetensors
+  dir=${LORA_DIR}
+  out=ootdColour193600.yz3z.safetensors
+
+https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors
+  dir=${LORA_DIR}
+  out=qwenRealNud3s.r69Z.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
     
 
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
