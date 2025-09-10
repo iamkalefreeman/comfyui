@@ -7,6 +7,7 @@ const RequestSchema = z.object({
   image: z.string().describe("Input image for editing (URL or base64 encoded string)"),
   prompt: z
     .string()
+    .default("Replace background with tropical forest with rocks")
     .describe("The editing instructions for the image generation"),
   negative_prompt: z
     .string()
