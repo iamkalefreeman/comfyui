@@ -7,8 +7,8 @@ working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 #########################
 # Kontext-Flux Builds
 #########################
-docker buildx build --target kontext-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 11
+# docker buildx build --target kontext-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 
 docker buildx build --target comfyui-kontext --build-arg BASE_IMAGE="ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime" \
   -t "${docker_account}/comfyui:kontext-base-latest" "${working_dir}" \
@@ -39,8 +39,8 @@ docker push "${docker_account}/comfyui:kontext-full-latest"
 #########################
 # QWEN Builds
 #########################
-docker buildx build --target qwen-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 11
+# docker buildx build --target qwen-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 
 docker buildx build --target comfyui-qwen --build-arg BASE_IMAGE="ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime" \
   -t "${docker_account}/comfyui:qwen-base-latest" "${working_dir}" \
