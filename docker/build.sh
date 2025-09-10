@@ -8,17 +8,20 @@
   git pull
   cd ..
   
+  docker buildx build --target kontext-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
+  [[ "$?" -ne 0 ]] && echo "Error!" && return 11
+
   docker buildx build --target comfyui-kontext --build-arg BASE_IMAGE="ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime" \
     -t "${docker_account}/comfyui-kontext-flux:base-latest" "${working_dir}" \
     -f "${working_dir}/docker/base/Dockerfile"
   docker push "${docker_account}/comfyui-kontext-flux:base-latest"
-  [[ "$?" -ne 0 ]] && echo "Error!" && return 11
+  [[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
   docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-kontext-flux:base-latest" \
     -t "${docker_account}/comfyui-kontext-flux:salad-api-latest" "${working_dir}" \
     -f "${working_dir}/docker/salad-api/Dockerfile"
   docker push "${docker_account}/comfyui-kontext-flux:salad-api-latest"
-  [[ "$?" -ne 0 ]] && echo "Error!" && return 12
+  [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 
   docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-kontext-flux:salad-api-latest" \
     -t "${docker_account}/comfyui-kontext-flux:runpod-${date_version}" \
@@ -26,41 +29,43 @@
     -f "${working_dir}/docker/runpod/Dockerfile"
   docker push "${docker_account}/comfyui-kontext-flux:runpod-${date_version}"
   docker push "${docker_account}/comfyui-kontext-flux:runpod-latest"
-  [[ "$?" -ne 0 ]] && echo "Error!" && return 13
+  [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 
   docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-kontext-flux:salad-api-latest" \
     -t "${docker_account}/comfyui-kontext-flux:full-latest" "${working_dir}" \
     -f "${working_dir}/docker/full/Dockerfile"
   docker push "${docker_account}/comfyui-kontext-flux:full-latest"
-  [[ "$?" -ne 0 ]] && echo "Error!" && return 14
+  [[ "$?" -ne 0 ]] && echo "Error!" && return 15
 
 
 
-  docker buildx build --target comfyui-qwen --build-arg BASE_IMAGE="ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime" \
-    -t "${docker_account}/comfyui-qwen-flux:base-latest" "${working_dir}" \
-    -f "${working_dir}/docker/base/Dockerfile"
-  docker push "${docker_account}/comfyui-qwen-flux:base-latest"
+
+  docker buildx build --target qwen-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
   [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 
-  docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-qwen-flux:base-latest" \
-    -t "${docker_account}/comfyui-qwen-flux:salad-api-latest" "${working_dir}" \
-    -f "${working_dir}/docker/salad-api/Dockerfile"
-  docker push "${docker_account}/comfyui-qwen-flux:salad-api-latest"
+  docker buildx build --target comfyui-qwen --build-arg BASE_IMAGE="ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime" \
+    -t "${docker_account}/comfyui-qwen:base-latest" "${working_dir}" \
+    -f "${working_dir}/docker/base/Dockerfile"
+  docker push "${docker_account}/comfyui-qwen:base-latest"
   [[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
-  docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-qwen-flux:salad-api-latest" \
-    -t "${docker_account}/comfyui-qwen-flux:runpod-${date_version}" \
-    -t "${docker_account}/comfyui-qwen-flux:runpod-latest" "${working_dir}" \
-    -f "${working_dir}/docker/runpod/Dockerfile"
-  docker push "${docker_account}/comfyui-qwen-flux:runpod-${date_version}"
-  docker push "${docker_account}/comfyui-qwen-flux:runpod-latest"
+  docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-qwen:base-latest" \
+    -t "${docker_account}/comfyui-qwen:salad-api-latest" "${working_dir}" \
+    -f "${working_dir}/docker/salad-api/Dockerfile"
+  docker push "${docker_account}/comfyui-qwen:salad-api-latest"
   [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 
-  docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-qwen-flux:salad-api-latest" \
-    -t "${docker_account}/comfyui-qwen-flux:full-latest" "${working_dir}" \
-    -f "${working_dir}/docker/full/Dockerfile"
-  docker push "${docker_account}/comfyui-qwen-flux:full-latest"
+  docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-qwen:salad-api-latest" \
+    -t "${docker_account}/comfyui-qwen:runpod-${date_version}" \
+    -t "${docker_account}/comfyui-qwen:runpod-latest" "${working_dir}" \
+    -f "${working_dir}/docker/runpod/Dockerfile"
+  docker push "${docker_account}/comfyui-qwen:runpod-${date_version}"
+  docker push "${docker_account}/comfyui-qwen:runpod-latest"
   [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 
+  docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui-qwen:salad-api-latest" \
+    -t "${docker_account}/comfyui-qwen:full-latest" "${working_dir}" \
+    -f "${working_dir}/docker/full/Dockerfile"
+  docker push "${docker_account}/comfyui-kontex
 
 return 0
