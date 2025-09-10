@@ -95,7 +95,7 @@ https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/tex
   out=qwen_2.5_vl_7b_fp8_scaled.safetensors
 
 https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors?download=true
-  dir=${DIFFUSION_DIR}
+  dir=${LORA_DIR}
   out=Qwen-Image-Lightning-4steps-V1.0.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
