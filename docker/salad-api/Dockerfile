@@ -4,7 +4,7 @@ ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui-kontext-flux:base-latest
 
 FROM ${BASE_IMAGE}
 
-RUN  mkdir -p /workflows
+RUN  set -xe && mkdir -p /workflows
 COPY ./api-workflows /workflows
 
 EXPOSE 8188
