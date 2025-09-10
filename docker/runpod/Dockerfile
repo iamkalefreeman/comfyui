@@ -1,6 +1,6 @@
 # check=skip=InvalidDefaultArgInFrom
 
-ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui-kontext-flux:salad-api-latest
+ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui:base-latest
 
 FROM ${BASE_IMAGE}
 
@@ -24,6 +24,12 @@ ADD ./docker/runpod/src /app
 
 RUN set -xe \
     && chmod -R +x /app
+
+RUN  set -xe && mkdir -p /workflows
+COPY ./api-workflows /workflows
+
+EXPOSE 8188
+EXPOSE 3000
 
 CMD         ["/app/start.sh"]
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
