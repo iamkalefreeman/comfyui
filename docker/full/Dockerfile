@@ -1,6 +1,6 @@
 # check=skip=InvalidDefaultArgInFrom
 
-ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui-kontext-flux:salad-api-latest
+ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui:base-latest
 
 FROM ${BASE_IMAGE}
 
@@ -47,6 +47,9 @@ RUN set -xe && \
 # Optionally, download GGUF model for lower VRAM systems
 # RUN set -xe && wget -O ${UNET_DIR}/flux1-kontext-dev-Q3_K_S.gguf https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/flux1-kontext-dev-Q3_K_S.gguf?download=true && \
 #     chmod 644 ${UNET_DIR}/*.gguf
+
+RUN  set -xe && mkdir -p /workflows
+COPY ./api-workflows /workflows
 
 # Expose the ComfyUI port
 EXPOSE 8188
