@@ -1,6 +1,6 @@
 # check=skip=InvalidDefaultArgInFrom
 
-ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui-kontext-flux:base-latest
+ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui:base-latest
 
 FROM ${BASE_IMAGE}
 
