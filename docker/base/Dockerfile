@@ -1,3 +1,6 @@
+##########################################################################################
+# build args
+##########################################################################################
 ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime
 ARG MODEL_DIR=/opt/ComfyUI/models
 ARG CHECKPOINT_DIR=/opt/ComfyUI/models/checkpoints
@@ -10,6 +13,9 @@ ARG COMFYUI_PORT_HOST=8188
 ARG STARTUP_CHECK_MAX_TRIES=30
 ARG PYTHONUNBUFFERED=1
 
+##########################################################################################
+# base stage
+##########################################################################################
 FROM $BASE_IMAGE AS base
 
 RUN set -xe \
@@ -25,6 +31,9 @@ RUN set -xe \
     && rm -rf /var/lib/apt/lists/*
 
 
+##########################################################################################
+# kontext-models stage
+##########################################################################################
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM base AS kontext-models
 
@@ -58,6 +67,10 @@ https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+
+##########################################################################################
+# qwen-models stage
+##########################################################################################
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM base AS qwen-models
 
@@ -106,8 +119,11 @@ https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors
   out=qwenRealNud3s.r69Z.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-    
 
+
+##########################################################################################
+# comfyui stage
+##########################################################################################
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM base AS comfyui
 
@@ -153,8 +169,9 @@ CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
 
 
-
-
+##########################################################################################
+# comfyui-kontext stage
+##########################################################################################
 FROM comfyui AS comfyui-kontext
 
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
@@ -167,8 +184,9 @@ COPY --from=kontext-models ${UNET_DIR} ${UNET_DIR}
 COPY --from=kontext-models ${LORA_DIR} ${LORA_DIR}
 
 
-
-
+##########################################################################################
+# comfyui-qwen stage
+##########################################################################################
 FROM comfyui AS comfyui-qwen
 
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
