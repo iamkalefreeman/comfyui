@@ -194,7 +194,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "75": {
       "inputs": {
-        "strength": input.strength,
+        "strength": input.cfg_norm_strength,
         "model": [
           "66",
           0
