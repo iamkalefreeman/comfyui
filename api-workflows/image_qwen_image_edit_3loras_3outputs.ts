@@ -4,21 +4,19 @@ import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
 
 const RequestSchema = z.object({
-  image: z.string().describe("Input image for editing (URL or base64 encoded string)"),
-  prompt: z
-    .string()
-    .describe("The editing instructions for the image generation"),
+  image: z.string().describe("The input image to be edited, provided as a URL or base64 encoded string."),
+  prompt: z.string().describe("The positive prompt describing the desired edit."),
   negative_prompt: z
     .string()
     .optional()
-    .default("")
-    .describe("The negative prompt for the image generation"),
+    .default("blurry, ugly")
+    .describe("The negative prompt to guide the generation away from."),
   seed: z
     .number()
     .int()
     .optional()
     .default(() => Math.floor(Math.random() * 1000000000000000))
-    .describe("Seed for random number generation"),
+    .describe("Seed for random number generation. A specific seed will ensure reproducible results."),
   steps: z
     .number()
     .int()
@@ -26,55 +24,57 @@ const RequestSchema = z.object({
     .max(100)
     .optional()
     .default(4)
-    .describe("Number of sampling steps"),
+    .describe("Number of sampling steps."),
   cfg_scale: z
     .number()
     .min(0)
     .max(20)
     .optional()
-    .default(2.5)
-    .describe("Classifier-free guidance scale"),
+    .default(1)
+    .describe("Classifier-Free Guidance scale."),
   sampler_name: config.samplers
     .optional()
     .default("euler")
-    .describe("Name of the sampler to use"),
+    .describe("The sampler to use for the generation process."),
   scheduler: config.schedulers
     .optional()
     .default("simple")
-    .describe("Type of scheduler to use"),
+    .describe("The scheduler to use for the generation process."),
   denoise: z
     .number()
     .min(0)
     .max(1)
     .optional()
     .default(1)
-    .describe("Denoising strength"),
-  shift: z
+    .describe("Denoising strength. A value of 1.0 completely replaces the original image content based on the prompt."),
+  megapixels: z
+    .number()
+    .min(0.1)
+    .max(4)
+    .optional()
+    .default(1)
+    .describe("The target resolution for the input image in megapixels before processing."),
+  aura_flow_shift: z
     .number()
     .int()
     .optional()
     .default(3)
-    .describe("Aura Flow model sampling shift value"),
+    .describe("Shift value for the ModelSamplingAuraFlow node."),
   cfg_norm_strength: z
     .number()
+    .min(0)
+    .max(1)
     .optional()
-    .default(1)
-    .describe("Strength for CFG Normalization"),
-  upscale_method: z
-    .string()
-    .optional()
-    .default("lanczos")
-    .describe("Method to use for upscaling the image"),
-  megapixels: z
-    .number()
-    .optional()
-    .default(1)
-    .describe("Total megapixels to scale the image to"),
+    .default(0.79)
+    .describe("Strength of the CFGNorm normalization."),
+  unet_name: config.unets.optional().default("qwen_image_edit_fp8_e4m3fn.safetensors").describe("The UNET model to use."),
+  clip_name: config.clips.optional().default("qwen_2.5_vl_7b_fp8_scaled.safetensors").describe("The CLIP model to use."),
+  vae_name: config.vaes.optional().default("qwen_image_vae.safetensors").describe("The VAE model to use."),
   lora_1_name: z
     .string()
     .optional()
     .default("Qwen-Image-Lightning-4steps-V1.0.safetensors")
-    .describe("Name of the first LoRA model (e.g., Lightning)"),
+    .describe("Name of the first LoRA model to use (e.g., Lightning)"),
   lora_1_strength: z
     .number()
     .optional()
@@ -84,7 +84,7 @@ const RequestSchema = z.object({
     .string()
     .optional()
     .default("extractOutfitV3.xWyV.safetensors")
-    .describe("Name of the second LoRA model (e.g., Outfit Extractor)"),
+    .describe("Name of the second LoRA model to use (e.g., Outfit Extractor)"),
   lora_2_strength: z
     .number()
     .optional()
@@ -93,28 +93,13 @@ const RequestSchema = z.object({
   lora_3_name: z
     .string()
     .optional()
-    .default("ootdColour193600.yz3z.safetensors")
-    .describe("Name of the third LoRA model (e.g., OOTD/Color)"),
+    .default("qwenRealNud3s.r69Z.safetensors")
+    .describe("Name of the third LoRA model to use (e.g., RealNud3)"),
   lora_3_strength: z
     .number()
     .optional()
     .default(1)
     .describe("Strength of the third LoRA model"),
-  unet_name: z
-    .string()
-    .optional()
-    .default("qwen_image_edit_fp8_e4m3fn.safetensors")
-    .describe("Name of the UNET model to load"),
-  clip_name: z
-    .string()
-    .optional()
-    .default("qwen_2.5_vl_7b_fp8_scaled.safetensors")
-    .describe("Name of the CLIP model to load"),
-  vae_name: z
-    .string()
-    .optional()
-    .default("qwen_image_vae.safetensors")
-    .describe("Name of the VAE model to load"),
 });
 
 type InputType = z.infer<typeof RequestSchema>;
@@ -191,8 +176,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "66": {
       inputs: {
-        shift: input.shift,
-        model: ["103", 0],
+        shift: input.aura_flow_shift,
+        model: ["109", 0],
       },
       class_type: "ModelSamplingAuraFlow",
       _meta: {
@@ -255,7 +240,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "93": {
       inputs: {
-        upscale_method: input.upscale_method,
+        upscale_method: "lanczos",
         megapixels: input.megapixels,
         image: ["78", 0],
       },
@@ -288,6 +273,82 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "103": {
       inputs: {
+        seed: input.seed + 1,
+        steps: input.steps,
+        cfg: input.cfg_scale,
+        sampler_name: input.sampler_name,
+        scheduler: input.scheduler,
+        denoise: input.denoise,
+        model: ["75", 0],
+        positive: ["76", 0],
+        negative: ["77", 0],
+        latent_image: ["88", 0],
+      },
+      class_type: "KSampler",
+      _meta: {
+        title: "KSampler",
+      },
+    },
+    "104": {
+      inputs: {
+        samples: ["103", 0],
+        vae: ["39", 0],
+      },
+      class_type: "VAEDecode",
+      _meta: {
+        title: "VAE Decode",
+      },
+    },
+    "105": {
+      inputs: {
+        filename_prefix: "ComfyUI",
+        images: ["104", 0],
+      },
+      class_type: "SaveImage",
+      _meta: {
+        title: "Save Image",
+      },
+    },
+    "106": {
+      inputs: {
+        seed: input.seed + 2,
+        steps: input.steps,
+        cfg: input.cfg_scale,
+        sampler_name: input.sampler_name,
+        scheduler: input.scheduler,
+        denoise: input.denoise,
+        model: ["75", 0],
+        positive: ["76", 0],
+        negative: ["77", 0],
+        latent_image: ["88", 0],
+      },
+      class_type: "KSampler",
+      _meta: {
+        title: "KSampler",
+      },
+    },
+    "107": {
+      inputs: {
+        samples: ["106", 0],
+        vae: ["39", 0],
+      },
+      class_type: "VAEDecode",
+      _meta: {
+        title: "VAE Decode",
+      },
+    },
+    "108": {
+      inputs: {
+        filename_prefix: "ComfyUI",
+        images: ["107", 0],
+      },
+      class_type: "SaveImage",
+      _meta: {
+        title: "Save Image",
+      },
+    },
+    "109": {
+      inputs: {
         lora_name: input.lora_3_name,
         strength_model: input.lora_3_strength,
         model: ["102", 0],
@@ -303,9 +364,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "Qwen Image Edit with Three LoRAs",
-  description:
-    "Edits a provided image based on a text prompt using the Qwen model. ",
+  summary: "Qwen Text-Guided Image Editing (3 LoRA)",
+  description: "Edits an input image based on a text prompt using the Qwen-Image model with a three-LoRA chain. This workflow generates 3 variations.",
 };
 
 export default workflow;
