@@ -71,9 +71,6 @@ const RequestSchema = z.object({
     .optional()
     .default(1)
     .describe("Total megapixels to scale the image to"),
-  unet_name: config.unets.default("qwen_image_edit_fp8_e4m3fn.safetensors").describe("The UNET model to use."),
-  clip_name: config.clips.default("qwen_2.5_vl_7b_fp8_scaled.safetensors").describe("The CLIP model to use."),
-  vae_name: config.vaes.default("qwen_image_vae.safetensors").describe("The VAE model to use."),
   lora_1_name: z
     .string()
     .optional()
@@ -83,7 +80,22 @@ const RequestSchema = z.object({
     .number()
     .optional()
     .default(1)
-    .describe("Strength of the first LoRA model"),
+    .describe("Strength of the LoRA model"),
+  unet_name: z
+    .string()
+    .optional()
+    .default("qwen_image_edit_fp8_e4m3fn.safetensors")
+    .describe("Name of the UNET model to load"),
+  clip_name: z
+    .string()
+    .optional()
+    .default("qwen_2.5_vl_7b_fp8_scaled.safetensors")
+    .describe("Name of the CLIP model to load"),
+  vae_name: z
+    .string()
+    .optional()
+    .default("qwen_image_vae.safetensors")
+    .describe("Name of the VAE model to load"),
 });
 
 type InputType = z.infer<typeof RequestSchema>;
