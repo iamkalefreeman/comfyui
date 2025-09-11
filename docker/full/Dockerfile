@@ -38,7 +38,9 @@ RUN set -xe && \
     if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_SLK_joy_caption_two/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI_SLK_joy_caption_two/requirements.txt; else echo "No requirements.txt for ComfyUI_SLK_joy_caption_two"; fi && \
     git clone https://github.com/bananasss00/ComfyUI_bitsandbytes_NF4-Lora.git /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora && \
     if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt; else echo "No requirements.txt for ComfyUI_bitsandbytes_NF4-Lora"; fi && \
-    chmod -R 755 /opt/ComfyUI/custom_nodes
+    chmod -R 755 /opt/ComfyUI/custom_nodes && \
+    echo "Updating ComfyUI nodes..." \
+    comfy node update all
 
 # Optionally, download a sample LoRA model for Flux.1 (example LoRA, replace with desired model)
 # RUN set -xe && wget -O ${LORA_DIR}/example_lora.safetensors https://huggingface.co/<user>/<lora-model>/resolve/main/<lora-model>.safetensors && \
@@ -50,6 +52,11 @@ RUN set -xe && \
 
 RUN  set -xe && mkdir -p /workflows
 COPY ./api-workflows /workflows
+
+RUN for file in /workflows/*.json; do \
+    echo "Installing dependencies for: $file"; \
+    comfy node install-deps --workflow=$file || true; \
+    done
 
 # Expose the ComfyUI port
 EXPOSE 8188
