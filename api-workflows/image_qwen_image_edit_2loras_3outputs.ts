@@ -4,69 +4,73 @@ import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
 
 const RequestSchema = z.object({
-  image: z.string().describe("The input image to be edited, provided as a URL or base64 encoded string."),
-  prompt: z.string().describe("The positive prompt describing the desired edit."),
+  image: z.string().describe("Input image for editing (URL or base64 encoded string)"),
+  prompt: z
+    .string()
+    .default("Replace background with tropical forest with rocks")
+    .describe("The editing instructions for the image generation"),
   negative_prompt: z
     .string()
     .optional()
-    .default("blurry, ugly")
-    .describe("The negative prompt to guide the generation away from."),
+    .default("")
+    .describe("The negative prompt for the image generation"),
   seed: z
     .number()
     .int()
     .optional()
     .default(() => Math.floor(Math.random() * 1000000000000000))
-    .describe("Seed for random number generation. A specific seed will ensure reproducible results."),
+    .describe("Seed for random number generation"),
   steps: z
     .number()
     .int()
     .min(1)
     .max(100)
     .optional()
-    .default(4)
-    .describe("Number of sampling steps."),
+    .default(5)
+    .describe("Number of sampling steps"),
   cfg_scale: z
     .number()
     .min(0)
     .max(20)
     .optional()
-    .default(1)
-    .describe("Classifier-Free Guidance scale."),
+    .default(2.5)
+    .describe("Classifier-free guidance scale"),
   sampler_name: config.samplers
     .optional()
     .default("euler")
-    .describe("The sampler to use for the generation process."),
+    .describe("Name of the sampler to use"),
   scheduler: config.schedulers
     .optional()
     .default("simple")
-    .describe("The scheduler to use for the generation process."),
+    .describe("Type of scheduler to use"),
   denoise: z
     .number()
     .min(0)
     .max(1)
     .optional()
     .default(1)
-    .describe("Denoising strength. A value of 1.0 completely replaces the original image content based on the prompt."),
-  megapixels: z
-    .number()
-    .min(0.1)
-    .max(4)
-    .optional()
-    .default(1)
-    .describe("The target resolution for the input image in megapixels before processing."),
-  aura_flow_shift: z
+    .describe("Denoising strength"),
+  shift: z
     .number()
     .int()
     .optional()
     .default(3)
-    .describe("Shift value for the ModelSamplingAuraFlow node."),
+    .describe("Aura Flow model sampling shift value"),
   cfg_norm_strength: z
     .number()
-    .min(0)
-    .max(1)
     .optional()
-    .default(0.79)
-    .describe("Strength of the CFGNorm normalization."),
+    .default(1)
+    .describe("Strength for CFG Normalization"),
+  upscale_method: z
+    .string()
+    .optional()
+    .default("lanczos")
+    .describe("Method to use for upscaling the image"),
+  megapixels: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Total megapixels to scale the image to"),
   unet_name: config.unets.default("qwen_image_edit_fp8_e4m3fn.safetensors").describe("The UNET model to use."),
   clip_name: config.clips.default("qwen_2.5_vl_7b_fp8_scaled.safetensors").describe("The CLIP model to use."),
   vae_name: config.vaes.default("qwen_image_vae.safetensors").describe("The VAE model to use."),
@@ -230,7 +234,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "93": {
       inputs: {
-        upscale_method: "lanczos",
+        upscale_method: input.upscale_method,
         megapixels: input.megapixels,
         image: ["78", 0],
       },
