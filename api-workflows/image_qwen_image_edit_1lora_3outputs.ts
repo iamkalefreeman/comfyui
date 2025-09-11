@@ -50,7 +50,7 @@ const RequestSchema = z.object({
     .optional()
     .default(1)
     .describe("Denoising strength"),
-  shift: z
+  aura_flow_shift: z
     .number()
     .int()
     .optional()
