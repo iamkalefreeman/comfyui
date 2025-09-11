@@ -28,6 +28,13 @@ RUN set -xe \
 RUN set -xe && mkdir -p /workflows
 COPY ./api-workflows /workflows
 
+# Install custom nodes with requirements.txt checks
+RUN set -xe && \
+    git clone https://github.com/Comfy-Org/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager && \
+    if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt; else echo "No requirements.txt for ComfyUI-Manager"; fi && \
+    if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt; else echo "No requirements.txt for ComfyUI_bitsandbytes_NF4-Lora"; fi && \
+    chmod -R 755 /opt/ComfyUI/custom_nodes
+
 RUN set -xe \
     && echo "Updating ComfyUI nodes..." \
     && comfy node update all
