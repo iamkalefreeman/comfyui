@@ -50,7 +50,7 @@ const RequestSchema = z.object({
     .optional()
     .default(1)
     .describe("Denoising strength"),
-  shift: z
+  aura_flow_shift: z
     .number()
     .int()
     .optional()
@@ -172,7 +172,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "66": {
       inputs: {
-        shift: input.shift,
+        shift: input.aura_flow_shift,
         model: ["101", 0],
       },
       class_type: "ModelSamplingAuraFlow",
