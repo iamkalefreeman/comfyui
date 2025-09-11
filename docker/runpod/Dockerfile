@@ -45,6 +45,9 @@ RUN for file in /workflows/*.json; do \
     comfy node install-deps --workflow=$file || true; \
     done
 
+RUN set -xe && \
+    comfy manager disable-gui
+
 EXPOSE 8188
 EXPOSE 3000
 
