@@ -25,8 +25,17 @@ ADD ./docker/runpod/src /app
 RUN set -xe \
     && chmod -R +x /app
 
-RUN  set -xe && mkdir -p /workflows
+RUN set -xe && mkdir -p /workflows
 COPY ./api-workflows /workflows
+
+RUN set -xe \
+    && echo "Updating ComfyUI nodes..." \
+    && comfy node update all
+
+RUN for file in /workflows/*.json; do \
+    echo "Installing dependencies for: $file"; \
+    comfy node install-deps --workflow=$file || true; \
+    done
 
 EXPOSE 8188
 EXPOSE 3000
