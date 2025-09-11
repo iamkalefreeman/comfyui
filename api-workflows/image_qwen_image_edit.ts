@@ -71,12 +71,12 @@ const RequestSchema = z.object({
     .optional()
     .default(1)
     .describe("Total megapixels to scale the image to"),
-  lora_name: z
+  lora_1_name: z
     .string()
     .optional()
     .default("Qwen-Image-Lightning-4steps-V1.0.safetensors")
     .describe("Name of the LoRA model to use"),
-  lora_strength: z
+  lora_1_strength: z
     .number()
     .optional()
     .default(1)
@@ -247,8 +247,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "101": {
       inputs: {
-        lora_name: input.lora_name,
-        strength_model: input.lora_strength,
+        lora_name: input.lora_1_name,
+        strength_model: input.lora_1_strength,
         model: ["37", 0],
       },
       class_type: "LoraLoaderModelOnly",
