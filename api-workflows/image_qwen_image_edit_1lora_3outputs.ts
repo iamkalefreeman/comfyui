@@ -159,7 +159,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "39": {
       "inputs": {
-        "vae_name": input.vae_name,
+        "vae_name": input.vae_name
       },
       "class_type": "VAELoader",
       "_meta": {
@@ -300,6 +300,124 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       "_meta": {
         "title": "LoraLoaderModelOnly"
       }
+    },
+    "103": {
+      "inputs": {
+        "seed": input.seed + 1,
+        "steps": input.steps,
+        "cfg": input.cfg_scale,
+        "sampler_name": input.sampler_name,
+        "scheduler": input.scheduler,
+        "denoise": input.denoise,
+        "model": [
+          "75",
+          0
+        ],
+        "positive": [
+          "76",
+          0
+        ],
+        "negative": [
+          "77",
+          0
+        ],
+        "latent_image": [
+          "88",
+          0
+        ]
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "104": {
+      "inputs": {
+        "samples": [
+          "103",
+          0
+        ],
+        "vae": [
+          "39",
+          0
+        ]
+      },
+      "class_type": "VAEDecode",
+      "_meta": {
+        "title": "VAE Decode"
+      }
+    },
+    "105": {
+      "inputs": {
+        "filename_prefix": "ComfyUI",
+        "images": [
+          "104",
+          0
+        ]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
+    },
+    "106": {
+      "inputs": {
+        "seed": input.seed + 2,
+        "steps": input.steps,
+        "cfg": input.cfg_scale,
+        "sampler_name": input.sampler_name,
+        "scheduler": input.scheduler,
+        "denoise": input.denoise,
+        "model": [
+          "75",
+          0
+        ],
+        "positive": [
+          "76",
+          0
+        ],
+        "negative": [
+          "77",
+          0
+        ],
+        "latent_image": [
+          "88",
+          0
+        ]
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "107": {
+      "inputs": {
+        "samples": [
+          "106",
+          0
+        ],
+        "vae": [
+          "39",
+          0
+        ]
+      },
+      "class_type": "VAEDecode",
+      "_meta": {
+        "title": "VAE Decode"
+      }
+    },
+    "108": {
+      "inputs": {
+        "filename_prefix": "ComfyUI",
+        "images": [
+          "107",
+          0
+        ]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
     }
   };
 }
@@ -307,8 +425,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "Image Editing with Qwen",
-  description: "Edits an input image based on a text prompt using the Qwen model and a lightning LoRA.",
+  summary: "Qwen Image Editing with Multiple Outputs",
+  description: "Edits an input image based on a text prompt using the Qwen model and a lightning LoRA, generating three distinct outputs.",
 };
 
 export default workflow;
