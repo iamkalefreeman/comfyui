@@ -39,7 +39,7 @@ RUN set -xe && \
     git clone https://github.com/bananasss00/ComfyUI_bitsandbytes_NF4-Lora.git /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora && \
     if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt; else echo "No requirements.txt for ComfyUI_bitsandbytes_NF4-Lora"; fi && \
     chmod -R 755 /opt/ComfyUI/custom_nodes && \
-    echo "Updating ComfyUI nodes..." \
+    echo "Updating ComfyUI nodes..." && \
     comfy node update all
 
 # Optionally, download a sample LoRA model for Flux.1 (example LoRA, replace with desired model)
