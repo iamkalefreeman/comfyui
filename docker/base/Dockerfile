@@ -154,6 +154,8 @@ RUN set -xe \
 RUN set -xe \
     && git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF \
     && if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt; else echo "No requirements.txt for ComfyUI-GGUF"; fi \
+    && git clone https://github.com/iamkalefreeman/TooManyLoras.git /opt/ComfyUI/custom_nodes/TooManyLoras \
+    && if [ -f /opt/ComfyUI/custom_nodes/TooManyLoras/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/TooManyLoras/requirements.txt; else echo "No requirements.txt for TooManyLoras"; fi \
     && chmod -R 755 /opt/ComfyUI/custom_nodes
 
 # Disable safety filters to allow NSFW input/output
