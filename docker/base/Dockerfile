@@ -45,7 +45,7 @@ RUN set -xe && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LO
 # Download models in parallel to reduce build time
 ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors?download=true
+https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors?download=true
   dir=${DIFFUSION_DIR}
   out=flux1-dev-kontext_fp8_scaled.safetensors
 
