@@ -28,6 +28,7 @@ RUN set -xe \
 RUN set -xe && mkdir -p /workflows
 COPY ./api-workflows /workflows
 
+
 # Install custom nodes with requirements.txt checks
 RUN set -xe \
     && git clone https://github.com/Comfy-Org/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager \
@@ -36,13 +37,17 @@ RUN set -xe \
     && if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt; else echo "No requirements.txt for ComfyUI_bitsandbytes_NF4-Lora"; fi \
     && chmod -R 755 /opt/ComfyUI/custom_nodes \
     && echo "Updating ComfyUI nodes..." \
+    && sed -i 's/security_level/c\security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
+    && sed -i 's/network_mode/c\network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
     && comfy node update all \
     && \
     for file in /workflows/*.json; do \
         echo "Installing dependencies for: $file"; \
         comfy node install-deps --workflow=$file || true; \
     done \
-    && rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
+    && rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager \
+    && sed -i 's/security_level/c\security_level = normal/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
+    && sed -i 's/network_mode/c\network_mode = offline/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
 
 EXPOSE 8188
 EXPOSE 3000
