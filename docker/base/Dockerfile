@@ -171,19 +171,19 @@ CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
 
 
-##########################################################################################
-# comfyui-kontext stage
-##########################################################################################
-FROM comfyui AS comfyui-kontext
+# ##########################################################################################
+# # comfyui-kontext stage
+# ##########################################################################################
+# FROM comfyui AS comfyui-kontext
 
-ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
+# ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
-COPY --from=kontext-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
-COPY --from=kontext-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
-COPY --from=kontext-models ${VAE_DIR} ${VAE_DIR}
-COPY --from=kontext-models ${CLIP_DIR} ${CLIP_DIR}
-COPY --from=kontext-models ${UNET_DIR} ${UNET_DIR}
-COPY --from=kontext-models ${LORA_DIR} ${LORA_DIR}
+# COPY --from=kontext-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
+# COPY --from=kontext-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
+# COPY --from=kontext-models ${VAE_DIR} ${VAE_DIR}
+# COPY --from=kontext-models ${CLIP_DIR} ${CLIP_DIR}
+# COPY --from=kontext-models ${UNET_DIR} ${UNET_DIR}
+# COPY --from=kontext-models ${LORA_DIR} ${LORA_DIR}
 
 
 ##########################################################################################
