@@ -1,7 +1,7 @@
 ##########################################################################################
 # build args
 ##########################################################################################
-ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.55-api1.9.2-torch2.8.0-cuda12.8-runtime
+ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:comfy0.3.59-api1.9.2-torch2.8.0-cuda12.8-runtime
 ARG MODEL_DIR=/opt/ComfyUI/models
 ARG CHECKPOINT_DIR=/opt/ComfyUI/models/checkpoints
 ARG DIFFUSION_DIR=/opt/ComfyUI/models/diffusion_models
