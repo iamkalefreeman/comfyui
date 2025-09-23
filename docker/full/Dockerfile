@@ -50,7 +50,11 @@ RUN set -xe && \
 # RUN set -xe && wget -O ${UNET_DIR}/flux1-kontext-dev-Q3_K_S.gguf https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/flux1-kontext-dev-Q3_K_S.gguf?download=true && \
 #     chmod 644 ${UNET_DIR}/*.gguf
 
-RUN  set -xe && mkdir -p /workflows
+RUN set -xe \
+    && sed -i 's/security_level/c\security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
+    && sed -i 's/network_mode/c\network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
+
+RUN set -xe && mkdir -p /workflows
 COPY ./api-workflows /workflows
 
 RUN for file in /workflows/*.json; do \
