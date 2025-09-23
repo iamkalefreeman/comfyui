@@ -85,6 +85,96 @@ const RequestSchema = z.object({
     .optional()
     .default(1)
     .describe("Strength of the LoRA model"),
+  lora_2_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_2_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
+  lora_3_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_3_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
+  lora_4_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_4_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
+  lora_5_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_5_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
+  lora_6_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_6_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
+  lora_7_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_7_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
+  lora_8_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_8_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
+  lora_9_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_9_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
+  lora_10_name: z
+    .string()
+    .optional()
+    .default("None")
+    .describe("Name of the LoRA model to use"),
+  lora_10_strength: z
+    .number()
+    .optional()
+    .default(1)
+    .describe("Strength of the LoRA model"),
   unet_name: z
     .string()
     .optional()
@@ -253,24 +343,23 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       inputs: {
         lora_01: input.lora_1_name,
         strength_01: input.lora_1_strength,
-        lora_02: "None",
-        strength_02: 1,
-        lora_03: "None",
-        strength_03: 1,
-        lora_04: "None",
-        strength_04: 1,
-        lora_05: "None",
-        strength_05: 1,
-        lora_06: "None",
-        strength_06: 1,
-        lora_07: "None",
-        strength_07: 1,
-        lora_08: "None",
-        strength_08: 1,
-        lora_09: "None",
-        strength_09: 1,
-        lora_10: "None",
-        strength_10: 1,
+        lora_02: input.lora_2_name,
+        strength_02: input.lora_2_strength,
+        lora_03: input.lora_3_name,
+        strength_03: input.lora_3_strength,
+        lora_04: input.lora_4_name,
+        strength_04: input.lora_4_strength,
+        strength_05: input.lora_5_strength,
+        lora_06: input.lora_6_name,
+        strength_06: input.lora_6_strength,
+        lora_07: input.lora_7_name,
+        strength_07: input.lora_7_strength,
+        lora_08: input.lora_8_name,
+        strength_08: input.lora_8_strength,
+        lora_09: input.lora_9_name,
+        strength_09: input.lora_9_strength,
+        lora_10: input.lora_10_name,
+        strength_10: input.lora_10_strength,
         model: ["37", 0],
         clip: ["38", 0],
       },
