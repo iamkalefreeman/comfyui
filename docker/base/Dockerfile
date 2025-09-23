@@ -82,7 +82,7 @@ RUN set -xe && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LO
 # Download QWEN models in parallel to reduce build time
 ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors?download=true
+https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/blob/main/split_files/diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors?download=true
   dir=${DIFFUSION_DIR}
   out=qwen_image_edit_fp8_e4m3fn.safetensors
 
@@ -93,14 +93,6 @@ https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae
 https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true
   dir=${CLIP_DIR}
   out=qwen_2.5_vl_7b_fp8_scaled.safetensors
-
-https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-Lightning-8steps-V1.0.safetensors?download=true
-  dir=${LORA_DIR}
-  out=Qwen-Image-Edit-Lightning-8steps-V1.0.safetensors
-
-https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-Lightning-4steps-V1.0.safetensors?download=true
-  dir=${LORA_DIR}
-  out=Qwen-Image-Edit-Lightning-4steps-V1.0.safetensors
 
 https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V2.0.safetensors?download=true
   dir=${LORA_DIR}
