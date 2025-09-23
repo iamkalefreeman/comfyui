@@ -349,6 +349,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         strength_03: input.lora_3_strength,
         lora_04: input.lora_4_name,
         strength_04: input.lora_4_strength,
+        lora_05: input.lora_5_name,
         strength_05: input.lora_5_strength,
         lora_06: input.lora_6_name,
         strength_06: input.lora_6_strength,
