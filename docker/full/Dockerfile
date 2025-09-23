@@ -54,8 +54,8 @@ RUN set -xe && mkdir -p /workflows
 COPY ./api-workflows /workflows
 
 RUN set -xe \
-    && sed -i 's/security_level/c\security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
-    && sed -i 's/network_mode/c\network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
+    && sed -i 's/^security_level.*$/security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
+    && sed -i 's/^network_mode.*$/network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
     && \
     for file in /workflows/*.json; do \
     echo "Installing dependencies for: $file"; \
