@@ -37,8 +37,8 @@ RUN set -xe \
     && if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt; else echo "No requirements.txt for ComfyUI_bitsandbytes_NF4-Lora"; fi \
     && chmod -R 755 /opt/ComfyUI/custom_nodes \
     && echo "Updating ComfyUI nodes..." \
-    && sed -i 's/^security_level.*$/security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
-    && sed -i 's/^network_mode.*$/network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
+    # && sed -i 's/^security_level.*$/security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
+    # && sed -i 's/^network_mode.*$/network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
     && comfy node update all \
     && \
     for file in /workflows/*.json; do \
