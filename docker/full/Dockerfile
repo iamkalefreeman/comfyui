@@ -59,10 +59,26 @@ RUN set -xe \
     echo "Installing dependencies for: $file"; \
     comfy node install-deps --workflow=$file || true; \
     done
-
-RUN set -xe \
-    && sed -i 's/^security_level.*$/security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
-    && sed -i 's/^network_mode.*$/network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' 
+    
+COPY --chown=root:root <<EOF "/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini"
+[default]
+preview_method = none
+git_exe =
+use_uv = True
+channel_url = https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
+share_option = all
+bypass_ssl = False
+file_logging = True
+component_policy = workflow
+update_policy = stable-comfyui
+windows_selector_event_loop_policy = False
+model_download_by_agent = False
+downgrade_blacklist =
+security_level = weak
+always_lazy_install = False
+network_mode = public
+db_mode = cache
+EOF
 
 # Expose the ComfyUI port
 EXPOSE 8188
