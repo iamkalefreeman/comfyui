@@ -13,6 +13,10 @@ RUN set -xe \
     && if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt; else echo "No requirements.txt for ComfyUI-Manager"; fi \
     && git clone https://github.com/bananasss00/ComfyUI_bitsandbytes_NF4-Lora.git /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora \
     && if [ -f /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora/requirements.txt; else echo "No requirements.txt for ComfyUI_bitsandbytes_NF4-Lora"; fi \
+    && git clone https://github.com/MixLabPro/comfyui-mixlab-nodes.git /opt/ComfyUI/custom_nodes/comfyui-mixlab-nodes \
+    && if [ -f /opt/ComfyUI/custom_nodes/comfyui-mixlab-nodes/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/comfyui-mixlab-nodes/requirements.txt; else echo "No requirements.txt for comfyui-mixlab-nodes"; fi \
+    && git clone https://github.com/1038lab/ComfyUI-RMBG.git /opt/ComfyUI/custom_nodes/ComfyUI-RMBG \
+    && if [ -f /opt/ComfyUI/custom_nodes/ComfyUI-RMBG/requirements.txt ]; then pip install --no-cache-dir -r /opt/ComfyUI/custom_nodes/ComfyUI-RMBG/requirements.txt; else echo "No requirements.txt for ComfyUI-RMBG"; fi \
     && chmod -R 755 /opt/ComfyUI/custom_nodes \
     && echo "Updating ComfyUI nodes..." \
     # && sed -i 's/^security_level.*$/security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
