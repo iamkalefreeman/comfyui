@@ -23,10 +23,8 @@ RUN set -xe \
         echo "Installing dependencies for: $file"; \
         comfy node install-deps --workflow=$file || true; \
     done \
-    && rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager \
-    && sed -i 's/security_level/c\security_level = normal/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini' \
-    && sed -i 's/network_mode/c\network_mode = offline/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
-
+    && rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager 
+    
 EXPOSE 8188
 EXPOSE 3000
 
