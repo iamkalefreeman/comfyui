@@ -84,7 +84,7 @@ ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors?download=true
   dir=${DIFFUSION_DIR}
-  out=qwen_image_edit_fp8_e4m3fn.safetensors
+  out=qwen_image_edit_2509_fp8_e4m3fn.safetensors
 
 https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true
   dir=${VAE_DIR}
