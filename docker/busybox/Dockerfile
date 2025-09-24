@@ -11,27 +11,14 @@ RUN set -xe \
     apt-transport-https \
     gnupg2 gnupg \
     lsb-release \
-    dirmngr \
     expat \
-    libgomp1 \
-    python3 python3-pip \
     wget \
     curl \
     git \
     zip unzip unrar \
     xvfb \
-    imagemagick \
-    cifs-utils \
-    ruby \
     file \
-    dumb-init \
-    cron \
-    rsyslog \
-    rsync \
-    rclone \
-    streamlink \
-    ffmpeg \
-    ncdu mc \
+    ncdu \
     tzdata \
     apt-utils \
     iputils-ping \
