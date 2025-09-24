@@ -40,7 +40,8 @@ RUN set -xe \
 # # Environment variables
 # ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
-# RUN set -xe && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
+# WORKDIR /
+# RUN set -xe && mkdir -p ${MODEL_DIR} ${DIFFUSION_DIR} ${CHECKPOINT_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
 # # Download models in parallel to reduce build time
 # ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
@@ -74,12 +75,11 @@ RUN set -xe \
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM $BUILDBOX_IMAGE AS qwen-models
 
-WORKDIR /
-
 # Environment variables
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
-RUN set -xe && mkdir -p ${DIFFUSION_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
+WORKDIR /
+RUN set -xe && mkdir -p ${MODEL_DIR} ${DIFFUSION_DIR} ${CHECKPOINT_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
 # Download QWEN models in parallel to reduce build time
 ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
