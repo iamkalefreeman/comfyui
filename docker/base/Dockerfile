@@ -35,8 +35,8 @@ RUN set -xe \
 # busybox stage
 ##########################################################################################
 FROM ubuntu:noble-20250910 AS busybox
-RUN set -xe && \
-  apt-get install -yq --no-install-recommends \
+RUN set -xe \
+  && apt-get update && apt-get install -yq --no-install-recommends \
     software-properties-common  \
     ca-certificates \
     apt-transport-https \
@@ -50,8 +50,8 @@ RUN set -xe && \
     tzdata \
     locales \
   && \
-  apt-get autoremove -y && \
-  apt-get clean -y && \
+  && apt-get autoremove -y \
+  && apt-get clean -y \
   rm -rf /var/lib/apt/lists/*
 
 # ##########################################################################################
