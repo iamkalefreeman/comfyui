@@ -17,12 +17,14 @@ docker buildx build --target comfyui-qwen --build-arg BASE_IMAGE="ghcr.io/iamkal
 docker push "${docker_account}/comfyui:qwen-base-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
-docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
-  -t "${docker_account}/comfyui:qwen-salad-api-latest" "${working_dir}" \
-  -f "${working_dir}/docker/salad-api/Dockerfile"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 13
-docker push "${docker_account}/comfyui:qwen-salad-api-latest"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 13
+### No longer need qwen-salad-api-latest as base for building subsequent images
+# docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
+#   -t "${docker_account}/comfyui:qwen-salad-api-latest" "${working_dir}" \
+#   -f "${working_dir}/docker/salad-api/Dockerfile"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 13
+# docker push "${docker_account}/comfyui:qwen-salad-api-latest"
+# docker image rm "${docker_account}/comfyui:qwen-salad-api-latest"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 
 docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   -t "${docker_account}/comfyui:qwen-runpod-${date_version}" \
@@ -30,6 +32,7 @@ docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-
   -f "${working_dir}/docker/runpod/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 docker push "${docker_account}/comfyui:qwen-runpod-${date_version}"
+docker image rm "${docker_account}/comfyui:qwen-runpod-${date_version}"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 docker push "${docker_account}/comfyui:qwen-runpod-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
