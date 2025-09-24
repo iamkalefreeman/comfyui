@@ -31,11 +31,25 @@ RUN set -xe \
     && rm -rf /var/lib/apt/lists/*
 
 
+##########################################################################################
+# busybox stage
+##########################################################################################
+FROM ubuntu:noble-20250910 AS busybox
+
+RUN set -xe \
+    && apt-get update && apt-get install -y --no-install-recommends \
+      aria2 \
+      wget \
+      git \
+      curl \
+    && rm -rf /var/lib/apt/lists/*
+
+
 # ##########################################################################################
 # # kontext-models stage
 # ##########################################################################################
 # # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-# FROM base AS kontext-models
+# FROM busybox AS kontext-models
 
 # # Environment variables
 # ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
@@ -72,7 +86,7 @@ RUN set -xe \
 # qwen-models stage
 ##########################################################################################
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM base AS qwen-models
+FROM busybox AS qwen-models
 
 # Environment variables
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
