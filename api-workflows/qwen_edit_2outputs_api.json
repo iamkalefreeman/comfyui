@@ -1,7 +1,7 @@
 {
   "3": {
     "inputs": {
-      "seed": 929882406340093,
+      "seed": 268929258908205,
       "steps": 4,
       "cfg": 1,
       "sampler_name": "euler",
@@ -12,11 +12,11 @@
         0
       ],
       "positive": [
-        "76",
+        "111",
         0
       ],
       "negative": [
-        "77",
+        "116",
         0
       ],
       "latent_image": [
@@ -92,7 +92,7 @@
     "inputs": {
       "shift": 3,
       "model": [
-        "102",
+        "117",
         0
       ]
     },
@@ -114,51 +114,9 @@
       "title": "CFGNorm"
     }
   },
-  "76": {
-    "inputs": {
-      "prompt": "change background into tropical jungle with rocks, change scenery into tropical jungle with rocks, and apply soft background lens blur.",
-      "clip": [
-        "38",
-        0
-      ],
-      "vae": [
-        "39",
-        0
-      ],
-      "image": [
-        "93",
-        0
-      ]
-    },
-    "class_type": "TextEncodeQwenImageEdit",
-    "_meta": {
-      "title": "TextEncodeQwenImageEdit"
-    }
-  },
-  "77": {
-    "inputs": {
-      "prompt": "blurry, ugly",
-      "clip": [
-        "38",
-        0
-      ],
-      "vae": [
-        "39",
-        0
-      ],
-      "image": [
-        "93",
-        0
-      ]
-    },
-    "class_type": "TextEncodeQwenImageEdit",
-    "_meta": {
-      "title": "TextEncodeQwenImageEdit"
-    }
-  },
   "78": {
     "inputs": {
-      "image": "491743424_1202761584811458_6628814249044823196_n.jpg"
+      "image": "489351741_1186125559111209_199056439823072913_n.jpg"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -195,7 +153,40 @@
       "title": "Scale Image to Total Pixels"
     }
   },
-  "102": {
+  "111": {
+    "inputs": {
+      "prompt": "replace background with Indonesian nature background",
+      "clip": [
+        "117",
+        1
+      ],
+      "vae": [
+        "39",
+        0
+      ],
+      "image1": [
+        "93",
+        0
+      ]
+    },
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "_meta": {
+      "title": "TextEncodeQwenImageEditPlus"
+    }
+  },
+  "116": {
+    "inputs": {
+      "conditioning": [
+        "111",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "117": {
     "inputs": {
       "lora_01": "Qwen-Image-Lightning-4steps-V2.0.safetensors",
       "strength_01": 1,
@@ -231,10 +222,40 @@
       "title": "TooManyLoras"
     }
   },
-  "106": {
+  "118": {
+    "inputs": {
+      "seed": 268929258908206,
+      "steps": 4,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "75",
+        0
+      ],
+      "positive": [
+        "111",
+        0
+      ],
+      "negative": [
+        "116",
+        0
+      ],
+      "latent_image": [
+        "88",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "119": {
     "inputs": {
       "samples": [
-        "108",
+        "118",
         0
       ],
       "vae": [
@@ -247,47 +268,17 @@
       "title": "VAE Decode"
     }
   },
-  "107": {
+  "120": {
     "inputs": {
       "filename_prefix": "ComfyUI",
       "images": [
-        "106",
+        "119",
         0
       ]
     },
     "class_type": "SaveImage",
     "_meta": {
       "title": "Save Image"
-    }
-  },
-  "108": {
-    "inputs": {
-      "seed": 584424639015288,
-      "steps": 4,
-      "cfg": 1,
-      "sampler_name": "euler",
-      "scheduler": "simple",
-      "denoise": 1,
-      "model": [
-        "75",
-        0
-      ],
-      "positive": [
-        "76",
-        0
-      ],
-      "negative": [
-        "77",
-        0
-      ],
-      "latent_image": [
-        "88",
-        0
-      ]
-    },
-    "class_type": "KSampler",
-    "_meta": {
-      "title": "KSampler"
     }
   }
 }
