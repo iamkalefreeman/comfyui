@@ -74,6 +74,8 @@ RUN set -xe \
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM $BUILDBOX_IMAGE AS qwen-models
 
+WORKDIR /
+
 # Environment variables
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
