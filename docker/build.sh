@@ -4,15 +4,15 @@ date_version=$(date +'%d-%m-%Y-%H-%M')
 docker_account=${DOCKER_ACCOUNT:-YOUR_DOCKER_ACCOUNT_HERE}
 working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 
-#########################
-# BusyBox Build
-#########################
-docker buildx build \
-  -t "${docker_account}/busybox:stable" "${working_dir}" \
-  -f "${working_dir}/docker/busybox/Dockerfile"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 10
-docker push "${docker_account}/busybox:stable"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 10
+# #########################
+# # BusyBox Build
+# #########################
+# docker buildx build \
+#   -t "${docker_account}/busybox:stable" "${working_dir}" \
+#   -f "${working_dir}/docker/busybox/Dockerfile"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 10
+# docker push "${docker_account}/busybox:stable"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 10
 
 #########################
 # QWEN Builds
@@ -30,6 +30,7 @@ docker push "${docker_account}/comfyui:qwen-base-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
 ### No longer need qwen-salad-api-latest as base for building subsequent images
+### Build qwen-salad-api
 # docker buildx build 
 #   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
 #   --build-arg BUSYBOX_IMAGE="${docker_account}/busybox:stable" \
@@ -40,6 +41,7 @@ docker push "${docker_account}/comfyui:qwen-base-latest"
 ## docker image rm "${docker_account}/comfyui:qwen-salad-api-latest"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 
+### Build qwen-runpod
 docker buildx build \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   --build-arg BUSYBOX_IMAGE="${docker_account}/busybox:stable" \
@@ -54,6 +56,7 @@ docker push "${docker_account}/comfyui:qwen-runpod-latest"
 # docker image rm "${docker_account}/comfyui:qwen-runpod-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 
+### Build qwen-full
 docker buildx build \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   --build-arg BUSYBOX_IMAGE="${docker_account}/busybox:stable" \
