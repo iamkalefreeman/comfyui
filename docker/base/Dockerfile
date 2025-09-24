@@ -44,7 +44,7 @@ RUN set -xe && \
     apt-transport-https \
     gnupg2 gnupg \
     libgomp1 \
-    aria2
+    aria2 \
     wget \
     curl \
     git \
