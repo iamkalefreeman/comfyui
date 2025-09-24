@@ -32,7 +32,7 @@ docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-
   -f "${working_dir}/docker/runpod/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 docker push "${docker_account}/comfyui:qwen-runpod-${date_version}"
-docker image rm "${docker_account}/comfyui:qwen-runpod-${date_version}"
+# docker image rm "${docker_account}/comfyui:qwen-runpod-${date_version}"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 docker push "${docker_account}/comfyui:qwen-runpod-latest"
 # docker image rm "${docker_account}/comfyui:qwen-runpod-latest"
