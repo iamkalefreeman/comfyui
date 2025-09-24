@@ -1,7 +1,7 @@
 ##########################################################################################
 # build args
 ##########################################################################################
-ARG BUSYBOX_IMAGE=iamkalefreeman/busybox:stable
+ARG BUILDBOX_IMAGE=iamkalefreeman/buildbox:stable
 ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:latest
 ARG MODEL_DIR=/opt/ComfyUI/models
 ARG CHECKPOINT_DIR=/opt/ComfyUI/models/checkpoints
@@ -35,7 +35,7 @@ RUN set -xe \
 # # kontext-models stage
 # ##########################################################################################
 # # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-# FROM $BUSYBOX_IMAGE AS kontext-models
+# FROM $BUILDBOX_IMAGE AS kontext-models
 
 # # Environment variables
 # ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
@@ -72,7 +72,7 @@ RUN set -xe \
 # qwen-models stage
 ##########################################################################################
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM $BUSYBOX_IMAGE AS qwen-models
+FROM $BUILDBOX_IMAGE AS qwen-models
 
 # Environment variables
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
