@@ -36,8 +36,6 @@ RUN set -xe \
 ##########################################################################################
 FROM ubuntu:noble-20250910 AS busybox
 RUN set -xe && \
-  apt-get -yqq update && \
-  apt-get -yqq upgrade && \
   apt-get install -yq --no-install-recommends \
     software-properties-common  \
     ca-certificates \
