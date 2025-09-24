@@ -1,7 +1,4 @@
-##########################################################################################
-# busybox stage
-##########################################################################################
-FROM ubuntu:noble-20250910 AS busybox
+FROM ubuntu:noble-20250910 
 RUN set -xe \
   && apt-get update && apt-get install -yq --no-install-recommends \
     linux-headers-$(uname -r) \
