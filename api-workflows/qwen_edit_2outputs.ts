@@ -4,20 +4,11 @@ import { ComfyPrompt, Workflow } from "../types";
 import config from "../config";
 
 const RequestSchema = z.object({
-  image: z
-    .string()
-    .describe("Input image for editing (URL or base64 encoded string)"),
+  image: z.string().describe("Input image for editing (URL or base64 encoded string)"),
   prompt: z
     .string()
-    .default(
-      "apply soft background lens blur."
-    )
+    .default("replace background with Indonesian nature background")
     .describe("The editing instructions for the image generation"),
-  negative_prompt: z
-    .string()
-    .optional()
-    .default("blurry, ugly")
-    .describe("The negative prompt for the image generation"),
   seed: z
     .number()
     .int()
@@ -205,8 +196,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         scheduler: input.scheduler,
         denoise: input.denoise,
         model: ["75", 0],
-        positive: ["76", 0],
-        negative: ["77", 0],
+        positive: ["111", 0],
+        negative: ["116", 0],
         latent_image: ["88", 0],
       },
       class_type: "KSampler",
@@ -267,7 +258,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "66": {
       inputs: {
         shift: input.aura_flow_shift,
-        model: ["102", 0],
+        model: ["117", 0],
       },
       class_type: "ModelSamplingAuraFlow",
       _meta: {
@@ -282,30 +273,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       class_type: "CFGNorm",
       _meta: {
         title: "CFGNorm",
-      },
-    },
-    "76": {
-      inputs: {
-        prompt: input.prompt,
-        clip: ["38", 0],
-        vae: ["39", 0],
-        image: ["93", 0],
-      },
-      class_type: "TextEncodeQwenImageEdit",
-      _meta: {
-        title: "TextEncodeQwenImageEdit",
-      },
-    },
-    "77": {
-      inputs: {
-        prompt: input.negative_prompt,
-        clip: ["38", 0],
-        vae: ["39", 0],
-        image: ["93", 0],
-      },
-      class_type: "TextEncodeQwenImageEdit",
-      _meta: {
-        title: "TextEncodeQwenImageEdit",
       },
     },
     "78": {
@@ -339,7 +306,28 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         title: "Scale Image to Total Pixels",
       },
     },
-    "102": {
+    "111": {
+      inputs: {
+        prompt: input.prompt,
+        clip: ["117", 1],
+        vae: ["39", 0],
+        image1: ["93", 0],
+      },
+      class_type: "TextEncodeQwenImageEditPlus",
+      _meta: {
+        title: "TextEncodeQwenImageEditPlus",
+      },
+    },
+    "116": {
+      inputs: {
+        conditioning: ["111", 0],
+      },
+      class_type: "ConditioningZeroOut",
+      _meta: {
+        title: "ConditioningZeroOut",
+      },
+    },
+    "117": {
       inputs: {
         lora_01: input.lora_1_name,
         strength_01: input.lora_1_strength,
@@ -369,27 +357,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         title: "TooManyLoras",
       },
     },
-    "106": {
-      inputs: {
-        samples: ["108", 0],
-        vae: ["39", 0],
-      },
-      class_type: "VAEDecode",
-      _meta: {
-        title: "VAE Decode",
-      },
-    },
-    "107": {
-      inputs: {
-        filename_prefix: "ComfyUI",
-        images: ["106", 0],
-      },
-      class_type: "SaveImage",
-      _meta: {
-        title: "Save Image",
-      },
-    },
-    "108": {
+    "118": {
       inputs: {
         seed: input.seed + 1,
         steps: input.steps,
@@ -398,13 +366,33 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         scheduler: input.scheduler,
         denoise: input.denoise,
         model: ["75", 0],
-        positive: ["76", 0],
-        negative: ["77", 0],
+        positive: ["111", 0],
+        negative: ["116", 0],
         latent_image: ["88", 0],
       },
       class_type: "KSampler",
       _meta: {
         title: "KSampler",
+      },
+    },
+    "119": {
+      inputs: {
+        samples: ["118", 0],
+        vae: ["39", 0],
+      },
+      class_type: "VAEDecode",
+      _meta: {
+        title: "VAE Decode",
+      },
+    },
+    "120": {
+      inputs: {
+        filename_prefix: "ComfyUI",
+        images: ["119", 0],
+      },
+      class_type: "SaveImage",
+      _meta: {
+        title: "Save Image",
       },
     },
   };
@@ -413,9 +401,9 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "Qwen Image Edit (2 Outputs)",
+  summary: "Qwen Image Edit with LoRAs",
   description:
-    "Edits a provided image based on a text prompt using the Qwen model. This workflow generates two images with different seeds.",
+    "Edits a provided image based on a text prompt using the Qwen model, with support for up to 10 LoRAs.",
 };
 
 export default workflow;
