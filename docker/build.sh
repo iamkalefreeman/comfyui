@@ -5,12 +5,24 @@ docker_account=${DOCKER_ACCOUNT:-YOUR_DOCKER_ACCOUNT_HERE}
 working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 
 #########################
+# BusyBox Build
+#########################
+docker buildx build \
+  -t "${docker_account}/busybox:stable" "${working_dir}" \
+  -f "${working_dir}/docker/busybox/Dockerfile"
+[[ "$?" -ne 0 ]] && echo "Error!" && return 10
+docker push "${docker_account}/busybox:stable"
+[[ "$?" -ne 0 ]] && echo "Error!" && return 10
+
+#########################
 # QWEN Builds
 #########################
 # docker buildx build --target qwen-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 
-docker buildx build --target comfyui-qwen --build-arg BASE_IMAGE="ghcr.io/iamkalefreeman/comfyui-api:latest" \
+docker buildx build --target comfyui-qwen \
+  --build-arg BASE_IMAGE="ghcr.io/iamkalefreeman/comfyui-api:latest" \
+  --build-arg BUSYBOX_IMAGE="${docker_account}/busybox:stable" \
   -t "${docker_account}/comfyui:qwen-base-latest" "${working_dir}" \
   -f "${working_dir}/docker/base/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
@@ -18,7 +30,9 @@ docker push "${docker_account}/comfyui:qwen-base-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
 ### No longer need qwen-salad-api-latest as base for building subsequent images
-# docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
+# docker buildx build 
+#   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
+#   --build-arg BUSYBOX_IMAGE="${docker_account}/busybox:stable" \
 #   -t "${docker_account}/comfyui:qwen-salad-api-latest" "${working_dir}" \
 #   -f "${working_dir}/docker/salad-api/Dockerfile"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 13
@@ -26,7 +40,9 @@ docker push "${docker_account}/comfyui:qwen-base-latest"
 ## docker image rm "${docker_account}/comfyui:qwen-salad-api-latest"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 
-docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
+docker buildx build \
+  --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
+  --build-arg BUSYBOX_IMAGE="${docker_account}/busybox:stable" \
   -t "${docker_account}/comfyui:qwen-runpod-${date_version}" \
   -t "${docker_account}/comfyui:qwen-runpod-latest" "${working_dir}" \
   -f "${working_dir}/docker/runpod/Dockerfile"
@@ -38,7 +54,9 @@ docker push "${docker_account}/comfyui:qwen-runpod-latest"
 # docker image rm "${docker_account}/comfyui:qwen-runpod-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 
-docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
+docker buildx build \
+  --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
+  --build-arg BUSYBOX_IMAGE="${docker_account}/busybox:stable" \
   -t "${docker_account}/comfyui:qwen-full-latest" "${working_dir}" \
   -f "${working_dir}/docker/full/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 15
