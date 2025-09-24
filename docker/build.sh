@@ -23,7 +23,7 @@ docker push "${docker_account}/comfyui:qwen-base-latest"
 #   -f "${working_dir}/docker/salad-api/Dockerfile"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 # docker push "${docker_account}/comfyui:qwen-salad-api-latest"
-# docker image rm "${docker_account}/comfyui:qwen-salad-api-latest"
+## docker image rm "${docker_account}/comfyui:qwen-salad-api-latest"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 13
 
 docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
@@ -35,6 +35,7 @@ docker push "${docker_account}/comfyui:qwen-runpod-${date_version}"
 docker image rm "${docker_account}/comfyui:qwen-runpod-${date_version}"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 docker push "${docker_account}/comfyui:qwen-runpod-latest"
+# docker image rm "${docker_account}/comfyui:qwen-runpod-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 
 docker buildx build --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
