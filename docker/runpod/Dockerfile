@@ -50,7 +50,7 @@ RUN set -xe \
     done \
     && rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 
-# Set ComfyUI-Manager config to allow installation of additional nodes.
+# Disable ComfyUI-Manager.
 COPY --chown=root:root <<EOF "/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini"
 [default]
 preview_method = none
