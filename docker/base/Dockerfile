@@ -15,10 +15,19 @@ ARG COMFYUI_PORT_HOST=8188
 ARG STARTUP_CHECK_MAX_TRIES=30
 ARG PYTHONUNBUFFERED=1
 
-##########################################################################################
-# base stage
-##########################################################################################
-FROM $BASE_IMAGE AS base
+FROM $BASE_IMAGE
+
+ARG MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED
+
+COPY --from=${MODELS_IMAGE} ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
+COPY --from=${MODELS_IMAGE} ${DIFFUSION_DIR} ${DIFFUSION_DIR}
+COPY --from=${MODELS_IMAGE} ${VAE_DIR} ${VAE_DIR}
+COPY --from=${MODELS_IMAGE} ${CLIP_DIR} ${CLIP_DIR}
+COPY --from=${MODELS_IMAGE} ${UNET_DIR} ${UNET_DIR}
+COPY --from=${MODELS_IMAGE} ${LORA_DIR} ${LORA_DIR}
+
+# Set working directory
+WORKDIR /opt/ComfyUI
 
 RUN set -xe \
     && apt-get update && apt-get install -y --no-install-recommends \
@@ -31,26 +40,6 @@ RUN set -xe \
       dumb-init \
       ffmpeg \
     && rm -rf /var/lib/apt/lists/*
-
-
-##########################################################################################
-# comfyui stage
-##########################################################################################
-# Use a CUDA-enabled base image with PyTorch and necessary dependencies
-FROM base AS comfyui
-
-# Environment variables
-ARG MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED
-
-# Set working directory
-WORKDIR /opt/ComfyUI
-
-COPY --from=${MODELS_IMAGE} ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
-COPY --from=${MODELS_IMAGE} ${DIFFUSION_DIR} ${DIFFUSION_DIR}
-COPY --from=${MODELS_IMAGE} ${VAE_DIR} ${VAE_DIR}
-COPY --from=${MODELS_IMAGE} ${CLIP_DIR} ${CLIP_DIR}
-COPY --from=${MODELS_IMAGE} ${UNET_DIR} ${UNET_DIR}
-COPY --from=${MODELS_IMAGE} ${LORA_DIR} ${LORA_DIR}
 
 # Install Python dependencies in one layer for FP8, LoRA, and custom nodes
 RUN set -xe \
