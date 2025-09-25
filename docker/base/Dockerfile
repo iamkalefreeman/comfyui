@@ -1,7 +1,8 @@
 ##########################################################################################
 # build args
 ##########################################################################################
-ARG BUILDBOX_IMAGE=iamkalefreeman/buildbox:stable
+ARG MODELS_IMAGE=DOCKER_ACCOUNT/ai-models:model-latest
+ARG BUILDBOX_IMAGE=DOCKER_ACCOUNT/buildbox:stable
 ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:latest
 ARG MODEL_DIR=/opt/ComfyUI/models
 ARG CHECKPOINT_DIR=/opt/ComfyUI/models/checkpoints
@@ -130,10 +131,17 @@ RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=1
 FROM base AS comfyui
 
 # Environment variables
-ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED
+ARG MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED
 
 # Set working directory
 WORKDIR /opt/ComfyUI
+
+COPY --from=${MODELS_IMAGE} ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
+COPY --from=${MODELS_IMAGE} ${DIFFUSION_DIR} ${DIFFUSION_DIR}
+COPY --from=${MODELS_IMAGE} ${VAE_DIR} ${VAE_DIR}
+COPY --from=${MODELS_IMAGE} ${CLIP_DIR} ${CLIP_DIR}
+COPY --from=${MODELS_IMAGE} ${UNET_DIR} ${UNET_DIR}
+COPY --from=${MODELS_IMAGE} ${LORA_DIR} ${LORA_DIR}
 
 # Install Python dependencies in one layer for FP8, LoRA, and custom nodes
 RUN set -xe \
@@ -171,33 +179,3 @@ EXPOSE 8188
 # Command to start ComfyUI
 CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
-
-
-# ##########################################################################################
-# # comfyui-kontext stage
-# ##########################################################################################
-# FROM comfyui AS comfyui-kontext
-
-# ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
-
-# COPY --from=kontext-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
-# COPY --from=kontext-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
-# COPY --from=kontext-models ${VAE_DIR} ${VAE_DIR}
-# COPY --from=kontext-models ${CLIP_DIR} ${CLIP_DIR}
-# COPY --from=kontext-models ${UNET_DIR} ${UNET_DIR}
-# COPY --from=kontext-models ${LORA_DIR} ${LORA_DIR}
-
-
-##########################################################################################
-# comfyui-qwen stage
-##########################################################################################
-FROM comfyui AS comfyui-qwen
-
-ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
-
-COPY --from=qwen-models ${CHECKPOINT_DIR} ${CHECKPOINT_DIR}
-COPY --from=qwen-models ${DIFFUSION_DIR} ${DIFFUSION_DIR}
-COPY --from=qwen-models ${VAE_DIR} ${VAE_DIR}
-COPY --from=qwen-models ${CLIP_DIR} ${CLIP_DIR}
-COPY --from=qwen-models ${UNET_DIR} ${UNET_DIR}
-COPY --from=qwen-models ${LORA_DIR} ${LORA_DIR}
