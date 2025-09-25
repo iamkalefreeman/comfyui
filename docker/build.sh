@@ -19,18 +19,6 @@ docker buildx build --target comfyui-qwen \
 docker push "${docker_account}/comfyui:qwen-base-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
-### No longer need qwen-salad-api-latest as base for building subsequent images
-### Build qwen-salad-api
-# docker buildx build 
-#   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
-#   --build-arg BUILDBOX_IMAGE="${docker_account}/buildbox:stable" \
-#   -t "${docker_account}/comfyui:qwen-salad-api-latest" "${working_dir}" \
-#   -f "${working_dir}/docker/salad-api/Dockerfile"
-# [[ "$?" -ne 0 ]] && echo "Error!" && return 13
-# docker push "${docker_account}/comfyui:qwen-salad-api-latest"
-## docker image rm "${docker_account}/comfyui:qwen-salad-api-latest"
-# [[ "$?" -ne 0 ]] && echo "Error!" && return 13
-
 ### Build qwen-runpod
 docker buildx build \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
