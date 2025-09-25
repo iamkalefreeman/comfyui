@@ -2,7 +2,7 @@
 
 ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui:base-latest
 
-FROM ${BASE_IMAGE}
+FROM ${BASE_IMAGE} AS full
 
 # Install custom nodes
 RUN set -xe \
