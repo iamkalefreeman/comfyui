@@ -28,7 +28,7 @@ docker push "${docker_account}/comfyui:qwen-base-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
 ### Build qwen-runpod
-docker buildx build --target qwen-runpod \
+docker buildx build --target runpod \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   -t "${docker_account}/comfyui:qwen-runpod-${date_version}" \
   -t "${docker_account}/comfyui:qwen-runpod-latest" "${working_dir}" \
@@ -42,7 +42,7 @@ docker push "${docker_account}/comfyui:qwen-runpod-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 
 ### Build qwen-full
-docker buildx build --target qwen-full \
+docker buildx build --target full \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   --build-arg BUILDBOX_IMAGE="${docker_account}/buildbox:stable" \
   -t "${docker_account}/comfyui:qwen-full-latest" "${working_dir}" \
