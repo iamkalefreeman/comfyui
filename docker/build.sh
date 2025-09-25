@@ -7,9 +7,6 @@ working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 #########################
 # QWEN Builds
 #########################
-# docker buildx build --target qwen-models "${working_dir}" -f "${working_dir}/docker/base/Dockerfile"
-# [[ "$?" -ne 0 ]] && echo "Error!" && return 11
-
 docker buildx build --target comfyui-qwen \
   --build-arg BASE_IMAGE="ghcr.io/iamkalefreeman/comfyui-api:latest" \
   --build-arg BUILDBOX_IMAGE="${docker_account}/buildbox:stable" \
