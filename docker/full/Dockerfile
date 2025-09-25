@@ -27,7 +27,7 @@ RUN set -xe \
     && git clone https://github.com/1038lab/ComfyUI-RMBG.git /opt/ComfyUI/custom_nodes/ComfyUI-RMBG \
     && chmod -R 755 /opt/ComfyUI/custom_nodes \
     # Find and install requirements.txt
-    && find . -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
+    && find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
         sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"' \
     # Execute node update command
     && echo "Updating ComfyUI nodes..." \
