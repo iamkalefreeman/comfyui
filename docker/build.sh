@@ -18,9 +18,9 @@ docker push "${docker_account}/ai-models:qwen-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 
 ### Build comfyui-qwen
-docker buildx build --target comfyui-qwen \
+docker buildx build --target comfyui \
   --build-arg BASE_IMAGE="ghcr.io/iamkalefreeman/comfyui-api:latest" \
-  --build-arg MODELS_IMAGE="${docker_account}/ai-models:qwen-latest" \
+  --build-arg MODELS_IMAGE="${docker_account}/ai-models:qwen-models-latest" \
   -t "${docker_account}/comfyui:qwen-base-latest" "${working_dir}" \
   -f "${working_dir}/docker/base/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
@@ -30,7 +30,6 @@ docker push "${docker_account}/comfyui:qwen-base-latest"
 ### Build qwen-runpod
 docker buildx build \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
-  --build-arg BUILDBOX_IMAGE="${docker_account}/buildbox:stable" \
   -t "${docker_account}/comfyui:qwen-runpod-${date_version}" \
   -t "${docker_account}/comfyui:qwen-runpod-latest" "${working_dir}" \
   -f "${working_dir}/docker/runpod/Dockerfile"
