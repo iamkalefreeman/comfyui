@@ -9,7 +9,7 @@ working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 #########################
 
 ### Build qwen-models
-docker buildx build \
+docker buildx build --target qwen-models \
   --build-arg BUILDBOX_IMAGE="${docker_account}/buildbox:stable" \
   -t "${docker_account}/comfyui:qwen-models-latest" "${working_dir}" \
   -f "${working_dir}/docker/ai-models/qwen-models.Dockerfile"
@@ -28,7 +28,7 @@ docker push "${docker_account}/comfyui:qwen-base-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
 ### Build qwen-runpod
-docker buildx build \
+docker buildx build --target qwen-runpod \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   -t "${docker_account}/comfyui:qwen-runpod-${date_version}" \
   -t "${docker_account}/comfyui:qwen-runpod-latest" "${working_dir}" \
@@ -42,7 +42,7 @@ docker push "${docker_account}/comfyui:qwen-runpod-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 
 ### Build qwen-full
-docker buildx build \
+docker buildx build --target qwen-full \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   --build-arg BUILDBOX_IMAGE="${docker_account}/buildbox:stable" \
   -t "${docker_account}/comfyui:qwen-full-latest" "${working_dir}" \
