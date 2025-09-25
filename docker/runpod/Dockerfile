@@ -28,7 +28,6 @@ RUN set -xe \
 RUN set -xe && mkdir -p /workflows
 COPY ./api-workflows /workflows
 
-
 # Install custom nodes with requirements.txt checks
 RUN set -xe \
     && git clone https://github.com/Comfy-Org/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager \
@@ -50,6 +49,27 @@ RUN set -xe \
         comfy node install-deps --workflow=$file || true; \
     done \
     && rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
+
+# Set ComfyUI-Manager config to allow installation of additional nodes.
+COPY --chown=root:root <<EOF "/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini"
+[default]
+preview_method = none
+git_exe =
+use_uv = True
+channel_url = https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
+share_option = all
+bypass_ssl = False
+file_logging = True
+component_policy = workflow
+update_policy = stable-comfyui
+windows_selector_event_loop_policy = False
+model_download_by_agent = False
+downgrade_blacklist =
+security_level = normal
+always_lazy_install = False
+network_mode = offline
+db_mode = cache
+EOF
 
 EXPOSE 8188
 EXPOSE 3000
