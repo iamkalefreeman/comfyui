@@ -26,6 +26,27 @@ COPY --from=${MODELS_IMAGE} ${CLIP_DIR} ${CLIP_DIR}
 COPY --from=${MODELS_IMAGE} ${UNET_DIR} ${UNET_DIR}
 COPY --from=${MODELS_IMAGE} ${LORA_DIR} ${LORA_DIR}
 
+# Download models in parallel to reduce build time
+ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/1038lab/RMBG-2.0/resolve/main/model.safetensors?download=true
+  dir=${MODEL_DIR}/RMBG/RMBG-2.0
+  out=model.safetensors
+
+https://huggingface.co/1038lab/BiRefNet_HR/resolve/main/model.safetensors?download=true
+  dir=${MODEL_DIR}/RMBG/BiRefNet-HR
+  out=model.safetensors
+
+https://huggingface.co/1038lab/segformer_clothes/resolve/main/model.safetensors?download=true
+  dir=${MODEL_DIR}/RMBG/segformer_clothes
+  out=model.safetensors
+
+https://huggingface.co/1038lab/segformer_fashion/resolve/main/model.safetensors?download=true
+  dir=${MODEL_DIR}/RMBG/segformer_fashion
+  out=model.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
 # Set working directory
 WORKDIR /opt/ComfyUI
 
