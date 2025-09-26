@@ -8,8 +8,8 @@ working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 # Kontext-Flux Builds
 #########################
 
-### Build qwen-models
-docker buildx build --target qwen-models \
+### Build kontext-models
+docker buildx build --target kontext-models \
   --build-arg BUILDBOX_IMAGE="${docker_account}/buildbox:stable" \
   -t "${docker_account}/ai-models:kontext-models-latest" "${working_dir}" \
   -f "${working_dir}/docker/ai-models/kontext-models.Dockerfile"
