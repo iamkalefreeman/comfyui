@@ -28,6 +28,14 @@ COPY --from=stage-models ${CLIP_DIR} ${CLIP_DIR}
 COPY --from=stage-models ${UNET_DIR} ${UNET_DIR}
 COPY --from=stage-models ${LORA_DIR} ${LORA_DIR}
 
+# Set working directory
+WORKDIR /opt/ComfyUI
+
+RUN set -xe \
+    && apt-get update && apt-get install -y --no-install-recommends \
+      aria2 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Download models in parallel to reduce build time
 ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
@@ -48,9 +56,6 @@ https://huggingface.co/1038lab/segformer_fashion/resolve/main/model.safetensors?
   out=model.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
-# Set working directory
-WORKDIR /opt/ComfyUI
 
 RUN set -xe \
     && apt-get update && apt-get install -y --no-install-recommends \
