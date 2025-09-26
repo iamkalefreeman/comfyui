@@ -57,6 +57,15 @@ https://huggingface.co/1038lab/segformer_fashion/resolve/main/model.safetensors?
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# Download more models in parallel to reduce build time
+ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/Comfy-Org/Real-ESRGAN_repackaged/resolve/main/RealESRGAN_x4plus.safetensors?download=true
+  dir=${MODEL_DIR}/upscale_models/RMBG-2.0
+  out=RealESRGAN_x4plus.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
 RUN set -xe \
     && apt-get update && apt-get install -y --no-install-recommends \
       aria2 \
