@@ -23,8 +23,7 @@ EOS
 RUN <<EOS
 set -xe
 pip install \
-  runpod \
-  comfy-cli
+  runpod
 EOS
 
 ADD ./docker/runpod/src /app
