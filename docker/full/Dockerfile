@@ -30,9 +30,6 @@ chmod -R 755 /opt/ComfyUI/custom_nodes
 # Find and install requirements.txt
 find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
-# Execute node update command
-echo "Updating ComfyUI nodes..."
-comfy node update all
 EOS
 
 RUN <<EOS
@@ -66,10 +63,12 @@ EOF
 # Install nodes used by workflows
 RUN <<EOS
 set -xe
+comfy node update all
 for file in /workflows/*.json; do \
   echo "Installing dependencies for workflow: $file"; \
   comfy node install-deps --workflow=$file || true; \
 done
+comfy node update all
 EOS
 
 # Expose the ComfyUI port
