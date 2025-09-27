@@ -76,9 +76,9 @@ https://huggingface.co/lokCX/4x-Ultrasharp/resolve/main/4x-UltraSharp.pth?downlo
   dir=${MODEL_DIR}/upscale_models
   out=4x-UltraSharp.pth
 
-https://huggingface.co/Phips/4xRealWebPhoto_v4_dat2/resolve/main/4xRealWebPhoto_v4.pth?download=true
+https://huggingface.co/Phips/4xRealWebPhoto_v4_dat2/resolve/main/4xRealWebPhoto_v4_dat2.safetensors?download=true
   dir=${MODEL_DIR}/upscale_models
-  out=4xRealWebPhoto_v4.pth
+  out=4xRealWebPhoto_v4_dat2.safetensors
 EOF
 RUN <<EOS
 set -xe
