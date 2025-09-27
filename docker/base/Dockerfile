@@ -69,8 +69,12 @@ EOS
 ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://huggingface.co/Comfy-Org/Real-ESRGAN_repackaged/resolve/main/RealESRGAN_x4plus.safetensors?download=true
-  dir=${MODEL_DIR}/upscale_models/RMBG-2.0
+  dir=${MODEL_DIR}/upscale_models
   out=RealESRGAN_x4plus.safetensors
+
+https://huggingface.co/Phips/4xFFHQDAT/resolve/main/4xFFHQDAT.safetensors?download=true
+  dir=${MODEL_DIR}/upscale_models
+  out=4xFFHQDAT.safetensors
 EOF
 RUN <<EOS
 set -xe
