@@ -50,6 +50,7 @@ RUN set -xe \
         echo "Installing dependencies for: $file"; \
         comfy node install-deps --workflow=$file; \
     done \
+    && comfy node update all \
     && rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 
 # Disable ComfyUI-Manager.
