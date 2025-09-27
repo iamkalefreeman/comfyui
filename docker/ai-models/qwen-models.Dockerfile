@@ -58,3 +58,11 @@ https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors
   out=qwenRealNud3s.r69Z.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+# Download more QWEN Loras
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://tigersjay.com/static/consistenceEditV1.V1CW.safetensors
+  dir=${LORA_DIR}
+  out=consistenceEditV1.V1CW.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
