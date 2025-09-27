@@ -72,9 +72,9 @@ https://huggingface.co/Comfy-Org/Real-ESRGAN_repackaged/resolve/main/RealESRGAN_
   dir=${MODEL_DIR}/upscale_models
   out=RealESRGAN_x4plus.safetensors
 
-https://huggingface.co/Phips/4xFFHQDAT/resolve/main/4xFFHQDAT.safetensors?download=true
+https://github.com/Phhofm/models/releases/download/4xRealWebPhoto_v4_dat2/4xRealWebPhoto_v4_dat2.safetensors
   dir=${MODEL_DIR}/upscale_models
-  out=4xFFHQDAT.safetensors
+  out=4xRealWebPhoto_v4_dat2.safetensors
 EOF
 RUN <<EOS
 set -xe
