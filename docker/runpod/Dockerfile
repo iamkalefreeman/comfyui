@@ -19,7 +19,7 @@ RUN set -xe \
 # Install runpod within the virtual environment
 RUN set -xe \
     && pip install \
-        runpod
+        runpod \
         comfy-cli
 
 ADD ./docker/runpod/src /app
