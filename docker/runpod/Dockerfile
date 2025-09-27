@@ -18,7 +18,9 @@ RUN set -xe \
 
 # Install runpod within the virtual environment
 RUN set -xe \
-    && pip install runpod
+    && pip install \
+        runpod
+        comfy-cli
 
 ADD ./docker/runpod/src /app
 
@@ -46,7 +48,7 @@ RUN set -xe \
     && \
     for file in /workflows/*.json; do \
         echo "Installing dependencies for: $file"; \
-        comfy node install-deps --workflow=$file || true; \
+        comfy node install-deps --workflow=$file; \
     done \
     && rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 
