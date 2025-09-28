@@ -84,10 +84,6 @@ https://github.com/TencentARC/GFPGAN/releases/download/v1.3.4/GFPGANv1.4.pth
   dir=${MODEL_DIR}/facerestore_models
   out=GFPGANv1.4.pth
 
-https://github.com/TencentARC/GFPGAN/releases/download/v1.3.4/GFPGANv1.4.pth
-  dir=${MODEL_DIR}/facerestore_models
-  out=GFPGANv1.4.pth
-
 https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth
   dir=${MODEL_DIR}/facerestore_models
   out=codeformer.pth
