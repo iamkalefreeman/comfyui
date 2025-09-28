@@ -38,6 +38,11 @@ COPY ./api-workflows /workflows
 # Install custom nodes with requirements.txt and disable ComfyUI-Manager
 RUN <<EOS
 set -xe
+for file in /workflows/*.json; do \
+  echo "Installing dependencies for: $file"; \
+  comfy node install-deps --workflow=$file; \
+done
+comfy node update all
 rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 EOS
 
