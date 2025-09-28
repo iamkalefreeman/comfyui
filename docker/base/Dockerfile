@@ -153,6 +153,7 @@ git clone https://github.com/MixLabPro/comfyui-mixlab-nodes.git /opt/ComfyUI/cus
 git clone https://github.com/1038lab/ComfyUI-RMBG.git /opt/ComfyUI/custom_nodes/ComfyUI-RMBG
 git clone https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF
 git clone https://github.com/iamkalefreeman/TooManyLoras.git /opt/ComfyUI/custom_nodes/TooManyLoras
+git clone https://github.com/mav-rik/facerestore_cf.git /opt/ComfyUI/custom_nodes/facerestore_cf
 chmod -R 755 /opt/ComfyUI/custom_nodes
 # Find and install requirements.txt
 find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
