@@ -72,12 +72,8 @@ find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs 
 comfy node update all
 EOS
 
-RUN <<EOS
-set -xe
-mkdir -p /workflows
-EOS
-
 COPY ./api-workflows /workflows
+COPY ./example_workflows /opt/ComfyUI/example_workflows
 
 # Set ComfyUI-Manager config to allow installation of additional nodes.
 COPY --chown=root:root <<EOF "/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini"
@@ -106,6 +102,10 @@ set -xe
 for file in /workflows/*.json; do \
   echo "Installing dependencies for workflow: $file"; \
   comfy node install-deps --workflow=$file || true; \
+done
+for file in /opt/ComfyUI/example_workflows/*.json; do \
+  echo "Installing dependencies for: $file"; \
+  comfy node install-deps --workflow=$file; \
 done
 comfy node update all
 EOS
