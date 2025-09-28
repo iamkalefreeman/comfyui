@@ -79,6 +79,34 @@ https://huggingface.co/lokCX/4x-Ultrasharp/resolve/main/4x-UltraSharp.pth?downlo
 https://huggingface.co/Phips/4xRealWebPhoto_v4_dat2/resolve/main/4xRealWebPhoto_v4_dat2.safetensors?download=true
   dir=${MODEL_DIR}/upscale_models
   out=4xRealWebPhoto_v4_dat2.safetensors
+
+https://github.com/TencentARC/GFPGAN/releases/download/v1.3.4/GFPGANv1.4.pth
+  dir=${MODEL_DIR}/facerestore_models
+  out=GFPGANv1.4.pth
+
+https://github.com/TencentARC/GFPGAN/releases/download/v1.3.4/GFPGANv1.4.pth
+  dir=${MODEL_DIR}/facerestore_models
+  out=GFPGANv1.4.pth
+
+https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth
+  dir=${MODEL_DIR}/facerestore_models
+  out=codeformer.pth
+
+https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth
+  dir=${MODEL_DIR}/facedetection
+  out=detection_Resnet50_Final.pth
+
+https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_mobilenet0.25_Final.pth
+  dir=${MODEL_DIR}/facedetection
+  out=detection_mobilenet0.25_Final.pth
+
+https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/yolov5l-face.pth
+  dir=${MODEL_DIR}/facedetection
+  out=yolov5l-face.pth
+
+https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/yolov5n-face.pth
+  dir=${MODEL_DIR}/facedetection
+  out=yolov5n-face.pth
 EOF
 RUN <<EOS
 set -xe
