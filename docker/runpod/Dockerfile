@@ -35,7 +35,7 @@ EOS
 
 COPY ./api-workflows /workflows
 
-# Install custom nodes with requirements.txt checks
+# Install custom nodes with requirements.txt and disable ComfyUI-Manager
 RUN <<EOS
 set -xe
 rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
