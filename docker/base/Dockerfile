@@ -158,15 +158,6 @@ chmod -R 755 /opt/ComfyUI/custom_nodes
 # Find and install requirements.txt
 find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
-echo "Updating ComfyUI nodes..."
-# sed -i 's/^security_level.*$/security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
-# sed -i 's/^network_mode.*$/network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
-comfy node update all
-for file in /workflows/*.json; do \
-  echo "Installing dependencies for: $file"; \
-  comfy node install-deps --workflow=$file; \
-done
-comfy node update all
 EOS
 
 # Disable safety filters to allow NSFW input/output
@@ -176,6 +167,18 @@ sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py || ech
 EOS
 
 COPY ./example_workflows /opt/ComfyUI/example_workflows
+
+RUN <<EOS
+set -xe
+echo "Installing nodes for workflows..."
+# sed -i 's/^security_level.*$/security_level = weak/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
+# sed -i 's/^network_mode.*$/network_mode = public/g' '/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini'
+for file in /opt/ComfyUI/example_workflows/*.json; do \
+  echo "Installing dependencies for: $file"; \
+  comfy node install-deps --workflow=$file; \
+done
+comfy node update all
+EOS
 
 # Expose the ComfyUI port
 EXPOSE 8188
