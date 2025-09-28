@@ -36,7 +36,9 @@ WORKDIR /opt/ComfyUI
 RUN <<EOS
 set -xe
 apt-get update
-apt-get install -y --no-install-recommends aria2
+apt-get install -y --no-install-recommends \
+  aria2 \
+  build-essential
 rm -rf /var/lib/apt/lists/*
 EOS
 
