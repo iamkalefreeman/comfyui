@@ -7,7 +7,6 @@ FROM ${BASE_IMAGE} AS full
 # Install custom nodes
 RUN <<EOS
 set -xe
-comfy node update all
 # Clone all custom nodes
 git clone https://github.com/Comfy-Org/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git /opt/ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus
