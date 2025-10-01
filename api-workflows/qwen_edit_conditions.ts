@@ -494,7 +494,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         delimiter: "|",
         start_index: 1,
         skip_every: 0,
-        max_count: 2,
+        max_count: 8,
       },
       class_type: "TextSplitByDelimiter",
       _meta: {
