@@ -170,8 +170,11 @@ for file in /workflows/*.json; do \
   comfy node install-deps --workflow=$file; \
 done
 comfy node update all
-( find . -type d -name ".git" && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
+( find . -type d -name ".git" ) | xargs -d '\n' rm -rf
+( find . -name ".gitignore" ) | xargs -d '\n' rm -rf
+( find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
 ( find . -name "install.py" && find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 # Disable safety filters to allow NSFW input/output
