@@ -51,7 +51,8 @@ const RequestSchema = z.object({
     .number()
     .default(1)
     .describe("Total megapixels to scale the image to"),
-  upscaler_model_name: config.upscalers
+  upscaler_model_name: z
+    .string()
     .default("RealESRGAN_x4plus.safetensors")
     .describe("Name of the upscaler model to use"),
   rmbg_model: z
@@ -303,12 +304,12 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "123": {
       inputs: {
         model: input.rmbg_model,
-        sensitivity: 1,
-        process_res: 1024,
-        mask_blur: 0,
-        mask_offset: 0,
+        sensitivity: input.rmbg_sensitivity,
+        process_res: input.rmbg_process_res,
+        mask_blur: input.rmbg_mask_blur,
+        mask_offset: input.rmbg_mask_offset,
         invert_output: false,
-        refine_foreground: false,
+        refine_foreground: input.rmbg_refine_foreground,
         background: "Alpha",
         background_color: "#ffffff",
         image: ["223", 0],
