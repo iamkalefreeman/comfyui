@@ -73,7 +73,7 @@ find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I 
 find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
 comfy node update all
-echo "Install nodes used ine example workflows..."
+echo "Install nodes used in example workflows..."
 for file in /opt/ComfyUI/example_workflows/*.json; do \
   echo "Installing dependencies for: $file"; \
   comfy node install-deps --workflow=$file; \
