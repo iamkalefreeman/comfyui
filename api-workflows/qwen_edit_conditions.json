@@ -1446,7 +1446,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "yolain/ComfyUI-Easy-Use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -2148,7 +2148,7 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.50",
+        "ver": "0.3.60",
         "Node name for S&R": "LoadImage",
         "enableTabs": false,
         "tabWidth": 65,
