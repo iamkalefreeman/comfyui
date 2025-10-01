@@ -19,33 +19,13 @@ apt-get install -y --no-install-recommends \
 rm -rf /var/lib/apt/lists/*
 EOS
 
-# Install runpod within the virtual environment
-RUN <<EOS
-set -xe
-pip install \
-  runpod
-EOS
-
 ADD ./docker/runpod/src /app
 
 RUN <<EOS
 set -xe
+pip install runpod
 chmod -R +x /app
-EOS
-
-COPY ./api-workflows /workflows
-
-# Install custom nodes with requirements.txt and disable ComfyUI-Manager
-RUN <<EOS
-set -xe
-for file in /workflows/*.json; do \
-  echo "Installing dependencies for: $file"; \
-  comfy node install-deps --workflow=$file; \
-done
-comfy node update all
 rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
-( find . -type d -name ".git" && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
-( find . -name "install.py" && find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 # Disable ComfyUI-Manager.
