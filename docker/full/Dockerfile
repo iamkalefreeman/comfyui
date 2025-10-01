@@ -64,7 +64,6 @@ fi
 if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI-RMBG" ]; then
     git clone --recurse-submodules https://github.com/1038lab/ComfyUI-RMBG.git "$CUSTOM_NODES_DIR/ComfyUI-RMBG"
 fi
-
 chmod -R 755 /opt/ComfyUI/custom_nodes
 # Find and install requirements.txt
 find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I {} \
@@ -72,6 +71,8 @@ find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I 
 find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
 comfy node update all
+( find . -type d -name ".git" && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
+( find . -name "install.py" && find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 COPY ./api-workflows /workflows
