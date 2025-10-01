@@ -178,7 +178,7 @@ RUN <<EOS
 set -xe
 for file in /workflows/*.json; do \
   echo "Installing dependencies for: $file"; \
-  comfy node install-deps --workflow=$file; \
+  comfy node install-deps --workflow="$file" --workspace /opt/ComfyUI ; \
 done
 comfy node update all
 ( find . -type d -name ".git" ) | xargs -d '\n' rm -rf
