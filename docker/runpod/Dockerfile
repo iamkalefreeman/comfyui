@@ -44,6 +44,8 @@ for file in /workflows/*.json; do \
 done
 comfy node update all
 rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
+( find . -type d -name ".git" && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
+( find . -name "install.py" && find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 # Disable ComfyUI-Manager.
