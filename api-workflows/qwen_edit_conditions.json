@@ -718,7 +718,7 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.59",
+        "ver": "0.3.60",
         "Node name for S&R": "TextEncodeQwenImageEditPlus"
       },
       "widgets_values": [
@@ -823,7 +823,7 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.48",
+        "ver": "0.3.60",
         "Node name for S&R": "KSampler",
         "enableTabs": false,
         "tabWidth": 65,
@@ -875,7 +875,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-reactor-node",
+        "aux_id": "comfyui-reactor-node",
         "ver": "ee1bcf161a6dc3b44656be7e856ee074a23f631f",
         "Node name for S&R": "ReActorRestoreFaceAdvanced"
       },
@@ -932,7 +932,7 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.48",
+        "ver": "0.3.60",
         "Node name for S&R": "VAEDecode",
         "enableTabs": false,
         "tabWidth": 65,
@@ -970,7 +970,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -1022,7 +1022,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy ifElse"
       },
@@ -1064,7 +1064,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "was-ns",
+        "aux_id": "ltdrdata/was-node-suite-comfyui",
         "ver": "afeee09ba44e713ec52a413ac6b105fd06b2d356",
         "Node name for S&R": "Text Contains"
       },
@@ -1099,7 +1099,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -1150,7 +1150,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui_essentials",
+        "aux_id": "iamkalefreeman/ComfyUI_essentials",
         "ver": "9d9f4bedfc9f0321c19faf71855e228c93bd0dc9",
         "Node name for S&R": "GetImageSize+"
       },
@@ -1270,8 +1270,8 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-impact-pack",
-        "ver": "8.23.0",
+        "aux_id": "ltdrdata/ComfyUI-Impact-Pack",
+        "ver": "4186fbd4f4d7fff87c2a5dac8e69ab1031ca1259",
         "Node name for S&R": "ImpactSwitch"
       },
       "widgets_values": [
@@ -1316,7 +1316,7 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.50",
+        "ver": "0.3.60",
         "Node name for S&R": "VAEEncode",
         "enableTabs": false,
         "tabWidth": 65,
@@ -1355,7 +1355,7 @@
       "outputs": [],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.48",
+        "ver": "0.3.60",
         "Node name for S&R": "SaveImage",
         "enableTabs": false,
         "tabWidth": 65,
@@ -1446,7 +1446,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "cnr_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -1479,7 +1479,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -1521,7 +1521,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "was-ns",
+        "aux_id": "ltdrdata/was-node-suite-comfyui",
         "ver": "afeee09ba44e713ec52a413ac6b105fd06b2d356",
         "Node name for S&R": "Text Contains"
       },
@@ -1703,8 +1703,8 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-impact-pack",
-        "ver": "8.23.0",
+        "aux_id": "ltdrdata/ComfyUI-Impact-Pack",
+        "ver": "4186fbd4f4d7fff87c2a5dac8e69ab1031ca1259",
         "Node name for S&R": "ImageMaskSwitch"
       },
       "widgets_values": [
@@ -1818,7 +1818,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy ifElse"
       },
@@ -1851,7 +1851,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -1893,7 +1893,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "was-ns",
+        "aux_id": "ltdrdata/was-node-suite-comfyui",
         "ver": "afeee09ba44e713ec52a413ac6b105fd06b2d356",
         "Node name for S&R": "Text Contains"
       },
@@ -1928,7 +1928,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -2025,8 +2025,8 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-impact-pack",
-        "ver": "8.23.0",
+        "aux_id": "ltdrdata/ComfyUI-Impact-Pack",
+        "ver": "4186fbd4f4d7fff87c2a5dac8e69ab1031ca1259",
         "Node name for S&R": "ImageMaskSwitch"
       },
       "widgets_values": [
@@ -2107,7 +2107,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "was-ns",
+        "aux_id": "ltdrdata/was-node-suite-comfyui",
         "ver": "afeee09ba44e713ec52a413ac6b105fd06b2d356",
         "Node name for S&R": "Text Multiline"
       },
@@ -2274,7 +2274,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui_essentials",
+        "aux_id": "iamkalefreeman/ComfyUI_essentials",
         "ver": "9d9f4bedfc9f0321c19faf71855e228c93bd0dc9",
         "Node name for S&R": "GetImageSize+"
       },
@@ -2322,7 +2322,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy mathInt"
       },
@@ -2376,7 +2376,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy ifElse"
       },
@@ -2409,7 +2409,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -2461,7 +2461,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy ifElse"
       },
@@ -2597,8 +2597,8 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-impact-pack",
-        "ver": "8.23.0",
+        "aux_id": "ltdrdata/ComfyUI-Impact-Pack",
+        "ver": "4186fbd4f4d7fff87c2a5dac8e69ab1031ca1259",
         "Node name for S&R": "ImageMaskSwitch"
       },
       "widgets_values": [
@@ -2630,7 +2630,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy int"
       },
@@ -2665,7 +2665,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy float"
       },
@@ -2707,7 +2707,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy mathFloat"
       },
@@ -2753,7 +2753,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-easy-use",
+        "aux_id": "yolain/ComfyUI-Easy-Use",
         "ver": "b6deb5f5155fd400b20cce7f8644a61efdcbe098",
         "Node name for S&R": "easy compare"
       },
@@ -2847,8 +2847,8 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-impact-pack",
-        "ver": "8.23.0",
+        "aux_id": "ltdrdata/ComfyUI-Impact-Pack",
+        "ver": "4186fbd4f4d7fff87c2a5dac8e69ab1031ca1259",
         "Node name for S&R": "ImageMaskSwitch"
       },
       "widgets_values": [
