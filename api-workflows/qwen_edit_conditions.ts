@@ -442,7 +442,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         delimiter: "|",
         start_index: 0,
         skip_every: 0,
-        max_count: 4,
+        max_count: 8,
       },
       class_type: "TextSplitByDelimiter",
       _meta: {
@@ -476,49 +476,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "184": {
       inputs: {
         string: ["183", 0],
-        regex_pattern: "\\<.*\\>",
-        replace: "",
-        case_insensitive: true,
-        multiline: false,
-        dotall: false,
-        count: 0,
-      },
-      class_type: "RegexReplace",
-      _meta: {
-        title: "Regex Replace",
-      },
-    },
-    "186": {
-      inputs: {
-        text: ["177", 0],
-        delimiter: "|",
-        start_index: 1,
-        skip_every: 0,
-        max_count: 8,
-      },
-      class_type: "TextSplitByDelimiter",
-      _meta: {
-        title: "Text Split By Delimiter",
-      },
-    },
-    "187": {
-      inputs: {
-        string: ["186", 0],
-        regex_pattern: "[\\r\\n]",
-        replace: "",
-        case_insensitive: true,
-        multiline: false,
-        dotall: false,
-        count: 0,
-      },
-      class_type: "RegexReplace",
-      _meta: {
-        title: "Regex Replace",
-      },
-    },
-    "188": {
-      inputs: {
-        string: ["187", 0],
         regex_pattern: "\\<.*\\>",
         replace: "",
         case_insensitive: true,
