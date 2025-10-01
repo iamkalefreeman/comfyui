@@ -1,8 +1,10 @@
 # check=skip=InvalidDefaultArgInFrom
 
-ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui:base-latest
+ARG BASE_IMAGE=YOUR_DOCKER_ACCOUNT/comfyui:runpod-latest
 
 FROM ${BASE_IMAGE} AS full
+
+COPY ./example_workflows /opt/ComfyUI/example_workflows
 
 # Install custom nodes
 RUN <<EOS
@@ -65,18 +67,19 @@ if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI-RMBG" ]; then
     git clone --recurse-submodules https://github.com/1038lab/ComfyUI-RMBG.git "$CUSTOM_NODES_DIR/ComfyUI-RMBG"
 fi
 chmod -R 755 /opt/ComfyUI/custom_nodes
-# Find and install requirements.txt
+echo "Find and install predefined nodes..."
 find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Running install.py from {}" && python "{}"'
 find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
 comfy node update all
-( find . -type d -name ".git" && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
-( find . -name "install.py" && find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+echo "Install nodes used ine example workflows..."
+for file in /opt/ComfyUI/example_workflows/*.json; do \
+  echo "Installing dependencies for: $file"; \
+  comfy node install-deps --workflow=$file; \
+done
+comfy node update all
 EOS
-
-COPY ./api-workflows /workflows
-COPY ./example_workflows /opt/ComfyUI/example_workflows
 
 # Set ComfyUI-Manager config to allow installation of additional nodes.
 COPY --chown=root:root <<EOF "/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini"
@@ -98,20 +101,6 @@ always_lazy_install = False
 network_mode = public
 db_mode = cache
 EOF
-
-# Install nodes used by workflows
-RUN <<EOS
-set -xe
-for file in /workflows/*.json; do \
-  echo "Installing dependencies for workflow: $file"; \
-  comfy node install-deps --workflow=$file || true; \
-done
-for file in /opt/ComfyUI/example_workflows/*.json; do \
-  echo "Installing dependencies for: $file"; \
-  comfy node install-deps --workflow=$file; \
-done
-comfy node update all
-EOS
 
 # Expose the ComfyUI port
 EXPOSE 8188
