@@ -173,7 +173,7 @@ comfy node update all
 ( find . -type d -name ".git" ) | xargs -d '\n' rm -rf
 ( find . -name ".gitignore" ) | xargs -d '\n' rm -rf
 ( find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
-( find . -name "install.py" && find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+( find . -name "install.py" ) | xargs -d '\n' rm -f
 ( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
