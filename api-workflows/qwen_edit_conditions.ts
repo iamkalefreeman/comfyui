@@ -59,6 +59,26 @@ const RequestSchema = z.object({
     .string()
     .default("INSPYRENET")
     .describe("Model to use for background removal"),
+  rmbg_sensitivity: z
+    .number()
+    .default(1)
+    .describe("Sensitivity of the background removal"),
+  rmbg_process_res: z
+    .number()
+    .default(1024)
+    .describe("Process resolution of the background removal"),
+  rmbg_mask_blur: z
+    .number()
+    .default(0)
+    .describe("Mask blur of the background removal"),
+  rmbg_mask_offset: z
+    .number()
+    .default(0)
+    .describe("Mask offset of the background removal"),
+  rmbg_refine_foreground: z
+    .boolean()
+    .default(false)
+    .describe("Refine foreground of the background removal"),
   face_detection_model: z
     .string()
     .default("retinaface_resnet50")
