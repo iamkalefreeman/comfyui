@@ -156,6 +156,7 @@ git clone --recurse-submodules https://github.com/1038lab/ComfyUI-RMBG.git /opt/
 git clone --recurse-submodules https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF
 git clone --recurse-submodules https://github.com/iamkalefreeman/TooManyLoras.git /opt/ComfyUI/custom_nodes/TooManyLoras
 git clone --recurse-submodules https://codeberg.org/Gourieff/comfyui-reactor-node.git /opt/ComfyUI/custom_nodes/comfyui-reactor-node
+( find . -type d -name ".git" && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
 chmod -R 755 /opt/ComfyUI/custom_nodes
 # Find and install requirements.txt
 find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I {} \
