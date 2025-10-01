@@ -146,22 +146,30 @@ pip install --no-cache-dir \
   xformers
 EOS
 
+COPY ./api-workflows /workflows
+
 # Install ComfyUI-GGUF and custom nodes with requirements.txt checks
 RUN <<EOS
 set -xe
 git clone --recurse-submodules https://github.com/Comfy-Org/ComfyUI-Manager.git /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 git clone --recurse-submodules https://github.com/bananasss00/ComfyUI_bitsandbytes_NF4-Lora.git /opt/ComfyUI/custom_nodes/ComfyUI_bitsandbytes_NF4-Lora
-git clone --recurse-submodules https://github.com/MixLabPro/comfyui-mixlab-nodes.git /opt/ComfyUI/custom_nodes/comfyui-mixlab-nodes
 git clone --recurse-submodules https://github.com/1038lab/ComfyUI-RMBG.git /opt/ComfyUI/custom_nodes/ComfyUI-RMBG
 git clone --recurse-submodules https://github.com/city96/ComfyUI-GGUF.git /opt/ComfyUI/custom_nodes/ComfyUI-GGUF
 git clone --recurse-submodules https://github.com/iamkalefreeman/TooManyLoras.git /opt/ComfyUI/custom_nodes/TooManyLoras
 git clone --recurse-submodules https://codeberg.org/Gourieff/comfyui-reactor-node.git /opt/ComfyUI/custom_nodes/comfyui-reactor-node
 chmod -R 755 /opt/ComfyUI/custom_nodes
-# Find and install requirements.txt
+# Find and install predefined custom nodes
 find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Running install.py from {}" && python "{}"'
 find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
+# Install custom nodes in 
+comfy node update all
+for file in /workflows/*.json; do \
+  echo "Installing dependencies for: $file"; \
+  comfy node install-deps --workflow=$file; \
+done
+comfy node update all
 ( find . -type d -name ".git" && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
 ( find . -name "install.py" && find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
