@@ -875,7 +875,7 @@
         }
       ],
       "properties": {
-        "aux_id": "comfyui-reactor-node",
+        "cnr_id": "comfyui-reactor-node",
         "ver": "ee1bcf161a6dc3b44656be7e856ee074a23f631f",
         "Node name for S&R": "ReActorRestoreFaceAdvanced"
       },
