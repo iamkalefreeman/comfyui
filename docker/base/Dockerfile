@@ -163,13 +163,18 @@ find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I 
   sh -c 'echo "Running install.py from {}" && python "{}"'
 find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
+comfy node update all
+( find . -type d -name ".git" ) | xargs -d '\n' rm -rf
+( find . -name ".gitignore" ) | xargs -d '\n' rm -rf
+( find . -name ".gitmodules" ) | xargs -d '\n' rm -rf
+( find . -name "install.py" ) | xargs -d '\n' rm -f
+( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 COPY ./api-workflows /workflows
 
 # Install custom nodes in workflows
 RUN <<EOS
-comfy node update all
 for file in /workflows/*.json; do \
   echo "Installing dependencies for: $file"; \
   comfy node install-deps --workflow=$file; \
