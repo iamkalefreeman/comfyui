@@ -175,6 +175,7 @@ COPY ./api-workflows /workflows
 
 # Install custom nodes in workflows
 RUN <<EOS
+set -xe
 for file in /workflows/*.json; do \
   echo "Installing dependencies for: $file"; \
   comfy node install-deps --workflow=$file; \
