@@ -40,7 +40,7 @@ docker push "${docker_account}/comfyui:kontext-runpod-latest"
 
 ### Build comfyui:kontext-full
 docker buildx build --target full \
-  --build-arg BASE_IMAGE="${docker_account}/comfyui:kontext-runpod-latest" \
+  --build-arg BASE_IMAGE="${docker_account}/comfyui:kontext-base-latest" \
   -t "${docker_account}/comfyui:kontext-full-latest" "${working_dir}" \
   -f "${working_dir}/docker/full/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 15
