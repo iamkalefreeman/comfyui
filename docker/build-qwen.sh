@@ -34,7 +34,7 @@ docker push "${docker_account}/comfyui:qwen-runpod-latest"
 
 ### Build comfyui:qwen-full
 docker buildx build --target full \
-  --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-runpod-latest" \
+  --build-arg BASE_IMAGE="${docker_account}/comfyui:qwen-base-latest" \
   -t "${docker_account}/comfyui:qwen-full-latest" "${working_dir}" \
   -f "${working_dir}/docker/full/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 15
