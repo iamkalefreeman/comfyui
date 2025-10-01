@@ -93,6 +93,10 @@ const RequestSchema = z.object({
     .max(1)
     .default(1)
     .describe("Visibility of the restored face"),
+  face_restore_take_count: z
+    .number()
+    .default(10)
+    .describe("Take count of the restored face"),
   codeformer_weight: z
     .number()
     .min(0)
@@ -424,7 +428,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         sort_by: "area",
         reverse_order: false,
         take_start: 0,
-        take_count: 10,
+        take_count: input.face_restore_take_count,
         image: ["119", 0],
       },
       class_type: "ReActorRestoreFaceAdvanced",
