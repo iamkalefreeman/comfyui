@@ -7,14 +7,6 @@ const RequestSchema = z.object({
   image: z
     .string()
     .describe("Main input image for editing (URL or base64 encoded string)"),
-  image_2: z
-    .string()
-    .default("")
-    .describe("Second input image for Qwen context (URL or base64 encoded string)"),
-  image_3: z
-    .string()
-    .default("")
-    .describe("Third input image for Qwen context (URL or base64 encoded string)"),
   prompt: z
     .string()
     .default(
