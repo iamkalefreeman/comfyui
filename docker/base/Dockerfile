@@ -170,7 +170,9 @@ EOS
 
 RUN <<EOS
 set -xe
+git clone --recurse-submodules https://github.com/DigitalIO/ComfyUI-stable-wildcards.git /opt/ComfyUI/custom_nodes/ComfyUI-stable-wildcards
 git clone --recurse-submodules https://github.com/MixLabPro/comfyui-mixlab-nodes.git /opt/ComfyUI/custom_nodes/comfyui-mixlab-nodes
+git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git /opt/ComfyUI/custom_nodes/ComfyUI-KJNodes
 # Find and install predefined custom nodes
 find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Running install.py from {}" && python "{}"'
