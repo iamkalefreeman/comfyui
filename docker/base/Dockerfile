@@ -177,6 +177,7 @@ EOS
 # Install more custom nodes 
 RUN <<EOS
 set -xe
+CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
 git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
 git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use "$CUSTOM_NODES_DIR/ComfyUI-Easy-Use"
 git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git "$CUSTOM_NODES_DIR/ComfyUI-KJNodes"
