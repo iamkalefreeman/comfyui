@@ -200,17 +200,17 @@ EOS
 
 COPY ./api-workflows /workflows
 
-# Install custom nodes in workflows
-RUN <<EOS
-set -xe
-for file in /workflows/*.json; do \
-  echo "Installing dependencies for: $file"; \
-  comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
-done
-comfy --workspace /opt/ComfyUI node update all
-( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
-( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
-EOS
+# # Install custom nodes in workflows
+# RUN <<EOS
+# set -xe
+# for file in /workflows/*.json; do \
+#   echo "Installing dependencies for: $file"; \
+#   comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
+# done
+# comfy --workspace /opt/ComfyUI node update all
+# ( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
+# ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
+# EOS
 
 # Disable safety filters to allow NSFW input/output
 RUN <<EOS
