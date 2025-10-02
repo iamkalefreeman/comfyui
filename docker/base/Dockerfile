@@ -3,6 +3,7 @@
 ##########################################################################################
 # build args
 ##########################################################################################
+ARG COMFYUI_MODELS_IMAGE=DOCKER_ACCOUNT/ai-models:comfyui-models-latest
 ARG MODELS_IMAGE=DOCKER_ACCOUNT/ai-models:model-latest
 ARG BUILDBOX_IMAGE=DOCKER_ACCOUNT/buildbox:stable
 ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:latest
@@ -23,7 +24,7 @@ FROM $MODELS_IMAGE AS stage-models
 
 FROM $BASE_IMAGE AS comfyui
 
-ARG MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED
+ARG COMFYUI_MODELS_IMAGE MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED
 
 COPY --from=stage-models ${MODEL_DIR} ${MODEL_DIR}
 COPY --from=comfyui-models ${MODEL_DIR} ${MODEL_DIR}
