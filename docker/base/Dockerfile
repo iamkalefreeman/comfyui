@@ -193,7 +193,10 @@ done
 comfy --workspace /opt/ComfyUI node update all
 ( find . -name "install.py" ) | xargs -d '\n' rm -f
 ( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+rm -rf /opt/ComfyUI/custom_nodes/comfyui-reactor
 EOS
+
+RUN rm -rf /opt/ComfyUI/custom_nodes/comfyui-reactor
 
 # Disable safety filters to allow NSFW input/output
 RUN <<EOS
