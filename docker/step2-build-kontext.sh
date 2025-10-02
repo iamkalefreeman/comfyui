@@ -8,6 +8,7 @@ working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 docker buildx build --target comfyui \
   --build-arg BASE_IMAGE="ghcr.io/iamkalefreeman/comfyui-api:latest" \
   --build-arg MODELS_IMAGE="${docker_account}/ai-models:kontext-models-latest" \
+  --build-arg COMFYUI_MODELS_IMAGE="${docker_account}/ai-models:comfyui-models-latest" \
   -t "${docker_account}/comfyui:kontext-base-latest" "${working_dir}" \
   -f "${working_dir}/docker/base/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
