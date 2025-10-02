@@ -170,8 +170,8 @@ find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
 find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
 comfy --workspace /opt/ComfyUI node update all
-( find . -name "install.py" ) | xargs -d '\n' rm -f
-( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
+( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 # Install more custom nodes 
@@ -194,8 +194,8 @@ find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
 find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
 comfy --workspace /opt/ComfyUI node update all
-( find . -name "install.py" ) | xargs -d '\n' rm -f
-( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
+( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 COPY ./api-workflows /workflows
