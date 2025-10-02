@@ -149,7 +149,7 @@ EOS
 # Install custom nodes 
 RUN <<EOS
 set -xe
-CUSTOM_NODES_DIR=""$CUSTOM_NODES_DIR"
+CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
 git clone --recurse-submodules https://github.com/Comfy-Org/ComfyUI-Manager.git "$CUSTOM_NODES_DIR/ComfyUI-Manager"
 git clone --recurse-submodules https://github.com/bananasss00/ComfyUI_bitsandbytes_NF4-Lora.git "$CUSTOM_NODES_DIR/ComfyUI_bitsandbytes_NF4-Lora"
 git clone --recurse-submodules https://github.com/1038lab/ComfyUI-RMBG.git "$CUSTOM_NODES_DIR/ComfyUI-RMBG"
