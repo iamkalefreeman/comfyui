@@ -440,7 +440,7 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-reactor-node",
+        "aux_id": "iamkalefreeman/comfyui-reactor-node",
         "ver": "ee1bcf161a6dc3b44656be7e856ee074a23f631f",
         "Node name for S&R": "ReActorRestoreFaceAdvanced"
       },
@@ -2176,7 +2176,6 @@
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-stable-wildcards",
         "ver": "1.1.3",
         "Node name for S&R": "Stable Wildcards",
         "aux_id": "DigitalIO/ComfyUI-stable-wildcards"
