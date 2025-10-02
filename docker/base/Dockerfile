@@ -168,6 +168,19 @@ comfy --workspace /opt/ComfyUI node update all
 ( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
+RUN <<EOS
+set -xe
+git clone --recurse-submodules https://github.com/MixLabPro/comfyui-mixlab-nodes.git /opt/ComfyUI/custom_nodes/comfyui-mixlab-nodes
+# Find and install predefined custom nodes
+find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I {} \
+  sh -c 'echo "Running install.py from {}" && python "{}"'
+find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
+  sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
+comfy --workspace /opt/ComfyUI node update all
+( find . -name "install.py" ) | xargs -d '\n' rm -f
+( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+EOS
+
 COPY ./api-workflows /workflows
 
 # Install custom nodes in workflows
@@ -177,9 +190,9 @@ for file in /workflows/*.json; do \
   echo "Installing dependencies for: $file"; \
   comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
 done
-# comfy --workspace /opt/ComfyUI node update all
-# ( find . -name "install.py" ) | xargs -d '\n' rm -f
-# ( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+comfy --workspace /opt/ComfyUI node update all
+( find . -name "install.py" ) | xargs -d '\n' rm -f
+( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 # Disable safety filters to allow NSFW input/output
