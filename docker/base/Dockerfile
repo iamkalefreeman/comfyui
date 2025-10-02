@@ -155,7 +155,7 @@ git clone --recurse-submodules https://github.com/bananasss00/ComfyUI_bitsandbyt
 git clone --recurse-submodules https://github.com/1038lab/ComfyUI-RMBG.git "$CUSTOM_NODES_DIR/ComfyUI-RMBG"
 git clone --recurse-submodules https://github.com/city96/ComfyUI-GGUF.git "$CUSTOM_NODES_DIR/ComfyUI-GGUF"
 git clone --recurse-submodules https://github.com/iamkalefreeman/TooManyLoras.git "$CUSTOM_NODES_DIR/TooManyLoras"
-git clone --recurse-submodules https://codeberg.org/Gourieff/comfyui-reactor-node.git "$CUSTOM_NODES_DIR/comfyui-reactor-node"
+git clone --recurse-submodules https://codeberg.org/Gourieff/comfyui-reactor-node.git "$CUSTOM_NODES_DIR/comfyui-reactor"
 git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Impact-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Impact-Pack"
 git clone --recurse-submodules https://github.com/MixLabPro/comfyui-mixlab-nodes.git "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
 git clone --recurse-submodules https://github.com/ltdrdata/was-node-suite-comfyui.git "$CUSTOM_NODES_DIR/was-nas"
@@ -163,11 +163,11 @@ git clone --recurse-submodules https://github.com/rgthree/rgthree-comfy.git "$CU
 git clone --recurse-submodules https://github.com/cubiq/ComfyUI_essentials.git "$CUSTOM_NODES_DIR/comfyui_essentials"
 git clone --recurse-submodules https://github.com/jags111/efficiency-nodes-comfyui.git "$CUSTOM_NODES_DIR/efficiency-nodes-comfyui"
 git clone --recurse-submodules https://github.com/DigitalIO/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
-chmod -R 755 "$CUSTOM_NODES_DIR
+chmod -R 755 "$CUSTOM_NODES_DIR"
 # Find and install predefined custom nodes
-find "$CUSTOM_NODES_DIR -name "install.py" -type f -print0 | xargs -0 -I {} \
+find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Running install.py from {}" && python "{}"'
-find "$CUSTOM_NODES_DIR -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
+find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
 comfy --workspace /opt/ComfyUI node update all
 ( find . -name "install.py" ) | xargs -d '\n' rm -f
@@ -187,11 +187,11 @@ git clone --recurse-submodules https://github.com/ssitu/ComfyUI_UltimateSDUpscal
 git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git "$CUSTOM_NODES_DIR/ComfyUI-Frame-Interpolation"
 git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use.git "$CUSTOM_NODES_DIR/ComfyUI-Easy-Use"
 git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
-chmod -R 755 "$CUSTOM_NODES_DIR
+chmod -R 755 "$CUSTOM_NODES_DIR"
 # Find and install predefined custom nodes
-find "$CUSTOM_NODES_DIR -name "install.py" -type f -print0 | xargs -0 -I {} \
+find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Running install.py from {}" && python "{}"'
-find "$CUSTOM_NODES_DIR -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
+find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
 comfy --workspace /opt/ComfyUI node update all
 ( find . -name "install.py" ) | xargs -d '\n' rm -f
@@ -208,12 +208,9 @@ for file in /workflows/*.json; do \
   comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
 done
 comfy --workspace /opt/ComfyUI node update all
-( find . -name "install.py" ) | xargs -d '\n' rm -f
-( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
-rm -rf "$CUSTOM_NODES_DIR/comfyui-reactor
+( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
+( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
-
-RUN rm -rf "$CUSTOM_NODES_DIR/comfyui-reactor
 
 # Disable safety filters to allow NSFW input/output
 RUN <<EOS
