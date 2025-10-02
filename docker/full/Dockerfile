@@ -23,9 +23,9 @@ if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI_SLK_joy_caption_two" ]; then
 fi
 chmod -R 755 /opt/ComfyUI/custom_nodes
 echo "Find and install predefined nodes..."
-find /opt/ComfyUI/custom_nodes -name "install.py" -type f -print0 | xargs -0 -I {} \
+find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Running install.py from {}" && python "{}"'
-find /opt/ComfyUI/custom_nodes -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
+find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
 comfy --workspace /opt/ComfyUI node update all
 echo "Install nodes used in example workflows..."
