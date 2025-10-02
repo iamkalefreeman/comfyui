@@ -177,9 +177,9 @@ for file in /workflows/*.json; do \
   echo "Installing dependencies for: $file"; \
   comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
 done
-comfy --workspace /opt/ComfyUI node update all
-( find . -name "install.py" ) | xargs -d '\n' rm -f
-( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
+# comfy --workspace /opt/ComfyUI node update all
+# ( find . -name "install.py" ) | xargs -d '\n' rm -f
+# ( find . -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
 # Disable safety filters to allow NSFW input/output
