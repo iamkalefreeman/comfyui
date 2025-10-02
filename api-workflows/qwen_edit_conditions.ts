@@ -503,7 +503,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       inputs: {
         seed: input.seed,
         control_after_generate: "fixed",
-        version: 1,
       },
       class_type: "Seed",
     },
@@ -511,6 +510,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       inputs: {
         prompt: ["184", 0],
         seed: ["274", 3],
+        version: 1,
       },
       class_type: "Stable Wildcards",
     },
