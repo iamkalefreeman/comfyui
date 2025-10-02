@@ -13,13 +13,13 @@ CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
 
 # Clone all custom nodes, but only if the directory doesn't already exist
 if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes" ]; then
-    git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
+    git clone --recursive https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
 fi
 if [ ! -d "$CUSTOM_NODES_DIR/ControlAltAI-Nodes" ]; then
-    git clone --recurse-submodules https://github.com/gseth/ControlAltAI-Nodes.git "$CUSTOM_NODES_DIR/ControlAltAI-Nodes"
+    git clone --recursive https://github.com/gseth/ControlAltAI-Nodes.git "$CUSTOM_NODES_DIR/ControlAltAI-Nodes"
 fi
 if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI_SLK_joy_caption_two" ]; then
-    git clone --recurse-submodules https://github.com/EvilBT/ComfyUI_SLK_joy_caption_two.git "$CUSTOM_NODES_DIR/ComfyUI_SLK_joy_caption_two"
+    git clone --recursive https://github.com/EvilBT/ComfyUI_SLK_joy_caption_two.git "$CUSTOM_NODES_DIR/ComfyUI_SLK_joy_caption_two"
 fi
 chmod -R 755 /opt/ComfyUI/custom_nodes
 echo "Find and install predefined nodes..."
