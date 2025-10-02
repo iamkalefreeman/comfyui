@@ -12,7 +12,7 @@ ARG CLIP_DIR=/opt/ComfyUI/models/clip
 ARG UNET_DIR=/opt/ComfyUI/models/unet
 ARG LORA_DIR=/opt/ComfyUI/models/loras
   
-FROM $BUILDBOX_IMAGE AS qwen-models
+FROM $BUILDBOX_IMAGE AS comfyui-models
 
 # Environment variables
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
