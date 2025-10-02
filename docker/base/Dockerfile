@@ -158,9 +158,9 @@ git clone --recursive https://github.com/iamkalefreeman/TooManyLoras.git "$CUSTO
 git clone --recursive https://codeberg.org/Gourieff/comfyui-reactor-node.git "$CUSTOM_NODES_DIR/comfyui-reactor-node"
 git clone --recursive https://github.com/ltdrdata/ComfyUI-Impact-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Impact-Pack"
 git clone --recursive https://github.com/MixLabPro/comfyui-mixlab-nodes.git "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
-git clone --recursive https://github.com/ltdrdata/was-node-suite-comfyui.git "$CUSTOM_NODES_DIR/was-node-suite-comfyui"
+git clone --recursive https://github.com/ltdrdata/was-node-suite-comfyui.git "$CUSTOM_NODES_DIR/was-nas"
 git clone --recursive https://github.com/rgthree/rgthree-comfy.git "$CUSTOM_NODES_DIR/rgthree-comfy"
-git clone --recursive https://github.com/cubiq/ComfyUI_essentials.git "$CUSTOM_NODES_DIR/ComfyUI_essentials"
+git clone --recursive https://github.com/cubiq/ComfyUI_essentials.git "$CUSTOM_NODES_DIR/comfyui_essentials"
 git clone --recursive https://github.com/jags111/efficiency-nodes-comfyui.git "$CUSTOM_NODES_DIR/efficiency-nodes-comfyui"
 git clone --recursive https://github.com/DigitalIO/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
 chmod -R 755 "$CUSTOM_NODES_DIR
