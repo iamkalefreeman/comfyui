@@ -200,20 +200,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
       class_type: "VAEEncode",
     },
-    "106": {
-      inputs: {
-        image: input.image_2,
-        "choose file to upload": "image",
-      },
-      class_type: "LoadImage",
-    },
-    "108": {
-      inputs: {
-        image: input.image_3,
-        "choose file to upload": "image",
-      },
-      class_type: "LoadImage",
-    },
     "117": {
       inputs: {
         lora_01: input.lora_1_name,
@@ -291,8 +277,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         clip: ["117", 1],
         vae: ["39", 0],
         image1: ["252", 0],
-        image2: ["106", 0],
-        image3: ["108", 0],
       },
       class_type: "TextEncodeQwenImageEditPlus",
     },
