@@ -12,9 +12,6 @@ ARG CLIP_DIR=/opt/ComfyUI/models/clip
 ARG UNET_DIR=/opt/ComfyUI/models/unet
 ARG LORA_DIR=/opt/ComfyUI/models/loras
   
-##########################################################################################
-# kontext-models stage
-##########################################################################################
 # Use a CUDA-enabled base image with PyTorch and necessary dependencies
 FROM $BUILDBOX_IMAGE AS kontext-models
 
