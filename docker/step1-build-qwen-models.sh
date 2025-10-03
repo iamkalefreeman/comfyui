@@ -25,5 +25,5 @@ docker buildx build --target comfyui-with-models \
   -t "${docker_account}/comfyui:qwen-models-latest" "${working_dir}" \
   -f "${working_dir}/docker/base/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
-docker push "${docker_account}/comfyui:qwen-models-latest"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 12
+# docker push "${docker_account}/comfyui:qwen-models-latest"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 12
