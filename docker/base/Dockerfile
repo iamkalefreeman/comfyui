@@ -134,7 +134,7 @@ EOS
 
 # Patches certain nodes
 RUN <<EOS
-set -xe
+set -eoux pipefail
 CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
 rm -rf "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
 git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
@@ -152,7 +152,7 @@ COPY ./api-workflows /workflows
 
 # # Install custom nodes in workflows
 # RUN <<EOS
-# set -xe
+# set -eou pipefail
 # for file in /workflows/*.json; do \
 #   echo "Installing dependencies for: $file"; \
 #   comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
