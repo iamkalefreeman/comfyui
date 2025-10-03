@@ -128,6 +128,20 @@ comfy --workspace /opt/ComfyUI node update all
 ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
+# Overwritting certain nodes
+RUN <<EOS
+set -xe
+CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
+rm -rf "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
+git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
+chmod -R 755 "$CUSTOM_NODES_DIR"
+# Find and install predefined custom nodes
+find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
+  sh -c 'echo "Running install.py from {}" && python "{}"'
+find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
+  sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
+EOS
+
 COPY ./api-workflows /workflows
 
 # # Install custom nodes in workflows
