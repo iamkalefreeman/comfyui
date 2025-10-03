@@ -585,7 +585,7 @@
       ],
       "properties": {
         "aux_id": "iamkalefreeman/ComfyUI-stable-wildcards",
-        "ver": "add896cd69962d2b69438b9bcd240e75e2a2aa52",
+        "ver": "ebc976096286f6a1223377eaf67b51cb125fb9d4",
         "Node name for S&R": "Stable Wildcards"
       },
       "widgets_values": [
@@ -631,7 +631,7 @@
       ],
       "properties": {
         "aux_id": "iamkalefreeman/ComfyUI-stable-wildcards",
-        "ver": "add896cd69962d2b69438b9bcd240e75e2a2aa52",
+        "ver": "ebc976096286f6a1223377eaf67b51cb125fb9d4",
         "Node name for S&R": "SpotlessTextSplitByDelimiter"
       },
       "widgets_values": [
