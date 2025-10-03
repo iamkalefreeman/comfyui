@@ -134,7 +134,7 @@ EOS
 
 # Patch certain nodes
 RUN <<EOS
-set -eoux pipefail
+set -eoux
 CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
 rm -rf "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
 git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
