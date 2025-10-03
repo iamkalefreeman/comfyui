@@ -1691,7 +1691,7 @@
     },
     {
       "id": 168,
-      "type": "TextSplitByDelimiter",
+      "type": "SpotlessTextSplitByDelimiter",
       "pos": [
         -2850.646240234375,
         -225.05076599121094
@@ -1726,9 +1726,9 @@
         }
       ],
       "properties": {
-        "aux_id": "MixLabPro/comfyui-mixlab-nodes",
-        "ver": "32b22c39cbe13b46df29ef1b6ab088c2eb4389d2",
-        "Node name for S&R": "TextSplitByDelimiter"
+        "aux_id": "iamkalefreeman/ComfyUI-stable-wildcards",
+        "ver": "add896cd69962d2b69438b9bcd240e75e2a2aa52",
+        "Node name for S&R": "SpotlessTextSplitByDelimiter"
       },
       "widgets_values": [
         "===",
