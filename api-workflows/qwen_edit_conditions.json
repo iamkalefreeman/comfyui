@@ -2176,9 +2176,9 @@
         }
       ],
       "properties": {
-        "ver": "41b72c45a8a403939217198006b6e85a4a237cce",
+        "ver": "add896cd69962d2b69438b9bcd240e75e2a2aa52",
         "Node name for S&R": "Stable Wildcards",
-        "aux_id": "DigitalIO/ComfyUI-stable-wildcards"
+        "aux_id": "iamkalefreeman/ComfyUI-stable-wildcards"
       },
       "widgets_values": [
         "",
