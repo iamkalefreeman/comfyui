@@ -91,12 +91,12 @@ git clone --recurse-submodules https://github.com/city96/ComfyUI-GGUF.git "$CUST
 git clone --recurse-submodules https://github.com/iamkalefreeman/TooManyLoras.git "$CUSTOM_NODES_DIR/TooManyLoras"
 git clone --recurse-submodules https://codeberg.org/Gourieff/comfyui-reactor-node.git "$CUSTOM_NODES_DIR/comfyui-reactor"
 git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Impact-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Impact-Pack"
-git clone --recurse-submodules https://github.com/MixLabPro/comfyui-mixlab-nodes.git "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
-git clone --recurse-submodules https://github.com/ltdrdata/was-node-suite-comfyui.git "$CUSTOM_NODES_DIR/was-nas"
+# git clone --recurse-submodules https://github.com/MixLabPro/comfyui-mixlab-nodes.git "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
+git clone --recurse-submodules https://github.com/ltdrdata/was-node-suite-comfyui.git "$CUSTOM_NODES_DIR/was-ns"
 git clone --recurse-submodules https://github.com/rgthree/rgthree-comfy.git "$CUSTOM_NODES_DIR/rgthree-comfy"
 git clone --recurse-submodules https://github.com/cubiq/ComfyUI_essentials.git "$CUSTOM_NODES_DIR/comfyui_essentials"
 git clone --recurse-submodules https://github.com/jags111/efficiency-nodes-comfyui.git "$CUSTOM_NODES_DIR/efficiency-nodes-comfyui"
-git clone --recurse-submodules https://github.com/DigitalIO/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
+git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
 chmod -R 755 "$CUSTOM_NODES_DIR"
 # Find and install predefined custom nodes
 find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
@@ -114,13 +114,13 @@ set -xe
 CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
 git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
 git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use "$CUSTOM_NODES_DIR/ComfyUI-Easy-Use"
-git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git "$CUSTOM_NODES_DIR/ComfyUI-KJNodes"
-git clone --recurse-submodules https://github.com/cubiq/ComfyUI_IPAdapter_plus.git "$CUSTOM_NODES_DIR/ComfyUI_IPAdapter_plus"
-git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-VideoHelperSuite.git "$CUSTOM_NODES_DIR/ComfyUI-VideoHelperSuite"
-git clone --recurse-submodules https://github.com/kijai/ComfyUI-DepthAnythingV2.git "$CUSTOM_NODES_DIR/ComfyUI-DepthAnythingV2"
-git clone --recurse-submodules https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git "$CUSTOM_NODES_DIR/ComfyUI_UltimateSDUpscale"
-git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git "$CUSTOM_NODES_DIR/ComfyUI-Frame-Interpolation"
-git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
+# git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git "$CUSTOM_NODES_DIR/ComfyUI-KJNodes"
+# git clone --recurse-submodules https://github.com/cubiq/ComfyUI_IPAdapter_plus.git "$CUSTOM_NODES_DIR/ComfyUI_IPAdapter_plus"
+# git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-VideoHelperSuite.git "$CUSTOM_NODES_DIR/ComfyUI-VideoHelperSuite"
+# git clone --recurse-submodules https://github.com/kijai/ComfyUI-DepthAnythingV2.git "$CUSTOM_NODES_DIR/ComfyUI-DepthAnythingV2"
+# git clone --recurse-submodules https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git "$CUSTOM_NODES_DIR/ComfyUI_UltimateSDUpscale"
+# git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git "$CUSTOM_NODES_DIR/ComfyUI-Frame-Interpolation"
+# git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
 chmod -R 755 "$CUSTOM_NODES_DIR"
 # Find and install predefined custom nodes
 find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
@@ -134,21 +134,6 @@ EOS
 
 # Patch certain nodes
 RUN <<EOS
-set -eoux
-CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
-rm -rf "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
-git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
-chmod -R 755 "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
-
-# # Find and install predefined custom nodes
-# find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
-#   sh -c 'echo "Running install.py from {}" && python "{}"'
-# find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
-#   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
-
-( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
-( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
-
 # Remove mixlab-nodes because it's too slow.
 rm -rf "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
 EOS
