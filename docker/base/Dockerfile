@@ -134,6 +134,7 @@ EOS
 
 # Patch certain nodes
 RUN <<EOS
+set -xe
 # Remove mixlab-nodes because it's too slow.
 rm -rf "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
 EOS
