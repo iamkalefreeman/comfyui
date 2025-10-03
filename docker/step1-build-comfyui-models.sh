@@ -10,5 +10,5 @@ docker buildx build --target comfyui-models \
   -t "${docker_account}/ai-models:comfyui-models-latest" "${working_dir}" \
   -f "${working_dir}/docker/ai-models/comfyui-models.Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
-# docker push "${docker_account}/ai-models:comfyui-models-latest"
-# [[ "$?" -ne 0 ]] && echo "Error!" && return 11
+docker push "${docker_account}/ai-models:comfyui-models-latest"
+[[ "$?" -ne 0 ]] && echo "Error!" && return 11
