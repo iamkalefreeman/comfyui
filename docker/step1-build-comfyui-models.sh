@@ -7,8 +7,8 @@ working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 ### Build comfyui-models
 docker buildx build --target comfyui-models \
   --build-arg BUILDBOX_IMAGE="${docker_account}/buildbox:stable" \
-  -t "${docker_account}/ai-models:comfyui-models-latest" "${working_dir}" \
+  -t "${docker_account}/comfyui:comfyui-models-latest" "${working_dir}" \
   -f "${working_dir}/docker/ai-models/comfyui-models.Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
-docker push "${docker_account}/ai-models:comfyui-models-latest"
+docker push "${docker_account}/comfyui:comfyui-models-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
