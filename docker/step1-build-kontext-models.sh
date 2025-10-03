@@ -10,8 +10,8 @@ docker buildx build --target kontext-models \
   -t "${docker_account}/ai-models:kontext-models-latest" "${working_dir}" \
   -f "${working_dir}/docker/ai-models/kontext-models.Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
-# docker push "${docker_account}/ai-models:kontext-models-latest"
-# [[ "$?" -ne 0 ]] && echo "Error!" && return 11
+docker push "${docker_account}/ai-models:kontext-models-latest"
+[[ "$?" -ne 0 ]] && echo "Error!" && return 11
 
 ### Build comfyui:kontext-models
 docker buildx build --target comfyui-with-models \
@@ -21,5 +21,5 @@ docker buildx build --target comfyui-with-models \
   -t "${docker_account}/comfyui:kontext-models-latest" "${working_dir}" \
   -f "${working_dir}/docker/base/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
-# docker push "${docker_account}/comfyui:kontext-models-latest"
-# [[ "$?" -ne 0 ]] && echo "Error!" && return 12
+docker push "${docker_account}/comfyui:kontext-models-latest"
+[[ "$?" -ne 0 ]] && echo "Error!" && return 12
