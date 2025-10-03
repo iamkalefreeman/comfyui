@@ -342,8 +342,8 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "168": {
       inputs: {
-        delimiter: "|",
-        secondary_delimiter: "---",
+        delimiter: "===",
+        secondary_delimiter: "",
         start_index: 0,
         skip_every: 0,
         max_count: 2,
