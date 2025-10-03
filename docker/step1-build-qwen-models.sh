@@ -16,3 +16,14 @@ docker buildx build --target qwen-models \
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 docker push "${docker_account}/ai-models:qwen-models-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
+
+### Build comfyui:qwen-models
+docker buildx build --target comfyui-with-models \
+  --build-arg BASE_IMAGE="ghcr.io/iamkalefreeman/comfyui-api:latest" \
+  --build-arg MODELS_IMAGE="${docker_account}/ai-models:qwen-models-latest" \
+  --build-arg COMFYUI_MODELS_IMAGE="${docker_account}/ai-models:comfyui-models-latest" \
+  -t "${docker_account}/comfyui:qwen-models-latest" "${working_dir}" \
+  -f "${working_dir}/docker/base/Dockerfile"
+[[ "$?" -ne 0 ]] && echo "Error!" && return 12
+docker push "${docker_account}/comfyui:qwen-models-latest"
+[[ "$?" -ne 0 ]] && echo "Error!" && return 12
