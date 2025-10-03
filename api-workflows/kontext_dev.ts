@@ -268,7 +268,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         max_count: 8,
         text: ["191", 0],
       },
-      class_type: "TextSplitByDelimiter",
+      class_type: "SpotlessTextSplitByDelimiter",
     },
     "193": {
       inputs: {
