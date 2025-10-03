@@ -1731,8 +1731,8 @@
         "Node name for S&R": "TextSplitByDelimiter"
       },
       "widgets_values": [
-        "|",
-        "---",
+        "===",
+        "",
         0,
         0,
         2
