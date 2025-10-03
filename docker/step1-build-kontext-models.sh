@@ -13,13 +13,13 @@ docker buildx build --target kontext-models \
 docker push "${docker_account}/ai-models:kontext-models-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 
-### Build comfyui:kontext-models
+### Build comfyui-kontext:kontext-models
 docker buildx build --target comfyui-with-models \
   --build-arg BASE_IMAGE="ghcr.io/iamkalefreeman/comfyui-api:latest" \
   --build-arg MODELS_IMAGE="${docker_account}/ai-models:kontext-models-latest" \
   --build-arg COMFYUI_MODELS_IMAGE="${docker_account}/ai-models:kontext-models-latest" \
-  -t "${docker_account}/comfyui:kontext-models-latest" "${working_dir}" \
+  -t "${docker_account}/comfyui-kontext:kontext-models-latest" "${working_dir}" \
   -f "${working_dir}/docker/base/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
-docker push "${docker_account}/comfyui:kontext-models-latest"
+docker push "${docker_account}/comfyui-kontext:kontext-models-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
