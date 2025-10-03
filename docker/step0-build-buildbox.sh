@@ -1,5 +1,4 @@
 #!bin/bash -eoux pipefail
-set -eoux pipefail
 
 docker_account=${DOCKER_ACCOUNT:-YOUR_DOCKER_ACCOUNT_HERE}
 working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
