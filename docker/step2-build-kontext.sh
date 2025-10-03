@@ -1,5 +1,4 @@
 #!bin/bash -xe
-set -xe
 
 date_version=$(date +'%d-%m-%Y-%H-%M')
 docker_account=${DOCKER_ACCOUNT:-YOUR_DOCKER_ACCOUNT_HERE}
