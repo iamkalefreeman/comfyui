@@ -10,8 +10,8 @@ docker buildx build --target comfyui \
   -t "${docker_account}/comfyui:kontext-base-latest" "${working_dir}" \
   -f "${working_dir}/docker/base/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 12
-# docker push "${docker_account}/comfyui:kontext-base-latest"
-# [[ "$?" -ne 0 ]] && echo "Error!" && return 12
+docker push "${docker_account}/comfyui:kontext-base-latest"
+[[ "$?" -ne 0 ]] && echo "Error!" && return 12
 
 ### Build comfyui:kontext-runpod
 docker buildx build --target runpod \
