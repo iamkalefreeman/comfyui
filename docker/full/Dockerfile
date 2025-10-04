@@ -62,9 +62,9 @@ EXPOSE 8188
 EXPOSE 3000
 
 ## Command to start ComfyUI (No longer needed because ./comfyui-api already executes thi)
-# CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
+CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
 
 # Set CMD to launch the comfyui-api binary. The comfyui-api binary will launch ComfyUI as a child process.
-CMD ["./comfyui-api"]
+# CMD ["./comfyui-api"]
 
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
