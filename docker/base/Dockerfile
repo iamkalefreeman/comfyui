@@ -149,7 +149,7 @@ rm -rf "$CUSTOM_NODES_DIR/ComfyUI-GGUF"
 EOS
 
 # Set API to call this to launch comfy
-ENV CMD="comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --highvram"
+ENV CMD="comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"
 
 COPY ./api-workflows /workflows
 
@@ -180,5 +180,5 @@ EOS
 EXPOSE 8188
 
 # Command to start ComfyUI
-CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --highvram"]
+CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
