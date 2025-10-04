@@ -132,6 +132,19 @@ comfy --workspace /opt/ComfyUI node update all
 ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
+# Download more models
+ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/1038lab/inspyrenet/resolve/main/inspyrenet.safetensors?download=true
+  dir=${MODEL_DIR}/RMBG/INSPYRENET
+  out=inspyrenet.safetensors
+
+https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth
+  dir=${MODEL_DIR}/facedetection
+  out=parsing_parsenet.pth
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
 # Patch certain nodes
 RUN <<EOS
 set -xe
