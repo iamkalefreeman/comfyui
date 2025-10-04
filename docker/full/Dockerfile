@@ -6,35 +6,35 @@ FROM ${BASE_IMAGE} AS full
 
 COPY ./example_workflows /opt/ComfyUI/example_workflows
 
-# Install custom nodes
-RUN <<EOS
-set -xe
-CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
+# # Install custom nodes
+# RUN <<EOS
+# set -xe
+# CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
 
-# Clone all custom nodes, but only if the directory doesn't already exist
-if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes" ]; then
-    git clone --recursive https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
-fi
-if [ ! -d "$CUSTOM_NODES_DIR/ControlAltAI-Nodes" ]; then
-    git clone --recursive https://github.com/gseth/ControlAltAI-Nodes.git "$CUSTOM_NODES_DIR/ControlAltAI-Nodes"
-fi
-if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI_SLK_joy_caption_two" ]; then
-    git clone --recursive https://github.com/EvilBT/ComfyUI_SLK_joy_caption_two.git "$CUSTOM_NODES_DIR/ComfyUI_SLK_joy_caption_two"
-fi
-chmod -R 755 /opt/ComfyUI/custom_nodes
-echo "Find and install predefined nodes..."
-find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
-  sh -c 'echo "Running install.py from {}" && python "{}"'
-find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
-  sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
-comfy --workspace /opt/ComfyUI node update all
-echo "Install nodes used in example workflows..."
-for file in /opt/ComfyUI/example_workflows/*.json; do \
-  echo "Installing dependencies for: $file"; \
-  comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
-done
-comfy --workspace /opt/ComfyUI node update all
-EOS
+# # Clone all custom nodes, but only if the directory doesn't already exist
+# if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes" ]; then
+#     git clone --recursive https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
+# fi
+# if [ ! -d "$CUSTOM_NODES_DIR/ControlAltAI-Nodes" ]; then
+#     git clone --recursive https://github.com/gseth/ControlAltAI-Nodes.git "$CUSTOM_NODES_DIR/ControlAltAI-Nodes"
+# fi
+# if [ ! -d "$CUSTOM_NODES_DIR/ComfyUI_SLK_joy_caption_two" ]; then
+#     git clone --recursive https://github.com/EvilBT/ComfyUI_SLK_joy_caption_two.git "$CUSTOM_NODES_DIR/ComfyUI_SLK_joy_caption_two"
+# fi
+# chmod -R 755 /opt/ComfyUI/custom_nodes
+# echo "Find and install predefined nodes..."
+# find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
+#   sh -c 'echo "Running install.py from {}" && python "{}"'
+# find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
+#   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
+# comfy --workspace /opt/ComfyUI node update all
+# echo "Install nodes used in example workflows..."
+# for file in /opt/ComfyUI/example_workflows/*.json; do \
+#   echo "Installing dependencies for: $file"; \
+#   comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
+# done
+# comfy --workspace /opt/ComfyUI node update all
+# EOS
 
 # Set ComfyUI-Manager config to allow installation of additional nodes.
 COPY --chown=root:root <<EOF "/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini"
