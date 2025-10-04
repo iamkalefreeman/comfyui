@@ -28,6 +28,8 @@ chmod -R +x /app
 rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 EOS
 
+ENV RUNPOD_REQUEST_TIMEOUT=300
+
 # Disable ComfyUI-Manager.
 COPY --chown=root:root <<EOF "/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini"
 [default]
