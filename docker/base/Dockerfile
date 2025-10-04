@@ -171,10 +171,10 @@ set -xe
 sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py || echo "safety_checker not found in main.py"
 EOS
 
-RUN <<EOS
-set -xe
-comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --verbose --quick-test-for-ci
-EOS
+# RUN <<EOS
+# set -xe
+# comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --cpu --verbose --quick-test-for-ci
+# EOS
 
 # Expose the ComfyUI port
 EXPOSE 8188
