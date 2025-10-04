@@ -32,7 +32,7 @@ def wait_for_service(url, max_attempts=240):
             health = requests.get(url, timeout=1)
             if health.status_code == 200:
                 time.sleep(1)
-                return {}, None
+                return 200, None
         except requests.exceptions.RequestException:
             print("Service not ready yet. Waiting for a second...")
         except Exception as err:
@@ -43,7 +43,7 @@ def wait_for_service(url, max_attempts=240):
         
     # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
     print("Service failed to become ready after maximum attempts")
-    return None, "Service failed to become ready after maximum attempts"
+    return 503, "Service failed to become ready after maximum attempts"
 
 def validate_input(job_input):
     """
