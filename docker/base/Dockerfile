@@ -173,7 +173,7 @@ EOS
 
 RUN <<EOS
 set -xe
-comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --cpu --verbose --quick-test-for-ci
+comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --verbose --quick-test-for-ci
 EOS
 
 # Expose the ComfyUI port
