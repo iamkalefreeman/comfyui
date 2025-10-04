@@ -167,5 +167,5 @@ EOS
 EXPOSE 8188
 
 # Command to start ComfyUI
-CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
+CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --high-vram --gpu-only --no-auto-launch --preview-method none --disable-preview --verbose"]
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
