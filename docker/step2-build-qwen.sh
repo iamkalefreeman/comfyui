@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-date_version=$(date +'%d-%m-%Y-%H-%M')
+date_version=$(date +'%d-%m-%Y-TT-%H-%M')
 docker_account=${DOCKER_ACCOUNT:-YOUR_DOCKER_ACCOUNT_HERE}
 working_dir=${WORKING_DIR:-"/path/to/your/comfyui/code"}
 
