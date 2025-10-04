@@ -32,15 +32,18 @@ def wait_for_service(url, max_attempts=240):
             health = requests.get(url, timeout=1)
             if health.status_code == 200:
                 time.sleep(1)
-                return
+                return {}, None
         except requests.exceptions.RequestException:
-            print("Service not ready yet. Retrying...")
+            print("Service not ready yet. Waiting for a second...")
         except Exception as err:
             print("Error: ", err)
 
         time.sleep(1)
         attempts += 1
-    raise Exception("Service failed to become ready after maximum attempts")
+        
+    # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
+    print("Service failed to become ready after maximum attempts")
+    return None, "Service failed to become ready after maximum attempts"
 
 def validate_input(job_input):
     """
@@ -109,8 +112,10 @@ def handler(job):
     return response_data
 
 if __name__ == "__main__":
-    wait_for_service(url=f'{LOCAL_URL}/health')
-
-    print("API Service is ready. Starting RunPod serverless handler...")
-
+    # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
+    return_data, error_message = wait_for_service(url=f'{LOCAL_URL}/health')
+    if error_message:
+        return {"error": error_message}
+    
+    print("API Service is ready. Starting RunPod serverless handler...")=
     runpod.serverless.start({"handler": handler})
