@@ -135,7 +135,9 @@ EOS
 # Patch certain nodes
 RUN <<EOS
 set -xe
-# Remove mixlab-nodes because it's too slow.
+# Remove salad-api manifest because it could download big models and install all sort of stuff
+echo '' > /opt/ComfyUI/manifest.yml
+# Remove slow nodes.
 rm -rf "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
 rm -rf "$CUSTOM_NODES_DIR/efficiency-nodes-comfyui"
 rm -rf "$CUSTOM_NODES_DIR/rgthree-comfy"
