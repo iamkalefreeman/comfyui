@@ -113,7 +113,7 @@ def handler(job):
 
 if __name__ == "__main__":
     # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
-    return_data, error_message = wait_for_service(url=f'{LOCAL_URL}/health')
+    http_code, error_message = wait_for_service(url=f'{LOCAL_URL}/health')
     if error_message:
         return {"error": error_message}
     
