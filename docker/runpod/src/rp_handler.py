@@ -22,7 +22,7 @@ cog_session.mount('http://', HTTPAdapter(max_retries=retries))
 # ---------------------------------------------------------------------------- #
 #                              Automatic Functions                             #
 # ---------------------------------------------------------------------------- #
-def wait_for_service(url, max_attempts=120):
+def wait_for_service(url, max_attempts=240):
     '''
     Check if the service is ready to receive requests.
     '''
