@@ -149,11 +149,7 @@ rm -rf "$CUSTOM_NODES_DIR/ComfyUI-GGUF"
 EOS
 
 # Set API to call this to launch comfy
-ENV CMD="/opt/ComfyUI/init.sh"
-COPY --chown=root:root <<EOF "/opt/ComfyUI/init.sh"
-#!/bin/bash -x
-/opt/ComfyUI/comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --high-vram --gpu-only --no-auto-launch --preview-method none --disable-preview --verbose
-EOF
+ENV CMD="/opt/ComfyUI/comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --high-vram --gpu-only --no-auto-launch --preview-method none --disable-preview --verbose"
 
 COPY ./api-workflows /workflows
 
