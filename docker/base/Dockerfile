@@ -136,7 +136,10 @@ EOS
 RUN <<EOS
 set -xe
 # Remove salad-api manifest because it could download big models and install all sort of stuff
+mkdir -p /app
 echo '' > /opt/ComfyUI/manifest.yml
+echo '' > /app/manifest.yml
+echo '' > /manifest.yml
 # Remove slow nodes.
 rm -rf "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
 rm -rf "$CUSTOM_NODES_DIR/efficiency-nodes-comfyui"
