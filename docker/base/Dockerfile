@@ -112,7 +112,7 @@ EOS
 RUN <<EOS
 set -xe
 CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
-git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
+# git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
 git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use "$CUSTOM_NODES_DIR/ComfyUI-Easy-Use"
 # git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git "$CUSTOM_NODES_DIR/ComfyUI-KJNodes"
 # git clone --recurse-submodules https://github.com/cubiq/ComfyUI_IPAdapter_plus.git "$CUSTOM_NODES_DIR/ComfyUI_IPAdapter_plus"
@@ -137,6 +137,10 @@ RUN <<EOS
 set -xe
 # Remove mixlab-nodes because it's too slow.
 rm -rf "$CUSTOM_NODES_DIR/comfyui-mixlab-nodes"
+rm -rf "$CUSTOM_NODES_DIR/efficiency-nodes-comfyui"
+rm -rf "$CUSTOM_NODES_DIR/rgthree-comfy"
+rm -rf "$CUSTOM_NODES_DIR/ComfyUI_bitsandbytes_NF4-Lora"
+rm -rf "$CUSTOM_NODES_DIR/ComfyUI-GGUF"
 EOS
 
 COPY ./api-workflows /workflows
