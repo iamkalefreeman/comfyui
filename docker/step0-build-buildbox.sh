@@ -12,3 +12,5 @@ docker buildx build \
 [[ "$?" -ne 0 ]] && echo "Error!" && return 10
 docker push "${docker_account}/buildbox:stable"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 10
+
+return 0
