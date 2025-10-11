@@ -16,3 +16,5 @@ docker buildx build --target qwen-models \
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 docker push "${docker_account}/comfyui:qwen-models-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
+
+return 0
