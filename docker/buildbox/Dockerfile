@@ -22,6 +22,8 @@ RUN set -xe \
     traceroute \
     locales \
     aria2 \
+    python3 \
+    python3-pip \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/*
