@@ -24,6 +24,15 @@ RUN set -xe \
     aria2 \
     python3 \
     python3-pip \
+    python3-venv \
   && apt-get autoremove -y \
   && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  mkdir -p /buildbox_env
+
+RUN <<EOS
+set -xe
+python3 -m venv /buildbox_env
+source /buildbox_env/bin/activate
+pip install --no-cache-dir "huggingface_hub[cli]" "huggingface_hub[hf_transfer]"
+EOS
