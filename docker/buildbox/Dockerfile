@@ -36,6 +36,6 @@ RUN <<EOS
 set -xe
 mkdir -p /buildbox_env
 python3 -m venv /buildbox_env
-source /buildbox_env/bin/activate
+. /buildbox_env/bin/activate
 pip install --no-cache-dir "huggingface_hub[cli]" "huggingface_hub[hf_transfer]"
 EOS
