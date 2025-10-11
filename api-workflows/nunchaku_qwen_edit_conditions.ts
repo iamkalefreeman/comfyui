@@ -111,6 +111,20 @@ const RequestSchema = z.object({
     .string()
     .default("svdq-int4_r128-qwen-image-edit-2509-lightningv2.0-4steps.safetensors")
     .describe("Name of the UNET model to load"),
+  cpu_offload: z
+    .string()
+    .default("enable")
+    .describe("indicates whether to offload certain computations to the CPU to save GPU memory."),
+  num_blocks_on_gpu: z
+    .number()
+    .min(1)
+    .max(200)
+    .default(20)
+    .describe("Increasing the value keeps more blocks in GPU memory, which minimizes offloading and can lead to faster generation times. "),
+  use_pin_memory: z
+    .string()
+    .default("disable")
+    .describe("Pinning memory can speed up data transfers to the GPU by pre-loading data into a special area of the CPU's memory."),
   clip_name: z
     .string()
     .default("qwen_2.5_vl_7b_fp8_scaled.safetensors")
@@ -154,9 +168,9 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "37": {
       inputs: {
         model_name: input.unet_name,
-        cpu_offload: "enable",
-        num_blocks_on_gpu: 20,
-        use_pin_memory: "disable"
+        cpu_offload: input.cpu_offload,
+        num_blocks_on_gpu: input.num_blocks_on_gpu,
+        use_pin_memory: input.use_pin_memory
       },
       class_type: "NunchakuQwenImageDiTLoader",
     },
@@ -527,5 +541,6 @@ const workflow: Workflow = {
   description:
     "Edits a provided image based on a text prompt using the Qwen model. The workflow supports conditional background removal, face restoration, and upscaling by including the tags <rmbg>, <restoreface>, and <upscale> in the prompt. It also supports wildcard replacements in the prompt (e.g., {option1|option2}).",
 };
+
 
 export default workflow;
