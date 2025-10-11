@@ -37,5 +37,5 @@ set -xe
 mkdir -p /buildbox_env
 python3 -m venv /buildbox_env
 . /buildbox_env/bin/activate
-pip install --no-cache-dir "huggingface_hub[cli]" "huggingface_hub[hf_transfer]"
+pip install --no-cache-dir huggingface_hub "huggingface_hub[cli]" "huggingface_hub[hf_transfer]"
 EOS
