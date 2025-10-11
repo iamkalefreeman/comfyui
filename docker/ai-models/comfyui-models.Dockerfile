@@ -20,25 +20,19 @@ ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 WORKDIR /
 RUN set -xe && mkdir -p ${MODEL_DIR} ${DIFFUSION_DIR} ${CHECKPOINT_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
+# Download HF models
+RUN <<EOS
+set -xe
+pip install -U "huggingface_hub[cli]" hf_transfer
+python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/RMBG-2.0', local_dir='${MODEL_DIR}/RMBG/RMBG-2.0', local_dir_use_symlinks=False)"
+python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/BiRefNet_HR', local_dir='${MODEL_DIR}/RMBG/BiRefNet_HR', local_dir_use_symlinks=False)"
+python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/segformer_clothes', local_dir='${MODEL_DIR}/RMBG/segformer_clothes', local_dir_use_symlinks=False)"
+python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/segformer_fashion', local_dir='${MODEL_DIR}/RMBG/segformer_fashion', local_dir_use_symlinks=False)"
+EOS
+
 # Download base models
 ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://huggingface.co/1038lab/RMBG-2.0/resolve/main/model.safetensors?download=true
-  dir=${MODEL_DIR}/RMBG/RMBG-2.0
-  out=model.safetensors
-
-https://huggingface.co/1038lab/BiRefNet_HR/resolve/main/model.safetensors?download=true
-  dir=${MODEL_DIR}/RMBG/BiRefNet-HR
-  out=model.safetensors
-
-https://huggingface.co/1038lab/segformer_clothes/resolve/main/model.safetensors?download=true
-  dir=${MODEL_DIR}/RMBG/segformer_clothes
-  out=model.safetensors
-
-https://huggingface.co/1038lab/segformer_fashion/resolve/main/model.safetensors?download=true
-  dir=${MODEL_DIR}/RMBG/segformer_fashion
-  out=model.safetensors
-
 https://huggingface.co/Comfy-Org/Real-ESRGAN_repackaged/resolve/main/RealESRGAN_x4plus.safetensors?download=true
   dir=${MODEL_DIR}/upscale_models
   out=RealESRGAN_x4plus.safetensors
