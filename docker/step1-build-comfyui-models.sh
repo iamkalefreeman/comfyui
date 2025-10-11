@@ -12,3 +12,5 @@ docker buildx build --target comfyui-models \
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
 docker push "${docker_account}/comfyui:comfyui-models-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 11
+
+return 0
