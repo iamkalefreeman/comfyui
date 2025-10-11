@@ -24,10 +24,10 @@ RUN set -xe && mkdir -p ${MODEL_DIR} ${DIFFUSION_DIR} ${CHECKPOINT_DIR} ${VAE_DI
 # Download HF models
 RUN <<EOS
 set -xe
-python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/RMBG-2.0', local_dir='${MODEL_DIR}/RMBG/RMBG-2.0', local_dir_use_symlinks=False)"
-python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/BiRefNet_HR', local_dir='${MODEL_DIR}/RMBG/BiRefNet_HR', local_dir_use_symlinks=False)"
-python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/segformer_clothes', local_dir='${MODEL_DIR}/RMBG/segformer_clothes', local_dir_use_symlinks=False)"
-python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/segformer_fashion', local_dir='${MODEL_DIR}/RMBG/segformer_fashion', local_dir_use_symlinks=False)"
+python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/RMBG-2.0', local_dir='${MODEL_DIR}/RMBG/RMBG-2.0', local_dir_use_symlinks=False)"
+python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/BiRefNet_HR', local_dir='${MODEL_DIR}/RMBG/BiRefNet_HR', local_dir_use_symlinks=False)"
+python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/segformer_clothes', local_dir='${MODEL_DIR}/RMBG/segformer_clothes', local_dir_use_symlinks=False)"
+python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='1038lab/segformer_fashion', local_dir='${MODEL_DIR}/RMBG/segformer_fashion', local_dir_use_symlinks=False)"
 EOS
 
 # Download base models
