@@ -17,6 +17,7 @@ ARG LORA_DIR=/opt/ComfyUI/models/loras
 ARG COMFYUI_PORT_HOST=8188
 ARG STARTUP_CHECK_MAX_TRIES=30
 ARG PYTHONUNBUFFERED=1
+ARG NUNCHAKU_VERSION=1.0.1
 
 FROM $COMFYUI_MODELS_IMAGE AS comfyui-models
 
@@ -31,7 +32,7 @@ COPY --from=comfyui-models ${MODEL_DIR} ${MODEL_DIR}
 
 FROM stage-build AS comfyui
 
-ARG COMFYUI_MODELS_IMAGE MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED
+ARG COMFYUI_MODELS_IMAGE MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED NUNCHAKU_VERSION
 
 # Set working directory
 WORKDIR /opt/ComfyUI
@@ -113,7 +114,7 @@ RUN <<EOS
 set -xe
 CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
 # git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
-git clone --recurse-submodules https://github.com/nunchaku-tech/ComfyUI-nunchaku.git "$CUSTOM_NODES_DIR/ComfyUI-nunchaku"
+git clone --recurse-submodules https://github.com/nunchaku-tech/ComfyUI-nunchaku.git "$CUSTOM_NODES_DIR/nunchaku_nodes"
 git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use.git "$CUSTOM_NODES_DIR/ComfyUI-Easy-Use"
 # git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git "$CUSTOM_NODES_DIR/ComfyUI-KJNodes"
 # git clone --recurse-submodules https://github.com/cubiq/ComfyUI_IPAdapter_plus.git "$CUSTOM_NODES_DIR/ComfyUI_IPAdapter_plus"
@@ -178,6 +179,23 @@ COPY ./api-workflows /workflows
 # ( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
 # ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
 # EOS
+
+# Install Nunchaku wheels
+RUN <<EOS
+set -xe pipefail
+echo "🔍 Detecting versions from your environment..."
+if ! python -c "import torch" &> /dev/null; then
+    echo "❌ Error: PyTorch is not installed in the current Python environment."
+    echo "Please install it first (e.g., 'pip install torch')."
+    exit 1
+fi
+pytorch_full_version=$(python -c "import torch; print(torch.__version__)")
+python_full_version=$(python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+torch_version=$(echo $pytorch_full_version | cut -d'.' -f1,2)
+python_version="${python_full_version//./}"
+nunchaku_wheel="https://github.com/nunchaku-tech/nunchaku/releases/download/v${NUNCHAKU_VERSION}/nunchaku-${NUNCHAKU_VERSION}+torch${torch_version}-cp${python_version}-cp${python_version}-linux_x86_64.whl"
+pip install "$nunchaku_wheel"
+EOS
 
 # Disable safety filters to allow NSFW input/output
 RUN <<EOS
