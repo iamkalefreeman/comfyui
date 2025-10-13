@@ -116,13 +116,19 @@ def init_failed(job):
     This function will always return an error.
     '''
     return {"error": "service failed to start"}
-
+    
+def adjust_concurrency(current_concurrency):
+    return 3
+    
 if __name__ == "__main__":
     # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
     http_code, error_message = wait_for_service(url=f'{LOCAL_URL}/health')
     if error_message is None:
         print("API Service is ready. Starting RunPod serverless handler...")
-        runpod.serverless.start({"handler": handler})
+        runpod.serverless.start({
+            "handler": handler,
+            "concurrency_modifier": adjust_concurrency
+        })
     else:
         runpod.serverless.start({"handler": init_failed})
     
