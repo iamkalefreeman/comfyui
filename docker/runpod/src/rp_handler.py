@@ -144,7 +144,7 @@ def init_failed(job):
     return {"error": "service failed to start"}
     
 def adjust_concurrency(current_concurrency):
-    return 3
+    return 10
     
 if __name__ == "__main__":
     # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
