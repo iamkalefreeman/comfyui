@@ -23,7 +23,9 @@ ADD ./docker/runpod/src /app
 
 RUN <<EOS
 set -xe
-pip install runpod
+pip install \
+  runpod \
+  aiohttp
 chmod -R +x /app
 rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 EOS
