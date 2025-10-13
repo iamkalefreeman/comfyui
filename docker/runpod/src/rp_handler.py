@@ -84,7 +84,7 @@ async def run_inference(endpoint, body):
     '''
     Run inference on a request.
     '''
-    max_retries = 10
+    max_retries = 5
     for attempt in range(max_retries + 1):
         try:
             async with async_session.post(url=f'{LOCAL_URL}/{endpoint}', json=body) as response:
@@ -106,7 +106,7 @@ async def run_inference(endpoint, body):
             raise ValueError(f"Request failed: {str(e)}")
         
         if attempt < max_retries:
-            sleep_time = 1.0 * (2 ** attempt)
+            sleep_time = 1.0 * (2 ** min(attempt, 3))
             await asyncio.sleep(sleep_time)
 
 async def handler(job):
