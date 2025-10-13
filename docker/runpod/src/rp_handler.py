@@ -137,7 +137,6 @@ if __name__ == "__main__":
     # Create the async session
     connector = aiohttp.TCPConnector(ssl=False)
     timeout = ClientTimeout(total=TIMEOUT)
-    global async_session
     async_session = aiohttp.ClientSession(timeout=timeout, connector=connector)
     
     # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
