@@ -84,23 +84,30 @@ async def run_inference(endpoint, body):
     '''
     Run inference on a request.
     '''
-    try:
-        async with async_session.post(url=f'{LOCAL_URL}/{endpoint}', json=body) as response:
-            if response.status == 200:
-                return await response.json()
-            else:
-                if response.status not in [502, 503, 504]:
-                    text = await response.text()
-                    raise ValueError(f"Request failed - reason: HTTP_{response.status} {text}")
+    max_retries = 10
+    for attempt in range(max_retries + 1):
+        try:
+            async with async_session.post(url=f'{LOCAL_URL}/{endpoint}', json=body) as response:
+                if response.status == 200:
+                    return await response.json()
                 else:
-                    text = await response.text()
-                    print(f"Request failed - reason: HTTP_{response.status} {text}")
-    except (aiohttp.ContentTypeError, json.JSONDecodeError):
-        raise ValueError(f"Invalid JSON response from server")
-    except aiohttp.ClientError as e:
-        raise ValueError(f"Request failed: {str(e)}")
-    except Exception as e:
-        raise ValueError(f"Request failed: {str(e)}")
+                    if response.status not in [502, 503, 504] or attempt >= max_retries:
+                        text = await response.text()
+                        raise ValueError(f"Request failed - reason: HTTP_{response.status} {text}")
+                    else:
+                        text = await response.text()
+                        print(f"Request failed - reason: HTTP_{response.status} {text}")
+        except (aiohttp.ContentTypeError, json.JSONDecodeError):
+            raise ValueError(f"Invalid JSON response from server")
+        except aiohttp.ClientError as e:
+            if attempt == max_retries:
+                raise ValueError(f"Request failed: {str(e)}")
+        except Exception as e:
+            raise ValueError(f"Request failed: {str(e)}")
+        
+        if attempt < max_retries:
+            sleep_time = 1.0 * (2 ** attempt)
+            await asyncio.sleep(sleep_time)
 
 async def handler(job):
     '''
