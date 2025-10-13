@@ -17,6 +17,7 @@ except ValueError:
 LOCAL_URL = os.environ.get("API_URL", "http://127.0.0.1:3000")
 
 async_session = None
+session_lock = asyncio.Lock()
 
 # ---------------------------------------------------------------------------- #
 #                              Automatic Functions                             #
@@ -25,25 +26,30 @@ async def wait_for_service(url, max_attempts=240):
     '''
     Check if the service is ready to receive requests.
     '''
-    attempts = 0
-    while attempts < max_attempts:
-        try:
-            timeout_health = ClientTimeout(total=1)
-            async with async_session.get(url, timeout=timeout_health) as health:
-                if health.status == 200:
-                    await asyncio.sleep(1)
-                    return 200, None
-        except aiohttp.ClientError:
-            print("Service not ready yet. Waiting for a second...")
-        except Exception as err:
-            print("Error: ", err)
+    connector = aiohttp.TCPConnector(ssl=False)
+    timeout_health = ClientTimeout(total=1)
+    local_session = aiohttp.ClientSession(timeout=timeout_health, connector=connector)
+    try:
+        attempts = 0
+        while attempts < max_attempts:
+            try:
+                async with local_session.get(url) as health:
+                    if health.status == 200:
+                        await asyncio.sleep(1)
+                        return 200, None
+            except aiohttp.ClientError:
+                print("Service not ready yet. Waiting for a second...")
+            except Exception as err:
+                print("Error: ", err)
 
-        await asyncio.sleep(1)
-        attempts += 1
-        
-    # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
-    print("Service failed to become ready after maximum attempts")
-    return 504, "Service failed to become ready after maximum attempts"
+            await asyncio.sleep(1)
+            attempts += 1
+            
+        # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
+        print("Service failed to become ready after maximum attempts")
+        return 504, "Service failed to become ready after maximum attempts"
+    finally:
+        await local_session.close()
 
 def validate_input(job_input):
     """
@@ -84,6 +90,13 @@ async def run_inference(endpoint, body):
     '''
     Run inference on a request.
     '''
+    global async_session
+    async with session_lock:
+        if async_session is None:
+            connector = aiohttp.TCPConnector(ssl=False)
+            timeout = ClientTimeout(total=TIMEOUT)
+            async_session = aiohttp.ClientSession(timeout=timeout, connector=connector)
+
     max_retries = 5
     for attempt in range(max_retries + 1):
         try:
@@ -100,7 +113,7 @@ async def run_inference(endpoint, body):
         except (aiohttp.ContentTypeError, json.JSONDecodeError):
             raise ValueError(f"Invalid JSON response from server")
         except aiohttp.ClientError as e:
-            if attempt == max_retries:
+            if attempt >= max_retries:
                 raise ValueError(f"Request failed: {str(e)}")
         except Exception as e:
             raise ValueError(f"Request failed: {str(e)}")
@@ -134,11 +147,6 @@ def adjust_concurrency(current_concurrency):
     return 3
     
 if __name__ == "__main__":
-    # Create the async session
-    connector = aiohttp.TCPConnector(ssl=False)
-    timeout = ClientTimeout(total=TIMEOUT)
-    async_session = aiohttp.ClientSession(timeout=timeout, connector=connector)
-    
     # Don't use "raise Exception()" before runpod.serverless.start() because that will cause Runpod worker to run indefinitely.
     http_code, error_message = asyncio.run(wait_for_service(url=f'{LOCAL_URL}/health'))
     if error_message is None:
