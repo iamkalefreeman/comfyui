@@ -3,7 +3,7 @@
 ##########################################################################################
 # build args
 ##########################################################################################
-ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:latest
+ARG BASE_IMAGE=ghcr.io/iamkalefreeman/comfyui-api:latest
 ARG MODEL_DIR=/opt/ComfyUI/models
 ARG CHECKPOINT_DIR=/opt/ComfyUI/models/checkpoints
 ARG DIFFUSION_DIR=/opt/ComfyUI/models/diffusion_models
@@ -153,7 +153,7 @@ EOS
 RUN <<EOS
 set -xe
 CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
-git clone --recurse-submodules https://github.com/Comfy-Org/ComfyUI-Manager.git "$CUSTOM_NODES_DIR/ComfyUI-Manager"
+[ ! -d "$CUSTOM_NODES_DIR/ComfyUI-Manager" ] && git clone --recurse-submodules https://github.com/Comfy-Org/ComfyUI-Manager.git "$CUSTOM_NODES_DIR/ComfyUI-Manager"
 git clone --recurse-submodules https://github.com/bananasss00/ComfyUI_bitsandbytes_NF4-Lora.git "$CUSTOM_NODES_DIR/ComfyUI_bitsandbytes_NF4-Lora"
 git clone --recurse-submodules https://github.com/1038lab/ComfyUI-RMBG.git "$CUSTOM_NODES_DIR/ComfyUI-RMBG"
 git clone --recurse-submodules https://github.com/city96/ComfyUI-GGUF.git "$CUSTOM_NODES_DIR/ComfyUI-GGUF"
@@ -277,19 +277,6 @@ FROM base
 
 ENV RUNPOD_REQUEST_TIMEOUT=120
 
-# Install necessary packages and Python 3.10
-RUN <<EOS
-set -xe
-apt-get update
-apt-get install -y --no-install-recommends \
-  software-properties-common \
-  curl \
-  git \
-  openssh-server \
-  dumb-init
-rm -rf /var/lib/apt/lists/*
-EOS
-
 ADD ./docker/runpod/src /app
 
 RUN <<EOS
@@ -302,27 +289,6 @@ rm -rf /opt/ComfyUI/custom_nodes/ComfyUI-Manager
 EOS
 
 ENV RUNPOD_REQUEST_TIMEOUT=300
-
-# Disable ComfyUI-Manager.
-COPY --chown=root:root <<EOF "/opt/ComfyUI/user/default/ComfyUI-Manager/config.ini"
-[default]
-preview_method = none
-git_exe =
-use_uv = True
-channel_url = https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
-share_option = all
-bypass_ssl = False
-file_logging = True
-component_policy = workflow
-update_policy = stable-comfyui
-windows_selector_event_loop_policy = False
-model_download_by_agent = False
-downgrade_blacklist =
-security_level = normal
-always_lazy_install = False
-network_mode = offline
-db_mode = cache
-EOF
 
 EXPOSE 8188
 EXPOSE 3000
