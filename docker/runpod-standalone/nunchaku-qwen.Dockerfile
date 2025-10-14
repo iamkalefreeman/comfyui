@@ -22,7 +22,7 @@ FROM $BASE_IMAGE AS models-stage
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 ENV HF_HUB_ENABLE_HF_TRANSFER=1
 
-RUN << EOS
+RUN <<EOS
 set -xe 
 apt-get update
 apt-get install -yq --no-install-recommends \
