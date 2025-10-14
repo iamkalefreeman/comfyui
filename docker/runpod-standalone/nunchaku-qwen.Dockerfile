@@ -3,7 +3,7 @@
 ##########################################################################################
 # build args
 ##########################################################################################
-ARG BASE_IMAGE=ghcr.io/saladtechnologies/comfyui-api:latest
+ARG BASE_IMAGE=ghcr.io/iamkalefreeman/comfyui-api:latest
 ARG MODEL_DIR=/opt/ComfyUI/models
 ARG CHECKPOINT_DIR=/opt/ComfyUI/models/checkpoints
 ARG DIFFUSION_DIR=/opt/ComfyUI/models/diffusion_models
