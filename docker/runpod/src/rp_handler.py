@@ -27,7 +27,7 @@ async def wait_for_service(url, max_attempts=240):
     Check if the service is ready to receive requests.
     '''
     connector = aiohttp.TCPConnector(ssl=False)
-    timeout_health = ClientTimeout(total=1)
+    timeout_health = ClientTimeout(total=10)
     local_session = aiohttp.ClientSession(timeout=timeout_health, connector=connector)
     try:
         attempts = 0
