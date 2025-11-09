@@ -9,7 +9,9 @@ Your job is to convert a json workflow graph for ai image generation into a type
 - Do not use zod.enum() or z.enum(). Use z.string() instead.
 - For SaveImage class-type node, make sure to include property filename_prefix: "ComfyUI"
 - Parse default values.
-- Always include image_2 and image_3 properties even not used or not referenced elsewhere.
+- Always include "image_2" and "image_3" properties even not used or not referenced elsewhere.
+- The default value of "seed" property is always like this: seed.default(() => Math.floor(Math.random() * 1000000000000000))
+- Never use .int() and .float()
 - Only output the typescript, with no additional commentary.
 
 # Example Output
@@ -33,17 +35,16 @@ const RequestSchema = z.object({
   prompt: z
     .string()
     .default(
-      "Replace the background to a dense, less-saturated {rainforest|bamboo forest|mountain forest}, with tall towering trees. Maintain natural green hues, but desaturate them slightly to evoke a misty, primeval atmosphere, with faint shafts of sunlight piercing the canopy. Incorporate patches of moss, scattered ferns, and damp earth to ground the scene in realism. Apply a soft background lens blur to create a cinematic depth-of-field effect, keeping the foreground figures sharp while gently softening the rainforest backdrop to emphasize their prominence. Ensure the lighting remains diffused, with a cool, natural tone. Add subtle details like distant bird silhouettes or faint water droplets on leaves to make scene look realistic, while maintaining a cohesive composition. Photo taken by iphone.\n---\nPlace the foreground in a scene showing a dense, less-saturated forest, captured in a slightly muted, amateurish style typical of an iPhone photo. The greenery appears faded, with dull greens dominating the tall, slender trees that stretch unevenly toward a pale, overcast sky. Their leaves, though abundant, lack vibrancy, blending into a soft, washed-out canopy. In the foreground, a cluster of large, moss-covered boulders sits heavily, their grayish-brown surfaces blending with the earthy tones of the forest floor. Sparse undergrowth, with muted shades of green and hints of yellow, weaves around the rocks, adding a slightly chaotic yet natural feel. The lighting is flat, casting no sharp shadows, which gives the image a hazy, almost dreamlike quality. The perspective tilts slightly, as if the phone was held at an angle, adding to the unpolished charm. A few thin trunks lean awkwardly, their bark peeling in subtle, desaturated browns. The overall mood is calm yet wild, a quiet snapshot of nature untouched, though the photo’s amateur nature—soft focus and uneven exposure—lends it a raw, unrefined edge. It’s a moment frozen in time, imperfect yet evocative of a serene, forgotten wilderness. Keep foreground scale intact. Align foreground to original position and size. Don't resize foreground. <rmbg><restoreface><upscale>"
+      "Replace the background to a dense, less-saturated bamboo forest, with tall towering trees. Maintain natural green hues, but desaturate them slightly to evoke a misty, primeval atmosphere, with faint shafts of sunlight piercing the canopy. Incorporate patches of moss, scattered ferns, and damp earth to ground the scene in realism. Apply a soft background lens blur to create a cinematic depth-of-field effect, keeping the foreground figures sharp while gently softening the rainforest backdrop to emphasize their prominence. Ensure the lighting remains diffused, with a cool, natural tone. Add subtle details like distant bird silhouettes or faint water droplets on leaves to make scene look realistic, while maintaining a cohesive composition. Photo taken by iphone.\n===\nPlace the foreground in a scene showing a dense, less-saturated forest, captured in a slightly muted, amateurish style typical of an iPhone photo. The greenery appears faded, with dull greens dominating the tall, slender trees that stretch unevenly toward a pale, overcast sky. Their leaves, though abundant, lack vibrancy, blending into a soft, washed-out canopy. In the foreground, a cluster of large, moss-covered boulders sits heavily, their grayish-brown surfaces blending with the earthy tones of the forest floor. Sparse undergrowth, with muted shades of green and hints of yellow, weaves around the rocks, adding a slightly chaotic yet natural feel. The lighting is flat, casting no sharp shadows, which gives the image a hazy, almost dreamlike quality. The perspective tilts slightly, as if the phone was held at an angle, adding to the unpolished charm. A few thin trunks lean awkwardly, their bark peeling in subtle, desaturated browns. The overall mood is calm yet wild, a quiet snapshot of nature untouched, though the photo’s amateur nature—soft focus and uneven exposure—lends it a raw, unrefined edge. It’s a moment frozen in time, imperfect yet evocative of a serene, forgotten wilderness. Keep foreground scale intact. Align foreground to original position and size. Don't resize foreground. <rmbg><restoreface><upscale>"
     )
     .describe(
       "The editing instructions for the image generation. Use tags like <rmbg>, <restoreface>, and <upscale> to enable those features."
     ),
   seed: z
     .number()
-    .int()
     .default(() => Math.floor(Math.random() * 1000000000000000))
     .describe("Seed for random number generation"),
-  steps: z.number().int().min(1).max(100).default(4).describe("Number of sampling steps"),
+  steps: z.number().min(1).max(100).default(4).describe("Number of sampling steps"),
   cfg_scale: z
     .number()
     .min(0)
@@ -59,7 +60,6 @@ const RequestSchema = z.object({
   denoise: z.number().min(0).max(1).default(1).describe("Denoising strength"),
   aura_flow_shift: z
     .number()
-    .int()
     .default(3)
     .describe("Aura Flow model sampling shift value"),
   cfg_norm_strength: z
@@ -152,16 +152,14 @@ const RequestSchema = z.object({
     .string()
     .default("Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors")
     .describe("Name of the VAE model to load"),
-  vae_upscale: z.number().int().default(2).describe("VAE decode upscale factor"),
+  vae_upscale: z.number().default(2).describe("VAE decode upscale factor"),
   vae_tile: z.boolean().default(false).describe("Enable tiled VAE decoding"),
   vae_tile_size: z
     .number()
-    .int()
     .default(512)
     .describe("Tile size for VAE decoding"),
   vae_overlap: z
     .number()
-    .int()
     .default(64)
     .describe("Tile overlap for VAE decoding"),
   lora_1_name: z
@@ -587,5 +585,6 @@ const workflow: Workflow = {
 };
 
 export default workflow;
+
 
 
