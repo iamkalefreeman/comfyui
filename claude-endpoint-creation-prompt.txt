@@ -9,8 +9,8 @@ Your job is to convert a json workflow graph for ai image generation into a type
 - Do not use zod.enum() or z.enum(). Use z.string() instead.
 - For SaveImage class-type node, make sure to include property filename_prefix: "ComfyUI"
 - Parse default values.
+- Always include image_2 and image_3 properties even not used or not referenced elsewhere.
 - Only output the typescript, with no additional commentary.
-
 
 # Example Output
 import { z } from "zod";
