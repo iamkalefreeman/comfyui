@@ -1,60 +1,9 @@
 {
   "id": "6309ac9a-6e6a-45ca-b2ad-e808281cd2d8",
   "revision": 0,
-  "last_node_id": 282,
-  "last_link_id": 544,
+  "last_node_id": 296,
+  "last_link_id": 574,
   "nodes": [
-    {
-      "id": 39,
-      "type": "VAELoader",
-      "pos": [
-        -3520.874755859375,
-        -831.3627319335938
-      ],
-      "size": [
-        330,
-        60
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "slot_index": 0,
-          "links": [
-            168,
-            235,
-            259
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.48",
-        "Node name for S&R": "VAELoader",
-        "models": [
-          {
-            "name": "qwen_image_vae.safetensors",
-            "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors",
-            "directory": "vae"
-          }
-        ],
-        "enableTabs": false,
-        "tabWidth": 65,
-        "tabXOffset": 10,
-        "hasSecondTab": false,
-        "secondTabText": "Send Back",
-        "secondTabOffset": 80,
-        "secondTabWidth": 65,
-        "widget_ue_connectable": {}
-      },
-      "widgets_values": [
-        "qwen_image_vae.safetensors"
-      ]
-    },
     {
       "id": 152,
       "type": "ImageCompositeMasked",
@@ -279,7 +228,7 @@
         106
       ],
       "flags": {},
-      "order": 21,
+      "order": 22,
       "mode": 0,
       "inputs": [
         {
@@ -325,7 +274,7 @@
         106
       ],
       "flags": {},
-      "order": 20,
+      "order": 21,
       "mode": 0,
       "inputs": [
         {
@@ -370,13 +319,13 @@
         250
       ],
       "flags": {},
-      "order": 41,
+      "order": 42,
       "mode": 0,
       "inputs": [
         {
           "name": "image",
           "type": "IMAGE",
-          "link": 398
+          "link": 570
         }
       ],
       "outputs": [
@@ -417,7 +366,7 @@
         78
       ],
       "flags": {},
-      "order": 42,
+      "order": 43,
       "mode": 0,
       "inputs": [
         {
@@ -428,7 +377,7 @@
         {
           "name": "ff_value",
           "type": "IMAGE",
-          "link": 466
+          "link": 571
         },
         {
           "name": "cond",
@@ -457,45 +406,6 @@
       },
       "widgets_values": [
         false
-      ]
-    },
-    {
-      "id": 120,
-      "type": "SaveImage",
-      "pos": [
-        2563.0908203125,
-        394.9466857910156
-      ],
-      "size": [
-        950,
-        1040
-      ],
-      "flags": {},
-      "order": 43,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 470
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "SaveImage",
-        "enableTabs": false,
-        "tabWidth": 65,
-        "tabXOffset": 10,
-        "hasSecondTab": false,
-        "secondTabText": "Send Back",
-        "secondTabOffset": 80,
-        "secondTabWidth": 65,
-        "widget_ue_connectable": {}
-      },
-      "widgets_values": [
-        "ComfyUI"
       ]
     },
     {
@@ -564,7 +474,7 @@
         58
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -599,7 +509,7 @@
         314.0000305175781
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 4,
       "inputs": [],
       "outputs": [
@@ -637,115 +547,6 @@
       "widgets_values": [
         "pose.png",
         "image"
-      ]
-    },
-    {
-      "id": 119,
-      "type": "VAEDecode",
-      "pos": [
-        1336.7813720703125,
-        624.50439453125
-      ],
-      "size": [
-        210,
-        46
-      ],
-      "flags": {
-        "collapsed": false
-      },
-      "order": 40,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "samples",
-          "type": "LATENT",
-          "link": 234
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 235
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "slot_index": 0,
-          "links": [
-            398,
-            466
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "VAEDecode",
-        "enableTabs": false,
-        "tabWidth": 65,
-        "tabXOffset": 10,
-        "hasSecondTab": false,
-        "secondTabText": "Send Back",
-        "secondTabOffset": 80,
-        "secondTabWidth": 65,
-        "widget_ue_connectable": {}
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 252,
-      "type": "ImpactConditionalBranch",
-      "pos": [
-        -383.4668273925781,
-        924.073974609375
-      ],
-      "size": [
-        270,
-        78
-      ],
-      "flags": {},
-      "order": 35,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "tt_value",
-          "type": "IMAGE",
-          "link": 473
-        },
-        {
-          "name": "ff_value",
-          "type": "IMAGE",
-          "link": 483
-        },
-        {
-          "name": "cond",
-          "type": "BOOLEAN",
-          "widget": {
-            "name": "cond"
-          },
-          "link": 472
-        }
-      ],
-      "outputs": [
-        {
-          "label": "IMAGE",
-          "name": "*",
-          "type": "IMAGE",
-          "links": [
-            475,
-            476
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui-impact-pack",
-        "ver": "4186fbd4f4d7fff87c2a5dac8e69ab1031ca1259",
-        "Node name for S&R": "ImpactConditionalBranch",
-        "aux_id": "ltdrdata/ComfyUI-Impact-Pack"
-      },
-      "widgets_values": [
-        false
       ]
     },
     {
@@ -960,7 +761,7 @@
         106
       ],
       "flags": {},
-      "order": 22,
+      "order": 23,
       "mode": 0,
       "inputs": [
         {
@@ -1187,83 +988,6 @@
       ]
     },
     {
-      "id": 118,
-      "type": "KSampler",
-      "pos": [
-        1205.69140625,
-        754.4874267578125
-      ],
-      "size": [
-        300,
-        474
-      ],
-      "flags": {},
-      "order": 39,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 237
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 256
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 257
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 236
-        },
-        {
-          "name": "seed",
-          "type": "INT",
-          "widget": {
-            "name": "seed"
-          },
-          "link": 535
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "slot_index": 0,
-          "links": [
-            234
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "KSampler",
-        "enableTabs": false,
-        "tabWidth": 65,
-        "tabXOffset": 10,
-        "hasSecondTab": false,
-        "secondTabText": "Send Back",
-        "secondTabOffset": 80,
-        "secondTabWidth": 65,
-        "widget_ue_connectable": {}
-      },
-      "widgets_values": [
-        756657748341809,
-        "fixed",
-        4,
-        1,
-        "euler",
-        "simple",
-        1
-      ]
-    },
-    {
       "id": 106,
       "type": "LoadImage",
       "pos": [
@@ -1275,7 +999,7 @@
         314.0000305175781
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 4,
       "inputs": [],
       "outputs": [
@@ -1329,7 +1053,7 @@
       "flags": {
         "collapsed": true
       },
-      "order": 16,
+      "order": 17,
       "mode": 0,
       "inputs": [
         {
@@ -1369,109 +1093,6 @@
       ]
     },
     {
-      "id": 274,
-      "type": "Seed",
-      "pos": [
-        288.601318359375,
-        337.2497253417969
-      ],
-      "size": [
-        270,
-        142
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "seed",
-          "type": "SEED",
-          "links": null
-        },
-        {
-          "name": "number",
-          "type": "NUMBER",
-          "links": null
-        },
-        {
-          "name": "float",
-          "type": "FLOAT",
-          "links": null
-        },
-        {
-          "name": "int",
-          "type": "INT",
-          "links": [
-            535,
-            542
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "was-ns",
-        "ver": "afeee09ba44e713ec52a413ac6b105fd06b2d356",
-        "Node name for S&R": "Seed",
-        "aux_id": "ltdrdata/was-node-suite-comfyui"
-      },
-      "widgets_values": [
-        489892870702323,
-        "randomize"
-      ]
-    },
-    {
-      "id": 88,
-      "type": "VAEEncode",
-      "pos": [
-        175.33099365234375,
-        736.8307495117188
-      ],
-      "size": [
-        140,
-        46
-      ],
-      "flags": {},
-      "order": 37,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "pixels",
-          "type": "IMAGE",
-          "link": 476
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 168
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            236
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "VAEEncode",
-        "enableTabs": false,
-        "tabWidth": 65,
-        "tabXOffset": 10,
-        "hasSecondTab": false,
-        "secondTabText": "Send Back",
-        "secondTabOffset": 80,
-        "secondTabWidth": 65,
-        "ue_properties": {
-          "widget_ue_connectable": {}
-        }
-      },
-      "widgets_values": []
-    },
-    {
       "id": 66,
       "type": "ModelSamplingAuraFlow",
       "pos": [
@@ -1483,7 +1104,7 @@
         60
       ],
       "flags": {},
-      "order": 17,
+      "order": 16,
       "mode": 0,
       "inputs": [
         {
@@ -1519,168 +1140,6 @@
       ]
     },
     {
-      "id": 75,
-      "type": "CFGNorm",
-      "pos": [
-        824.3955078125,
-        648.446044921875
-      ],
-      "size": [
-        290,
-        60
-      ],
-      "flags": {},
-      "order": 23,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 141
-        }
-      ],
-      "outputs": [
-        {
-          "name": "patched_model",
-          "type": "MODEL",
-          "links": [
-            237
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.50",
-        "Node name for S&R": "CFGNorm",
-        "enableTabs": false,
-        "tabWidth": 65,
-        "tabXOffset": 10,
-        "hasSecondTab": false,
-        "secondTabText": "Send Back",
-        "secondTabOffset": 80,
-        "secondTabWidth": 65,
-        "ue_properties": {
-          "widget_ue_connectable": {
-            "strength": true
-          }
-        }
-      },
-      "widgets_values": [
-        1
-      ]
-    },
-    {
-      "id": 128,
-      "type": "TextEncodeQwenImageEditPlus",
-      "pos": [
-        488.91876220703125,
-        764.0594482421875
-      ],
-      "size": [
-        400,
-        200
-      ],
-      "flags": {},
-      "order": 36,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 258
-        },
-        {
-          "name": "vae",
-          "shape": 7,
-          "type": "VAE",
-          "link": 259
-        },
-        {
-          "name": "image1",
-          "shape": 7,
-          "type": "IMAGE",
-          "link": 475
-        },
-        {
-          "name": "image2",
-          "shape": 7,
-          "type": "IMAGE",
-          "link": 261
-        },
-        {
-          "name": "image3",
-          "shape": 7,
-          "type": "IMAGE",
-          "link": 262
-        },
-        {
-          "name": "prompt",
-          "type": "STRING",
-          "widget": {
-            "name": "prompt"
-          },
-          "link": 544
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            255,
-            256
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "TextEncodeQwenImageEditPlus"
-      },
-      "widgets_values": [
-        "Place the foreground in a scene showing a dense, less-saturated forest, captured in a slightly muted, amateurish style typical of an iPhone photo. The greenery appears faded, with dull greens dominating the tall, slender trees that stretch unevenly toward a pale, overcast sky. Their leaves, though abundant, lack vibrancy, blending into a soft, washed-out canopy. In the foreground, a cluster of large, moss-covered boulders sits heavily, their grayish-brown surfaces blending with the earthy tones of the forest floor. Sparse undergrowth, with muted shades of green and hints of yellow, weaves around the rocks, adding a slightly chaotic yet natural feel. The lighting is flat, casting no sharp shadows, which gives the image a hazy, almost dreamlike quality. The perspective tilts slightly, as if the phone was held at an angle, adding to the unpolished charm. A few thin trunks lean awkwardly, their bark peeling in subtle, desaturated browns. The overall mood is calm yet wild, a quiet snapshot of nature untouched, though the photo’s amateur nature—soft focus and uneven exposure—lends it a raw, unrefined edge. It’s a moment frozen in time, imperfect yet evocative of a serene, forgotten wilderness. Keep foreground scale intact. Align foreground to original position and size. Don't resize foreground."
-      ],
-      "color": "#232",
-      "bgcolor": "#353"
-    },
-    {
-      "id": 129,
-      "type": "ConditioningZeroOut",
-      "pos": [
-        951.766845703125,
-        882.5942993164062
-      ],
-      "size": [
-        197.712890625,
-        26
-      ],
-      "flags": {},
-      "order": 38,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "conditioning",
-          "type": "CONDITIONING",
-          "link": 255
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            257
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "ConditioningZeroOut"
-      },
-      "widgets_values": []
-    },
-    {
       "id": 117,
       "type": "TooManyLoras",
       "pos": [
@@ -1692,7 +1151,7 @@
         534
       ],
       "flags": {},
-      "order": 14,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -1762,7 +1221,7 @@
         314.0000305175781
       ],
       "flags": {},
-      "order": 5,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1879,7 +1338,7 @@
         58
       ],
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1912,7 +1371,7 @@
         110
       ],
       "flags": {},
-      "order": 7,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1965,7 +1424,7 @@
       "flags": {
         "collapsed": false
       },
-      "order": 19,
+      "order": 20,
       "mode": 0,
       "inputs": [
         {
@@ -1999,89 +1458,6 @@
         false,
         false,
         0
-      ]
-    },
-    {
-      "id": 177,
-      "type": "Text Multiline",
-      "pos": [
-        -3515.787353515625,
-        -457.2815856933594
-      ],
-      "size": [
-        652.5079956054688,
-        420.1847229003906
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            364
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "was-ns",
-        "ver": "afeee09ba44e713ec52a413ac6b105fd06b2d356",
-        "Node name for S&R": "Text Multiline",
-        "aux_id": "ltdrdata/was-node-suite-comfyui"
-      },
-      "widgets_values": [
-        "Replace the background to a dense, less-saturated {rainforest|bamboo forest|mountain forest}, with tall towering trees. Maintain natural green hues, but desaturate them slightly to evoke a misty, primeval atmosphere, with faint shafts of sunlight piercing the canopy. Incorporate patches of moss, scattered ferns, and damp earth to ground the scene in realism. Apply a soft background lens blur to create a cinematic depth-of-field effect, keeping the foreground figures sharp while gently softening the rainforest backdrop to emphasize their prominence. Ensure the lighting remains diffused, with a cool, natural tone. Add subtle details like distant bird silhouettes or faint water droplets on leaves to make scene look realistic, while maintaining a cohesive composition. Photo taken by iphone.\n---\nPlace the foreground in a scene showing a dense, less-saturated forest, captured in a slightly muted, amateurish style typical of an iPhone photo. The greenery appears faded, with dull greens dominating the tall, slender trees that stretch unevenly toward a pale, overcast sky. Their leaves, though abundant, lack vibrancy, blending into a soft, washed-out canopy. In the foreground, a cluster of large, moss-covered boulders sits heavily, their grayish-brown surfaces blending with the earthy tones of the forest floor. Sparse undergrowth, with muted shades of green and hints of yellow, weaves around the rocks, adding a slightly chaotic yet natural feel. The lighting is flat, casting no sharp shadows, which gives the image a hazy, almost dreamlike quality. The perspective tilts slightly, as if the phone was held at an angle, adding to the unpolished charm. A few thin trunks lean awkwardly, their bark peeling in subtle, desaturated browns. The overall mood is calm yet wild, a quiet snapshot of nature untouched, though the photo’s amateur nature—soft focus and uneven exposure—lends it a raw, unrefined edge. It’s a moment frozen in time, imperfect yet evocative of a serene, forgotten wilderness. Keep foreground scale intact. Align foreground to original position and size. Don't resize foreground. <rmbg><restoreface><upscale>"
-      ]
-    },
-    {
-      "id": 168,
-      "type": "SpotlessTextSplitByDelimiter",
-      "pos": [
-        -2850.646240234375,
-        -225.05076599121094
-      ],
-      "size": [
-        400,
-        200
-      ],
-      "flags": {
-        "collapsed": false
-      },
-      "order": 13,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "text",
-          "type": "STRING",
-          "widget": {
-            "name": "text"
-          },
-          "link": 364
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "shape": 6,
-          "type": "STRING",
-          "links": [
-            366
-          ]
-        }
-      ],
-      "properties": {
-        "aux_id": "iamkalefreeman/ComfyUI-stable-wildcards",
-        "ver": "ebc976096286f6a1223377eaf67b51cb125fb9d4",
-        "Node name for S&R": "SpotlessTextSplitByDelimiter"
-      },
-      "widgets_values": [
-        "===",
-        "---",
-        0,
-        0,
-        8
       ]
     },
     {
@@ -2149,7 +1525,7 @@
         130
       ],
       "flags": {},
-      "order": 9,
+      "order": 6,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -2172,6 +1548,649 @@
         20,
         "disable"
       ]
+    },
+    {
+      "id": 252,
+      "type": "ImpactConditionalBranch",
+      "pos": [
+        -380.9580383300781,
+        927.837158203125
+      ],
+      "size": [
+        270,
+        78
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "tt_value",
+          "type": "IMAGE",
+          "link": 473
+        },
+        {
+          "name": "ff_value",
+          "type": "IMAGE",
+          "link": 483
+        },
+        {
+          "name": "cond",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "cond"
+          },
+          "link": 472
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "*",
+          "type": "IMAGE",
+          "links": [
+            475,
+            476
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-impact-pack",
+        "ver": "4186fbd4f4d7fff87c2a5dac8e69ab1031ca1259",
+        "Node name for S&R": "ImpactConditionalBranch",
+        "aux_id": "ltdrdata/ComfyUI-Impact-Pack"
+      },
+      "widgets_values": [
+        false
+      ]
+    },
+    {
+      "id": 128,
+      "type": "TextEncodeQwenImageEditPlus",
+      "pos": [
+        488.91876220703125,
+        764.0594482421875
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 258
+        },
+        {
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": 554
+        },
+        {
+          "name": "image1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 475
+        },
+        {
+          "name": "image2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 261
+        },
+        {
+          "name": "image3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 262
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 544
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            255,
+            256
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "TextEncodeQwenImageEditPlus"
+      },
+      "widgets_values": [
+        "Place the foreground in a scene showing a dense, less-saturated forest, captured in a slightly muted, amateurish style typical of an iPhone photo. The greenery appears faded, with dull greens dominating the tall, slender trees that stretch unevenly toward a pale, overcast sky. Their leaves, though abundant, lack vibrancy, blending into a soft, washed-out canopy. In the foreground, a cluster of large, moss-covered boulders sits heavily, their grayish-brown surfaces blending with the earthy tones of the forest floor. Sparse undergrowth, with muted shades of green and hints of yellow, weaves around the rocks, adding a slightly chaotic yet natural feel. The lighting is flat, casting no sharp shadows, which gives the image a hazy, almost dreamlike quality. The perspective tilts slightly, as if the phone was held at an angle, adding to the unpolished charm. A few thin trunks lean awkwardly, their bark peeling in subtle, desaturated browns. The overall mood is calm yet wild, a quiet snapshot of nature untouched, though the photo’s amateur nature—soft focus and uneven exposure—lends it a raw, unrefined edge. It’s a moment frozen in time, imperfect yet evocative of a serene, forgotten wilderness. Keep foreground scale intact. Align foreground to original position and size. Don't resize foreground."
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 129,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        951.766845703125,
+        882.5942993164062
+      ],
+      "size": [
+        197.712890625,
+        26
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 255
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            257
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "ConditioningZeroOut"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 88,
+      "type": "VAEEncode",
+      "pos": [
+        175.33099365234375,
+        736.8307495117188
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 476
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 552
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            236
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "VAEEncode",
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "ue_properties": {
+          "widget_ue_connectable": {}
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 75,
+      "type": "CFGNorm",
+      "pos": [
+        824.3955078125,
+        648.446044921875
+      ],
+      "size": [
+        290,
+        60
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 141
+        }
+      ],
+      "outputs": [
+        {
+          "name": "patched_model",
+          "type": "MODEL",
+          "links": [
+            237
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.50",
+        "Node name for S&R": "CFGNorm",
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "strength": true
+          }
+        }
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": 177,
+      "type": "Text Multiline",
+      "pos": [
+        -3515.787353515625,
+        -457.2815856933594
+      ],
+      "size": [
+        652.5079956054688,
+        420.1847229003906
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            364
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "was-ns",
+        "ver": "afeee09ba44e713ec52a413ac6b105fd06b2d356",
+        "Node name for S&R": "Text Multiline",
+        "aux_id": "ltdrdata/was-node-suite-comfyui"
+      },
+      "widgets_values": [
+        "Replace the background to a dense, less-saturated {rainforest|bamboo forest|mountain forest}, with tall towering trees. Maintain natural green hues, but desaturate them slightly to evoke a misty, primeval atmosphere, with faint shafts of sunlight piercing the canopy. Incorporate patches of moss, scattered ferns, and damp earth to ground the scene in realism. Apply a soft background lens blur to create a cinematic depth-of-field effect, keeping the foreground figures sharp while gently softening the rainforest backdrop to emphasize their prominence. Ensure the lighting remains diffused, with a cool, natural tone. Add subtle details like distant bird silhouettes or faint water droplets on leaves to make scene look realistic, while maintaining a cohesive composition. Photo taken by iphone.\n===\nPlace the foreground in a scene showing a dense, less-saturated forest, captured in a slightly muted, amateurish style typical of an iPhone photo. The greenery appears faded, with dull greens dominating the tall, slender trees that stretch unevenly toward a pale, overcast sky. Their leaves, though abundant, lack vibrancy, blending into a soft, washed-out canopy. In the foreground, a cluster of large, moss-covered boulders sits heavily, their grayish-brown surfaces blending with the earthy tones of the forest floor. Sparse undergrowth, with muted shades of green and hints of yellow, weaves around the rocks, adding a slightly chaotic yet natural feel. The lighting is flat, casting no sharp shadows, which gives the image a hazy, almost dreamlike quality. The perspective tilts slightly, as if the phone was held at an angle, adding to the unpolished charm. A few thin trunks lean awkwardly, their bark peeling in subtle, desaturated browns. The overall mood is calm yet wild, a quiet snapshot of nature untouched, though the photo’s amateur nature—soft focus and uneven exposure—lends it a raw, unrefined edge. It’s a moment frozen in time, imperfect yet evocative of a serene, forgotten wilderness. Keep foreground scale intact. Align foreground to original position and size. Don't resize foreground. <rmbg><restoreface><upscale>"
+      ]
+    },
+    {
+      "id": 168,
+      "type": "SpotlessTextSplitByDelimiter",
+      "pos": [
+        -2850.646240234375,
+        -225.05076599121094
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 364
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            366
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "iamkalefreeman/ComfyUI-stable-wildcards",
+        "ver": "ebc976096286f6a1223377eaf67b51cb125fb9d4",
+        "Node name for S&R": "SpotlessTextSplitByDelimiter"
+      },
+      "widgets_values": [
+        "===",
+        "===",
+        0,
+        0,
+        8
+      ]
+    },
+    {
+      "id": 285,
+      "type": "VAEUtils_CustomVAELoader",
+      "pos": [
+        -233.4882354736328,
+        212.0659942626953
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            552,
+            554,
+            555
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "lrzjason/ComfyUI-VAE-Utils",
+        "ver": "41d190362c121b7febf2d70272d4387be8ea378d",
+        "Node name for S&R": "VAEUtils_CustomVAELoader"
+      },
+      "widgets_values": [
+        "Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors"
+      ]
+    },
+    {
+      "id": 274,
+      "type": "Seed",
+      "pos": [
+        297.708251953125,
+        370.6413269042969
+      ],
+      "size": [
+        270,
+        142
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "seed",
+          "type": "SEED",
+          "links": null
+        },
+        {
+          "name": "number",
+          "type": "NUMBER",
+          "links": null
+        },
+        {
+          "name": "float",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "name": "int",
+          "type": "INT",
+          "links": [
+            535,
+            542
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "was-ns",
+        "ver": "afeee09ba44e713ec52a413ac6b105fd06b2d356",
+        "Node name for S&R": "Seed",
+        "aux_id": "ltdrdata/was-node-suite-comfyui"
+      },
+      "widgets_values": [
+        905159669756650,
+        "randomize"
+      ]
+    },
+    {
+      "id": 286,
+      "type": "VAEUtils_VAEDecodeTiled",
+      "pos": [
+        1273.2060546875,
+        285.42987060546875
+      ],
+      "size": [
+        270,
+        198
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 556
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 555
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            569
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "lrzjason/ComfyUI-VAE-Utils",
+        "ver": "41d190362c121b7febf2d70272d4387be8ea378d",
+        "Node name for S&R": "VAEUtils_VAEDecodeTiled"
+      },
+      "widgets_values": [
+        2,
+        false,
+        512,
+        64,
+        4096,
+        64
+      ]
+    },
+    {
+      "id": 293,
+      "type": "easy imageScaleDownBy",
+      "pos": [
+        1282.003662109375,
+        154.92889404296875
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 569
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            570,
+            571
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy imageScaleDownBy"
+      },
+      "widgets_values": [
+        0.5
+      ]
+    },
+    {
+      "id": 120,
+      "type": "SaveImage",
+      "pos": [
+        2563.0908203125,
+        394.9466857910156
+      ],
+      "size": [
+        950,
+        1040
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 470
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "SaveImage",
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 118,
+      "type": "KSampler",
+      "pos": [
+        1233.93701171875,
+        776.2216186523438
+      ],
+      "size": [
+        300,
+        474
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 237
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 256
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 257
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 236
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 535
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            556
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "KSampler",
+        "enableTabs": false,
+        "tabWidth": 65,
+        "tabXOffset": 10,
+        "hasSecondTab": false,
+        "secondTabText": "Send Back",
+        "secondTabOffset": 80,
+        "secondTabWidth": 65,
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        756657748341809,
+        "fixed",
+        4,
+        1,
+        "euler",
+        "simple",
+        1
+      ]
     }
   ],
   "links": [
@@ -2182,14 +2201,6 @@
       75,
       0,
       "MODEL"
-    ],
-    [
-      168,
-      39,
-      0,
-      88,
-      1,
-      "VAE"
     ],
     [
       228,
@@ -2214,22 +2225,6 @@
       117,
       1,
       "CLIP"
-    ],
-    [
-      234,
-      118,
-      0,
-      119,
-      0,
-      "LATENT"
-    ],
-    [
-      235,
-      39,
-      0,
-      119,
-      1,
-      "VAE"
     ],
     [
       236,
@@ -2278,14 +2273,6 @@
       128,
       0,
       "CLIP"
-    ],
-    [
-      259,
-      39,
-      0,
-      128,
-      1,
-      "VAE"
     ],
     [
       261,
@@ -2392,14 +2379,6 @@
       "STRING"
     ],
     [
-      398,
-      119,
-      0,
-      167,
-      0,
-      "IMAGE"
-    ],
-    [
       422,
       183,
       0,
@@ -2438,14 +2417,6 @@
       231,
       0,
       "*"
-    ],
-    [
-      466,
-      119,
-      0,
-      247,
-      1,
-      "IMAGE"
     ],
     [
       467,
@@ -2678,6 +2649,62 @@
       128,
       5,
       "STRING"
+    ],
+    [
+      552,
+      285,
+      0,
+      88,
+      1,
+      "VAE"
+    ],
+    [
+      554,
+      285,
+      0,
+      128,
+      1,
+      "VAE"
+    ],
+    [
+      555,
+      285,
+      0,
+      286,
+      1,
+      "VAE"
+    ],
+    [
+      556,
+      118,
+      0,
+      286,
+      0,
+      "LATENT"
+    ],
+    [
+      569,
+      286,
+      0,
+      293,
+      0,
+      "IMAGE"
+    ],
+    [
+      570,
+      293,
+      0,
+      167,
+      0,
+      "IMAGE"
+    ],
+    [
+      571,
+      293,
+      0,
+      247,
+      1,
+      "IMAGE"
     ]
   ],
   "groups": [
@@ -2776,10 +2803,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 1.1671841070450049,
+      "scale": 0.5989500000000042,
       "offset": [
-        3972.3176628631577,
-        1339.3550226380141
+        251.0522300438039,
+        185.1001713204075
       ]
     },
     "frontendVersion": "1.26.13",
