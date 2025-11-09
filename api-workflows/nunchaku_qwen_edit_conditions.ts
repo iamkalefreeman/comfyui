@@ -25,10 +25,9 @@ const RequestSchema = z.object({
     ),
   seed: z
     .number()
-    .int()
     .default(() => Math.floor(Math.random() * 1000000000000000))
     .describe("Seed for random number generation"),
-  steps: z.number().int().min(1).max(100).default(4).describe("Number of sampling steps"),
+  steps: z.number().min(1).max(100).default(4).describe("Number of sampling steps"),
   cfg_scale: z
     .number()
     .min(0)
@@ -44,7 +43,6 @@ const RequestSchema = z.object({
   denoise: z.number().min(0).max(1).default(1).describe("Denoising strength"),
   aura_flow_shift: z
     .number()
-    .int()
     .default(3)
     .describe("Aura Flow model sampling shift value"),
   cfg_norm_strength: z
@@ -137,16 +135,14 @@ const RequestSchema = z.object({
     .string()
     .default("Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors")
     .describe("Name of the VAE model to load"),
-  vae_upscale: z.number().int().default(2).describe("VAE decode upscale factor"),
+  vae_upscale: z.number().default(2).describe("VAE decode upscale factor"),
   vae_tile: z.boolean().default(false).describe("Enable tiled VAE decoding"),
   vae_tile_size: z
     .number()
-    .int()
     .default(512)
     .describe("Tile size for VAE decoding"),
   vae_overlap: z
     .number()
-    .int()
     .default(64)
     .describe("Tile overlap for VAE decoding"),
   lora_1_name: z
