@@ -61,7 +61,7 @@ const RequestSchema = z.object({
     .describe("Name of the upscaler model to use"),
   rmbg_model: z
     .string()
-    .default("INSPYRENET")
+    .default("RMBG-2.0")
     .describe("Model to use for background removal"),
   rmbg_sensitivity: z
     .number()
@@ -101,6 +101,10 @@ const RequestSchema = z.object({
     .number()
     .default(10)
     .describe("Take count of the restored face"),
+  face_restore_downscale: z
+    .number()
+    .default(0.5)
+    .describe("Downscale factor applied before face restoration"),
   codeformer_weight: z
     .number()
     .min(0)
@@ -109,7 +113,7 @@ const RequestSchema = z.object({
     .describe("Weight of the CodeFormer model in face restoration"),
   unet_name: z
     .string()
-    .default("svdq-int4_r128-qwen-image-edit-2509-lightningv2.0-4steps.safetensors")
+    .default("svdq-int4_r32-qwen-image-edit-2509-lightningv2.0-4steps.safetensors")
     .describe("Name of the UNET model to load"),
   cpu_offload: z
     .string()
@@ -131,8 +135,20 @@ const RequestSchema = z.object({
     .describe("Name of the CLIP model to load"),
   vae_name: z
     .string()
-    .default("qwen_image_vae.safetensors")
+    .default("Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors")
     .describe("Name of the VAE model to load"),
+  vae_upscale: z.number().int().default(2).describe("VAE decode upscale factor"),
+  vae_tile: z.boolean().default(false).describe("Enable tiled VAE decoding"),
+  vae_tile_size: z
+    .number()
+    .int()
+    .default(512)
+    .describe("Tile size for VAE decoding"),
+  vae_overlap: z
+    .number()
+    .int()
+    .default(64)
+    .describe("Tile overlap for VAE decoding"),
   lora_1_name: z
     .string()
     .default("None")
@@ -170,7 +186,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         model_name: input.unet_name,
         cpu_offload: input.cpu_offload,
         num_blocks_on_gpu: input.num_blocks_on_gpu,
-        use_pin_memory: input.use_pin_memory
+        use_pin_memory: input.use_pin_memory,
       },
       class_type: "NunchakuQwenImageDiTLoader",
     },
@@ -181,12 +197,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         device: "default",
       },
       class_type: "CLIPLoader",
-    },
-    "39": {
-      inputs: {
-        vae_name: input.vae_name,
-      },
-      class_type: "VAELoader",
     },
     "66": {
       inputs: {
@@ -212,7 +222,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "88": {
       inputs: {
         pixels: ["252", 0],
-        vae: ["39", 0],
+        vae: ["285", 0],
       },
       class_type: "VAEEncode",
     },
@@ -258,13 +268,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
       class_type: "KSampler",
     },
-    "119": {
-      inputs: {
-        samples: ["118", 0],
-        vae: ["39", 0],
-      },
-      class_type: "VAEDecode",
-    },
     "120": {
       inputs: {
         filename_prefix: "ComfyUI",
@@ -291,7 +294,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       inputs: {
         prompt: ["282", 0],
         clip: ["117", 1],
-        vae: ["39", 0],
+        vae: ["285", 0],
         image1: ["252", 0],
       },
       class_type: "TextEncodeQwenImageEditPlus",
@@ -304,10 +307,10 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "148": {
       inputs: {
-        batch_size: 1,
-        color: 0,
         width: ["151", 0],
         height: ["151", 1],
+        batch_size: 1,
+        color: 0,
       },
       class_type: "EmptyImage",
     },
@@ -352,7 +355,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         reverse_order: false,
         take_start: 0,
         take_count: input.face_restore_take_count,
-        image: ["119", 0],
+        image: ["293", 0],
       },
       class_type: "ReActorRestoreFaceAdvanced",
     },
@@ -453,7 +456,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       inputs: {
         cond: ["191", 0],
         tt_value: ["167", 0],
-        ff_value: ["119", 0],
+        ff_value: ["293", 0],
       },
       class_type: "ImpactConditionalBranch",
     },
@@ -525,10 +528,36 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "282": {
       inputs: {
         prompt: ["184", 0],
-        seed: ["274", 3],
         version: 1,
+        seed: ["274", 3],
       },
       class_type: "Stable Wildcards",
+    },
+    "285": {
+      inputs: {
+        vae_name: input.vae_name,
+      },
+      class_type: "VAEUtils_CustomVAELoader",
+    },
+    "286": {
+      inputs: {
+        upscale: input.vae_upscale,
+        tile: input.vae_tile,
+        tile_size: input.vae_tile_size,
+        overlap: input.vae_overlap,
+        temporal_size: 4096,
+        temporal_overlap: 64,
+        samples: ["118", 0],
+        vae: ["285", 0],
+      },
+      class_type: "VAEUtils_VAEDecodeTiled",
+    },
+    "293": {
+      inputs: {
+        scale_by: input.face_restore_downscale,
+        images: ["286", 0],
+      },
+      class_type: "easy imageScaleDownBy",
     },
   };
   return workflow;
@@ -541,6 +570,5 @@ const workflow: Workflow = {
   description:
     "Edits a provided image based on a text prompt using the Qwen model. The workflow supports conditional background removal, face restoration, and upscaling by including the tags <rmbg>, <restoreface>, and <upscale> in the prompt. It also supports wildcard replacements in the prompt (e.g., {option1|option2}).",
 };
-
 
 export default workflow;
