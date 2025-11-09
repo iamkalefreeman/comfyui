@@ -123,6 +123,7 @@ git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use.git "$
 # git clone --recurse-submodules https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git "$CUSTOM_NODES_DIR/ComfyUI_UltimateSDUpscale"
 # git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git "$CUSTOM_NODES_DIR/ComfyUI-Frame-Interpolation"
 # git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
+git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-VAE-Utils.git "$CUSTOM_NODES_DIR/ComfyUI-VAE-Utils"
 chmod -R 755 "$CUSTOM_NODES_DIR"
 # Find and install predefined custom nodes
 find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
@@ -144,6 +145,10 @@ https://huggingface.co/1038lab/inspyrenet/resolve/main/inspyrenet.safetensors?do
 https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth
   dir=${MODEL_DIR}/facedetection
   out=parsing_parsenet.pth
+
+https://huggingface.co/spacepxl/Wan2.1-VAE-upscale2x/resolve/main/Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors?download=true
+  dir=${VAE_DIR}
+  out=Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
