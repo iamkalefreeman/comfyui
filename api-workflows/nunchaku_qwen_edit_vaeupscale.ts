@@ -99,7 +99,7 @@ const RequestSchema = z.object({
     .number()
     .default(10)
     .describe("Take count of the restored face"),
-  face_restore_downscale: z
+  output_downscale: z
     .number()
     .default(0.5)
     .describe("Downscale factor applied before face restoration"),
@@ -550,7 +550,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "293": {
       inputs: {
-        scale_by: input.face_restore_downscale,
+        scale_by: input.output_downscale,
         images: ["286", 0],
       },
       class_type: "easy imageScaleDownBy",
