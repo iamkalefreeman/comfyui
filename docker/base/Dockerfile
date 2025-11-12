@@ -124,6 +124,7 @@ git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use.git "$
 # git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git "$CUSTOM_NODES_DIR/ComfyUI-Frame-Interpolation"
 # git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
 git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-VAE-Utils.git "$CUSTOM_NODES_DIR/ComfyUI-VAE-Utils"
+git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-QwenImageLoraLoader.git "$CUSTOM_NODES_DIR/ComfyUI-QwenImageLoraLoader"
 chmod -R 755 "$CUSTOM_NODES_DIR"
 # Find and install predefined custom nodes
 find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
