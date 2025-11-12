@@ -36,3 +36,11 @@ https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/tex
   out=qwen_2.5_vl_7b_fp8_scaled.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+# Download LoRAs
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/dx8152/Qwen-Edit-2509-Multiple-angles/resolve/main/%E9%95%9C%E5%A4%B4%E8%BD%AC%E6%8D%A2.safetensors?download=true
+  dir=${LORA_DIR}
+  out=qwen-image-edit-2509-multi-angles.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
