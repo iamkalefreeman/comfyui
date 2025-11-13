@@ -44,5 +44,3 @@ https://huggingface.co/dx8152/Qwen-Edit-2509-Multiple-angles/resolve/main/%E9%95
   out=qwen-image-edit-2509-multi-angles.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
-COPY ./models/MEXX_QWEN_TG300_23.safetensors ${LORA_DIR}/
