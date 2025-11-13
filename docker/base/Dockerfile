@@ -214,6 +214,8 @@ EOS
 # comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --cpu --verbose --quick-test-for-ci
 # EOS
 
+COPY ./models/MEXX_QWEN_TG300_23.safetensors ${LORA_DIR}/
+
 # Expose the ComfyUI port
 EXPOSE 8188
 
