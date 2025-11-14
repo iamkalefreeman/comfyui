@@ -20,48 +20,81 @@ ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 WORKDIR /
 RUN set -xe && mkdir -p ${MODEL_DIR} ${DIFFUSION_DIR} ${CHECKPOINT_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
-# Download QWEN models in parallel to reduce build time
-ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
+# Define a persistent temporary file path
+ENV ARIA2C_TMP_FILE="/tmp/download.txt"
+
+# --- Qwen Models & Components ---
+
+# Download: qwen_image_edit_2509_fp8_e4m3fn.safetensors
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors?download=true
   dir=${DIFFUSION_DIR}
   out=qwen_image_edit_2509_fp8_e4m3fn.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# Download: qwen_image_vae.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true
   dir=${VAE_DIR}
   out=qwen_image_vae.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# Download: qwen_2.5_vl_7b_fp8_scaled.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true
   dir=${CLIP_DIR}
   out=qwen_2.5_vl_7b_fp8_scaled.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# Download: Qwen-Image-Lightning-4steps-V2.0.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V2.0.safetensors?download=true
   dir=${LORA_DIR}
   out=Qwen-Image-Lightning-4steps-V2.0.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
-# Download Loras
-ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
+# --- Loras ---
+
+# Download: clothesTryonQwenEdit.3dlg.safetensors
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://tigersjay.com/static/clothesTryonQwenEdit.3dlg.safetensors
+https_proxy=${HF_PROXY} https://tigersjay.com/static/clothesTryonQwenEdit.3dlg.safetensors
   dir=${LORA_DIR}
   out=clothesTryonQwenEdit.3dlg.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# Download: extractOutfitV3.xWyV.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://tigersjay.com/static/extractOutfitV3.xWyV.safetensors
   dir=${LORA_DIR}
   out=extractOutfitV3.xWyV.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2IA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# Download: ootdColour193600.yz3z.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://tigersjay.com/static/ootdColour193600.yz3z.safetensors
   dir=${LORA_DIR}
   out=ootdColour193600.yz3z.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# Download: qwenRealNud3s.r69Z.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors
   dir=${LORA_DIR}
   out=qwenRealNud3s.r69Z.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# Download: consistenceEditV1.V1CW.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://tigersjay.com/static/consistenceEditV1.V1CW.safetensors
-  dir=${LORA_DIR}
+  dir=${LORA_LORA_DIR}
   out=consistenceEditV1.V1CW.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
