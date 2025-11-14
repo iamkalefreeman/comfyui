@@ -113,9 +113,11 @@ EOS
 RUN <<EOS
 set -xe
 CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
-# git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
 git clone --recurse-submodules https://github.com/nunchaku-tech/ComfyUI-nunchaku.git "$CUSTOM_NODES_DIR/nunchaku_nodes"
 git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use.git "$CUSTOM_NODES_DIR/ComfyUI-Easy-Use"
+git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-VAE-Utils.git "$CUSTOM_NODES_DIR/ComfyUI-VAE-Utils"
+git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-QwenImageLoraLoader.git "$CUSTOM_NODES_DIR/ComfyUI-QwenImageLoraLoader"
+# git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
 # git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git "$CUSTOM_NODES_DIR/ComfyUI-KJNodes"
 # git clone --recurse-submodules https://github.com/cubiq/ComfyUI_IPAdapter_plus.git "$CUSTOM_NODES_DIR/ComfyUI_IPAdapter_plus"
 # git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-VideoHelperSuite.git "$CUSTOM_NODES_DIR/ComfyUI-VideoHelperSuite"
@@ -123,8 +125,6 @@ git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use.git "$
 # git clone --recurse-submodules https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git "$CUSTOM_NODES_DIR/ComfyUI_UltimateSDUpscale"
 # git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git "$CUSTOM_NODES_DIR/ComfyUI-Frame-Interpolation"
 # git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
-git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-VAE-Utils.git "$CUSTOM_NODES_DIR/ComfyUI-VAE-Utils"
-git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-QwenImageLoraLoader.git "$CUSTOM_NODES_DIR/ComfyUI-QwenImageLoraLoader"
 chmod -R 755 "$CUSTOM_NODES_DIR"
 # Find and install predefined custom nodes
 find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
@@ -135,23 +135,6 @@ comfy --workspace /opt/ComfyUI node update all
 ( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
 ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
-
-# Download more models
-ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://huggingface.co/1038lab/inspyrenet/resolve/main/inspyrenet.safetensors?download=true
-  dir=${MODEL_DIR}/RMBG/INSPYRENET
-  out=inspyrenet.safetensors
-
-https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth
-  dir=${MODEL_DIR}/facedetection
-  out=parsing_parsenet.pth
-
-https://huggingface.co/spacepxl/Wan2.1-VAE-upscale2x/resolve/main/Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors?download=true
-  dir=${VAE_DIR}
-  out=Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
 # Patch certain nodes
 RUN <<EOS
