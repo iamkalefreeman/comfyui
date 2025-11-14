@@ -27,8 +27,8 @@ FROM $BASE_IMAGE AS stage-build
 
 ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 
-COPY --from=stage-models ${MODEL_DIR} ${MODEL_DIR}
-COPY --from=comfyui-models ${MODEL_DIR} ${MODEL_DIR}
+COPY --link --from=stage-models ${MODEL_DIR} ${MODEL_DIR}
+COPY --link --from=comfyui-models ${MODEL_DIR} ${MODEL_DIR}
 
 FROM stage-build AS comfyui
 
