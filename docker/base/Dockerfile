@@ -66,7 +66,7 @@ EOS
 RUN <<EOS
 set -xe
 pip install --no-cache-dir \
-  torch=2.8.0 \
+  torch==2.8.0 \
   transformers \
   bitsandbytes \
   accelerate \
