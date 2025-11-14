@@ -20,31 +20,10 @@ ARG MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR
 WORKDIR /
 RUN set -xe && mkdir -p ${MODEL_DIR} ${DIFFUSION_DIR} ${CHECKPOINT_DIR} ${VAE_DIR} ${CLIP_DIR} ${UNET_DIR} ${LORA_DIR}
 
-# Download QWEN models in parallel to reduce build time
-ENV ARIA2C_TMP_FILE="/tmp/downloads.txt"
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://huggingface.co/nunchaku-tech/nunchaku-qwen-image-edit-2509/resolve/main/svdq-int4_r32-qwen-image-edit-2509-lightningv2.0-4steps.safetensors?download=true
-  dir=${DIFFUSION_DIR}
-  out=svdq-int4_r32-qwen-image-edit-2509-lightningv2.0-4steps.safetensors
-
-https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true
-  dir=${VAE_DIR}
-  out=qwen_image_vae.safetensors
-
-https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true
-  dir=${CLIP_DIR}
-  out=qwen_2.5_vl_7b_fp8_scaled.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
-# Download LoRAs
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://huggingface.co/dx8152/Qwen-Edit-2509-Multiple-angles/resolve/main/%E9%95%9C%E5%A4%B4%E8%BD%AC%E6%8D%A2.safetensors?download=true
-  dir=${LORA_DIR}
-  out=qwen-image-edit-2509-multi-angles.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
-# Copy local models
+# Download QWEN models
+COPY https://huggingface.co/nunchaku-tech/nunchaku-qwen-image-edit-2509/resolve/main/svdq-int4_r32-qwen-image-edit-2509-lightningv2.0-4steps.safetensors?download=true ${DIFFUSION_DIR}/svdq-int4_r32-qwen-image-edit-2509-lightningv2.0-4steps.safetensors
+COPY https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true ${VAE_DIR}/qwen_image_vae.safetensors
+COPY https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true ${CLIP_DIR}/qwen_2.5_vl_7b_fp8_scaled.safetensors
+COPY https://huggingface.co/dx8152/Qwen-Edit-2509-Multiple-angles/resolve/main/%E9%95%9C%E5%A4%B4%E8%BD%AC%E6%8D%A2.safetensors?download=true ${LORA_DIR}/qwen-image-edit-2509-multi-angles.safetensors
 COPY ./models/MEXX_QWEN_TG300_23.safetensors ${LORA_DIR}/
 
