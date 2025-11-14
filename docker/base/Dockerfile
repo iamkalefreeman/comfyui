@@ -98,6 +98,10 @@ git clone --recurse-submodules https://github.com/rgthree/rgthree-comfy.git "$CU
 git clone --recurse-submodules https://github.com/cubiq/ComfyUI_essentials.git "$CUSTOM_NODES_DIR/comfyui_essentials"
 git clone --recurse-submodules https://github.com/jags111/efficiency-nodes-comfyui.git "$CUSTOM_NODES_DIR/efficiency-nodes-comfyui"
 git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-stable-wildcards.git "$CUSTOM_NODES_DIR/ComfyUI-stable-wildcards"
+git clone --recurse-submodules https://github.com/nunchaku-tech/ComfyUI-nunchaku.git "$CUSTOM_NODES_DIR/nunchaku_nodes"
+git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use.git "$CUSTOM_NODES_DIR/ComfyUI-Easy-Use"
+git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-VAE-Utils.git "$CUSTOM_NODES_DIR/ComfyUI-VAE-Utils"
+git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-QwenImageLoraLoader.git "$CUSTOM_NODES_DIR/ComfyUI-QwenImageLoraLoader"
 chmod -R 755 "$CUSTOM_NODES_DIR"
 # Find and install predefined custom nodes
 find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
@@ -109,32 +113,28 @@ comfy --workspace /opt/ComfyUI node update all
 ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
 EOS
 
-# Install more custom nodes 
-RUN <<EOS
-set -xe
-CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
-git clone --recurse-submodules https://github.com/nunchaku-tech/ComfyUI-nunchaku.git "$CUSTOM_NODES_DIR/nunchaku_nodes"
-git clone --recurse-submodules https://github.com/yolain/ComfyUI-Easy-Use.git "$CUSTOM_NODES_DIR/ComfyUI-Easy-Use"
-git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-VAE-Utils.git "$CUSTOM_NODES_DIR/ComfyUI-VAE-Utils"
-git clone --recurse-submodules https://github.com/iamkalefreeman/ComfyUI-QwenImageLoraLoader.git "$CUSTOM_NODES_DIR/ComfyUI-QwenImageLoraLoader"
-# git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
-# git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git "$CUSTOM_NODES_DIR/ComfyUI-KJNodes"
-# git clone --recurse-submodules https://github.com/cubiq/ComfyUI_IPAdapter_plus.git "$CUSTOM_NODES_DIR/ComfyUI_IPAdapter_plus"
-# git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-VideoHelperSuite.git "$CUSTOM_NODES_DIR/ComfyUI-VideoHelperSuite"
-# git clone --recurse-submodules https://github.com/kijai/ComfyUI-DepthAnythingV2.git "$CUSTOM_NODES_DIR/ComfyUI-DepthAnythingV2"
-# git clone --recurse-submodules https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git "$CUSTOM_NODES_DIR/ComfyUI_UltimateSDUpscale"
-# git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git "$CUSTOM_NODES_DIR/ComfyUI-Frame-Interpolation"
-# git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
-chmod -R 755 "$CUSTOM_NODES_DIR"
-# Find and install predefined custom nodes
-find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
-  sh -c 'echo "Running install.py from {}" && python "{}"'
-find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
-  sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
-comfy --workspace /opt/ComfyUI node update all
-( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
-( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
-EOS
+# # Install more custom nodes 
+# RUN <<EOS
+# set -xe
+# CUSTOM_NODES_DIR="/opt/ComfyUI/custom_nodes"
+# # git clone --recurse-submodules https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git "$CUSTOM_NODES_DIR/ComfyUI-Inspire-Pack"
+# # git clone --recurse-submodules https://github.com/kijai/ComfyUI-KJNodes.git "$CUSTOM_NODES_DIR/ComfyUI-KJNodes"
+# # git clone --recurse-submodules https://github.com/cubiq/ComfyUI_IPAdapter_plus.git "$CUSTOM_NODES_DIR/ComfyUI_IPAdapter_plus"
+# # git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-VideoHelperSuite.git "$CUSTOM_NODES_DIR/ComfyUI-VideoHelperSuite"
+# # git clone --recurse-submodules https://github.com/kijai/ComfyUI-DepthAnythingV2.git "$CUSTOM_NODES_DIR/ComfyUI-DepthAnythingV2"
+# # git clone --recurse-submodules https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git "$CUSTOM_NODES_DIR/ComfyUI_UltimateSDUpscale"
+# # git clone --recurse-submodules https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git "$CUSTOM_NODES_DIR/ComfyUI-Frame-Interpolation"
+# # git clone --recurse-submodules https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git "$CUSTOM_NODES_DIR/ComfyUI_tinyterraNodes"
+# chmod -R 755 "$CUSTOM_NODES_DIR"
+# # Find and install predefined custom nodes
+# find "$CUSTOM_NODES_DIR" -name "install.py" -type f -print0 | xargs -0 -I {} \
+#   sh -c 'echo "Running install.py from {}" && python "{}"'
+# find "$CUSTOM_NODES_DIR" -name "requirements.txt" -type f -print0 | xargs -0 -I {} \
+#   sh -c 'echo "Installing requirements from {}" && pip install --no-cache-dir -r "{}"'
+# comfy --workspace /opt/ComfyUI node update all
+# ( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
+# ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
+# EOS
 
 # Patch certain nodes
 RUN <<EOS
