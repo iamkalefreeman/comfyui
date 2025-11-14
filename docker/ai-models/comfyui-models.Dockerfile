@@ -112,3 +112,25 @@ https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/yolov5n-face.pth
   out=yolov5n-face.pth
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+# Download more models
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/1038lab/inspyrenet/resolve/main/inspyrenet.safetensors?download=true
+  dir=${MODEL_DIR}/RMBG/INSPYRENET
+  out=inspyrenet.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth
+  dir=${MODEL_DIR}/facedetection
+  out=parsing_parsenet.pth
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/spacepxl/Wan2.1-VAE-upscale2x/resolve/main/Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors?download=true
+  dir=${VAE_DIR}
+  out=Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
