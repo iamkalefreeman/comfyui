@@ -33,13 +33,13 @@ docker push "${docker_account}/comfyui:nunchaku-qwen-runpod-latest"
 # docker image rm "${docker_account}/comfyui:nunchaku-qwen-runpod-latest"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 
-### Build comfyui:nunchaku-qwen-full
-docker buildx build --target full \
-  --build-arg BASE_IMAGE="${docker_account}/comfyui:nunchaku-qwen-base-latest" \
-  -t "${docker_account}/comfyui:nunchaku-qwen-full-latest" "${working_dir}" \
-  -f "${working_dir}/docker/full/Dockerfile"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 15
-docker push "${docker_account}/comfyui:nunchaku-qwen-full-latest"
-[[ "$?" -ne 0 ]] && echo "Error!" && return 15
+# ### Build comfyui:nunchaku-qwen-full
+# docker buildx build --target full \
+#   --build-arg BASE_IMAGE="${docker_account}/comfyui:nunchaku-qwen-base-latest" \
+#   -t "${docker_account}/comfyui:nunchaku-qwen-full-latest" "${working_dir}" \
+#   -f "${working_dir}/docker/full/Dockerfile"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 15
+# docker push "${docker_account}/comfyui:nunchaku-qwen-full-latest"
+# [[ "$?" -ne 0 ]] && echo "Error!" && return 15
 
 return 0
