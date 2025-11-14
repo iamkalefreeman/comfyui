@@ -83,14 +83,6 @@ https://tigersjay.com/static/ootdColour193600.yz3z.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
-# Download: qwenRealNud3s.r69Z.safetensors
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://tigersjay.com/static/qwenRealNud3s.r69Z.safetensors
-  dir=${LORA_DIR}
-  out=qwenRealNud3s.r69Z.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
 # Download: consistenceEditV1.V1CW.safetensors
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://tigersjay.com/static/consistenceEditV1.V1CW.safetensors
@@ -98,3 +90,14 @@ https://tigersjay.com/static/consistenceEditV1.V1CW.safetensors
   out=consistenceEditV1.V1CW.safetensors
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+# Download: qwen-image-edit-2509-multi-angles.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/dx8152/Qwen-Edit-2509-Multiple-angles/resolve/main/%E9%95%9C%E5%A4%B4%E8%BD%AC%E6%8D%A2.safetensors?download=true
+  dir=${LORA_DIR}
+  out=qwen-image-edit-2509-multi-angles.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+# Copy local models
+COPY ./models/MEXX_QWEN_TG300_23.safetensors ${LORA_DIR}/
