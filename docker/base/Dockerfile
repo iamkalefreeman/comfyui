@@ -25,7 +25,7 @@ ARG COMFYUI_MODELS_IMAGE MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE
 
 #{{comfyui-models.dockerfile.template}}
 
-#{{nunchaku-qwen-models.dockerfile.template}}
+#{{xyz-models.dockerfile.template}}
 
 # Set working directory
 WORKDIR /opt/ComfyUI
