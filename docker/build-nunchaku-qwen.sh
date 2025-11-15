@@ -13,8 +13,8 @@ base_template_file="${working_dir}/docker/base/Dockerfile.template"
 comfyui_models_template_file="${working_dir}/docker/ai-models/comfyui-models.dockerfile.template"
 ai_models_template_file="${working_dir}/docker/ai-models/nunchaku-qwen-models.dockerfile.template"
 [[ ! -f "$base_template_file" ]] && echo "$base_template_file file does not exist" && return 101
-[[ ! -f "$comfyui_models_template_file" ]] && echo "$comfyui_models_template_file file does not exist" && return 101
-[[ ! -f "$ai_models_template_file" ]] && echo "$ai_models_template_file file does not exist" && return 101
+[[ ! -f "$comfyui_models_template_file" ]] && echo "$comfyui_models_template_file file does not exist" && return 102
+[[ ! -f "$ai_models_template_file" ]] && echo "$ai_models_template_file file does not exist" && return 103
 comfyui_models_template=$(< "$comfyui_models_template_file")
 ai_models_template=$(< "$ai_models_template_file")
 temp_dockerfile="$(mktemp).comfyui.Dockerfile"
