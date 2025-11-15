@@ -18,11 +18,12 @@ ai_models_template_file="${working_dir}/docker/ai-models/nunchaku-qwen-models.do
 comfyui_models_template=$(cat "$comfyui_models_template_file")
 ai_models_template=$(cat "$ai_models_template_file")
 temp_dockerfile="$(mktemp).comfyui.Dockerfile"
-while IFS= read -r line; do
-    processed_line="${line//comfyui_models_template_here/$comfyui_models_template}"
-    processed_line="${processed_line//ai_models_template_here/$ai_models_template}"
-    echo "$processed_line"
-done < "$base_template_file" > "$temp_dockerfile"
+
+# Replace the templates
+export COMFYUI_MODELS_TEMPLATE="$comfyui_models_template"
+export AI_MODELS_TEMPLATE="$ai_models_template"
+envsubst '${COMFYUI_MODELS_TEMPLATE},${AI_MODELS_TEMPLATE}' < "$base_template_file" > "$temp_dockerfile"
+unset COMFYUI_MODELS_TEMPLATE AI_MODELS_TEMPLATE
 
 ### Build comfyui:nunchaku-qwen-base
 docker buildx build --target comfyui \
