@@ -23,9 +23,6 @@ FROM $BASE_IMAGE AS comfyui
 
 ARG COMFYUI_MODELS_IMAGE MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED NUNCHAKU_VERSION
 
-# Set working directory
-WORKDIR /opt/ComfyUI
-
 # Install minimal packages to download & build 
 RUN <<EOS
 set -xe
@@ -46,6 +43,9 @@ EOS
 ${COMFYUI_MODELS_TEMPLATE}
 
 ${AI_MODELS_TEMPLATE}
+
+# Set working directory
+WORKDIR /opt/ComfyUI
 
 # Install Python dependencies in one layer for FP8, LoRA, and custom nodes
 RUN <<EOS
