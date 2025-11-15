@@ -19,8 +19,8 @@ comfyui_models_template=$(cat "$comfyui_models_template_file")
 ai_models_template=$(cat "$ai_models_template_file")
 temp_dockerfile="$(mktemp).comfyui.Dockerfile"
 while IFS= read -r line; do
-    echo "${line//comfyui_models_template_here/$comfyui_models_template}"
-    echo "${line//ai_models_template_here/$ai_models_template}"
+    line2="${line//comfyui_models_template_here/$comfyui_models_template}"
+    echo "${line2//ai_models_template_here/$ai_models_template}"
 done < "$base_template_file" > "$temp_dockerfile"
 
 ### Build comfyui:nunchaku-qwen-base
