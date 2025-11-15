@@ -200,6 +200,14 @@ EOS
 # Expose the ComfyUI port
 EXPOSE 8188
 
+# Download: consistenceEditV1.V1CW.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://tigersjay.com/static/consistenceEditV1.V1CW.safetensors
+  dir=${LORA_LORA_DIR}
+  out=consistenceEditV1.V1CW.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
 # Command to start ComfyUI
 CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
