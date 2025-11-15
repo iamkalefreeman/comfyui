@@ -60,3 +60,11 @@ RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=1
 
 # Copy local models
 COPY ./models/MEXX_QWEN_TG300_23.safetensors ${LORA_DIR}/
+
+# Download: consistenceEditV1.V1CW.safetensors
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://tigersjay.com/static/consistenceEditV1.V1CW.safetensors
+  dir=${LORA_LORA_DIR}
+  out=consistenceEditV1.V1CW.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
