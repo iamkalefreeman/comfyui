@@ -63,4 +63,6 @@ docker push "${docker_account}/comfyui:nunchaku-qwen-runpod-latest"
 # docker push "${docker_account}/comfyui:nunchaku-qwen-full-latest"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 15
 
+rm "$temp_dockerfile"
+
 return 0
