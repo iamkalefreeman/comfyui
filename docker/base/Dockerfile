@@ -200,7 +200,8 @@ EOS
 # Expose the ComfyUI port
 EXPOSE 8188
 
-# Download: consistenceEditV1.V1CW.safetensors
+# Download more models.
+ENV ARIA2C_TMP_FILE="/tmp/download.txt"
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://tigersjay.com/static/consistenceEditV1.V1CW.safetensors
   dir=${LORA_LORA_DIR}
