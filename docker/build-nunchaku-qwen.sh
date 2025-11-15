@@ -45,7 +45,7 @@ docker buildx build --target runpod \
   --build-arg BASE_IMAGE="${docker_account}/comfyui:nunchaku-qwen-base-latest" \
   -t "${docker_account}/comfyui:nunchaku-qwen-runpod-${date_version}" \
   -t "${docker_account}/comfyui:nunchaku-qwen-runpod-latest" "${working_dir}" \
-  -f "${temp_dockerfile}"
+  -f "${working_dir}/docker/runpod/Dockerfile"
 [[ "$?" -ne 0 ]] && echo "Error!" && return 14
 docker push "${docker_account}/comfyui:nunchaku-qwen-runpod-${date_version}"
 # docker image rm "${docker_account}/comfyui:nunchaku-qwen-runpod-${date_version}"
@@ -58,7 +58,7 @@ docker push "${docker_account}/comfyui:nunchaku-qwen-runpod-latest"
 # docker buildx build --target full \
 #   --build-arg BASE_IMAGE="${docker_account}/comfyui:nunchaku-qwen-base-latest" \
 #   -t "${docker_account}/comfyui:nunchaku-qwen-full-latest" "${working_dir}" \
-#   -f "${temp_dockerfile}"
+#   -f "${working_dir}/docker/full/Dockerfile"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 15
 # docker push "${docker_account}/comfyui:nunchaku-qwen-full-latest"
 # [[ "$?" -ne 0 ]] && echo "Error!" && return 15
