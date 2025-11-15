@@ -23,9 +23,9 @@ FROM $BASE_IMAGE AS comfyui
 
 ARG COMFYUI_MODELS_IMAGE MODELS_IMAGE MODEL_DIR CHECKPOINT_DIR DIFFUSION_DIR VAE_DIR CLIP_DIR UNET_DIR LORA_DIR COMFYUI_PORT_HOST STARTUP_CHECK_MAX_TRIES PYTHONUNBUFFERED NUNCHAKU_VERSION
 
-#{{comfyui-models.dockerfile.template}}
+comfyui_models_template_here
 
-#{{xyz-models.dockerfile.template}}
+ai_models_template_here
 
 # Set working directory
 WORKDIR /opt/ComfyUI
