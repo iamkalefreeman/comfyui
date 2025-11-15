@@ -15,13 +15,9 @@ apt-get install -yq --no-install-recommends \
   curl \
   git \
   zip unzip unrar \
-  xvfb \
   file \
-  ncdu \
   tzdata \
   apt-utils \
-  iputils-ping \
-  traceroute \
   locales \
   aria2 \
   python3 \
