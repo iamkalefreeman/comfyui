@@ -1,4 +1,6 @@
 
 COPY ./models/consistenceEditV2.WOzE.safetensors ${LORA_DIR}/
-
 COPY ./models/qwenMysticxxxV1.rkUk.safetensors ${LORA_DIR}/
+COPY ./models/clothesTryonQwenEdit.safetensors ${LORA_DIR}/
+COPY ./models/extractOutfitV3.safetensors ${LORA_DIR}/
+COPY ./models/poseTransferV2Qwen.safetensors ${LORA_DIR}/
