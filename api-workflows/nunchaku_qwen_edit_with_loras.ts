@@ -546,10 +546,11 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "299": {
       inputs: {
+        upscale_method: "lanczos",
         scale_by: input.output_downscale,
         images: ["286", 0],
       },
-      class_type: "easy imageScaleDownBy",
+      class_type: "ImageScaleBy",
     },
     "303": {
       inputs: {
