@@ -140,20 +140,6 @@ EOS
 # Set API to call this to launch comfy
 ENV CMD="comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"
 
-COPY ./api-workflows /workflows
-
-# # Install custom nodes in workflows
-# RUN <<EOS
-# set -eou pipefail
-# for file in /workflows/*.json; do \
-#   echo "Installing dependencies for: $file"; \
-#   comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
-# done
-# comfy --workspace /opt/ComfyUI node update all
-# ( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
-# ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
-# EOS
-
 # Install Nunchaku wheels
 RUN <<EOS
 set -xe pipefail
@@ -177,6 +163,22 @@ set -xe
 sed -i 's/safety_checker=True/safety_checker=False/' /opt/ComfyUI/main.py || echo "safety_checker not found in main.py"
 EOS
 
+${AI_EXTRA_MODELS_TEMPLATE}
+
+COPY ./api-workflows /workflows
+
+# # Install custom nodes in workflows
+# RUN <<EOS
+# set -eou pipefail
+# for file in /workflows/*.json; do \
+#   echo "Installing dependencies for: $file"; \
+#   comfy --workspace /opt/ComfyUI node install-deps --workflow="$file"; \
+# done
+# comfy --workspace /opt/ComfyUI node update all
+# ( find "$CUSTOM_NODES_DIR" -name "install.py" ) | xargs -d '\n' rm -f
+# ( find "$CUSTOM_NODES_DIR" -name "requirements.txt" ) | xargs -d '\n' rm -f
+# EOS
+
 # RUN <<EOS
 # set -xe
 # comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --cpu --verbose --quick-test-for-ci
@@ -184,8 +186,6 @@ EOS
 
 # Expose the ComfyUI port
 EXPOSE 8188
-
-${AI_EXTRA_MODELS_TEMPLATE}
 
 # Command to start ComfyUI
 CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
