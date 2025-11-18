@@ -137,9 +137,6 @@ rm -rf "$CUSTOM_NODES_DIR/ComfyUI_bitsandbytes_NF4-Lora"
 rm -rf "$CUSTOM_NODES_DIR/ComfyUI-GGUF"
 EOS
 
-# Set API to call this to launch comfy
-ENV CMD="comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"
-
 # Install Nunchaku wheels
 RUN <<EOS
 set -xe pipefail
@@ -186,6 +183,9 @@ COPY ./api-workflows /workflows
 
 # Expose the ComfyUI port
 EXPOSE 8188
+
+# Set API to call this to launch comfy
+ENV CMD="comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"
 
 # Command to start ComfyUI
 CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header"]
