@@ -36,4 +36,29 @@ RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=1
 
 # Copy local models
 COPY ./models/MEXX_QWEN_TG300_23.safetensors ${LORA_DIR}/
+COPY ./models/consistenceEditV2.WOzE.safetensors ${LORA_DIR}/
+COPY ./models/qwenMysticxxxV1.rkUk.safetensors ${LORA_DIR}/
+COPY ./models/clothesTryonQwenEdit.safetensors ${LORA_DIR}/
+COPY ./models/extractOutfitV3.safetensors ${LORA_DIR}/
+COPY ./models/poseTransferV2Qwen.safetensors ${LORA_DIR}/
+
+# SAM2 model for segmentation
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/1038lab/sam2/resolve/main/sam2.1_hiera_large-fp16.safetensors?download=true
+  dir=${MODEL_DIR}/sam2
+  out=sam2.1_hiera_large-fp16.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+# GroundingDino model for object detection/segmentation
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/1038lab/GroundingDINO/resolve/main/groundingdino_swinb_cogcoor.safetensors?download=true
+  dir=${MODEL_DIR}/grounding-dino
+  out=groundingdino_swinb_cogcoor.safetensors
+
+https://huggingface.co/1038lab/GroundingDINO/resolve/main/GroundingDINO_SwinB.cfg.py?download=true
+  dir=${MODEL_DIR}/grounding-dino
+  out=GroundingDINO_SwinB.cfg.py
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
