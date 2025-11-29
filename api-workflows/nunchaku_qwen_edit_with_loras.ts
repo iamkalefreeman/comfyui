@@ -17,9 +17,11 @@ const RequestSchema = z.object({
     .describe("Third input image for Qwen context (URL or base64 encoded string)"),
   prompt: z
     .string()
-    .default("将镜头向左旋转45度 (Rotate the camera 45 degrees to the left.)\n===\n将镜头转为俯视 (Turn the camera to a top-down view.)\n===\n将镜头转为广角镜头 (Turn the camera to a wide-angle lens.)\n===\n将镜头转为特写镜头 (Turn the camera to a close-up.)")
+    .default(
+      "将镜头向左旋转45度 (Rotate the camera 45 degrees to the left.)\n===\n将镜头转为俯视 (Turn the camera to a top-down view.)\n===\n将镜头转为广角镜头 (Turn the camera to a wide-angle lens.)\n===\n将镜头转为特写镜头 (Turn the camera to a close-up.) <sam><rmbg><restoreface><upscale>"
+    )
     .describe(
-      "The editing instructions for the image generation. Use tags like <rmbg>, <restoreface>, and <upscale> to enable those features."
+      "The editing instructions for the image generation. Use tags like <sam>, <rmbg>, <restoreface>, and <upscale> to enable those features."
     ),
   seed: z
     .number()
@@ -55,6 +57,23 @@ const RequestSchema = z.object({
     .string()
     .default("RealESRGAN_x4plus.safetensors")
     .describe("Name of the upscaler model to use"),
+  sam_prompt: z.string().default("clothes").describe("Prompt for SAM segmentation"),
+  sam2_model: z.string().default("sam2.1_hiera_large").describe("SAM2 model to use"),
+  dino_model: z
+    .string()
+    .default("GroundingDINO_SwinB (938MB)")
+    .describe("DINO model for SAM grounding"),
+  sam_threshold: z.number().default(0.35).describe("Threshold for SAM segmentation"),
+  sam_mask_blur: z.number().default(0).describe("Mask blur for SAM segmentation"),
+  sam_mask_offset: z.number().default(-2).describe("Mask offset for SAM segmentation"),
+  sam_invert_output: z
+    .boolean()
+    .default(true)
+    .describe("Invert the output mask from SAM"),
+  sam_background_color: z
+    .string()
+    .default("#000000")
+    .describe("Background color of the mask for SAM segmentation"),
   rmbg_model: z
     .string()
     .default("RMBG-2.0")
@@ -113,18 +132,24 @@ const RequestSchema = z.object({
     .describe("Name of the UNET model to load"),
   cpu_offload: z
     .string()
-    .default("enable")
-    .describe("indicates whether to offload certain computations to the CPU to save GPU memory."),
+    .default("auto")
+    .describe(
+      "Indicates whether to offload the main DiT model to the CPU to save GPU memory."
+    ),
   num_blocks_on_gpu: z
     .number()
     .min(1)
     .max(200)
     .default(20)
-    .describe("Increasing the value keeps more blocks in GPU memory, which minimizes offloading and can lead to faster generation times. "),
+    .describe(
+      "Increasing the value keeps more blocks in GPU memory, which minimizes offloading and can lead to faster generation times. "
+    ),
   use_pin_memory: z
     .string()
     .default("disable")
-    .describe("Pinning memory can speed up data transfers to the GPU by pre-loading data into a special area of the CPU's memory."),
+    .describe(
+      "Pinning memory can speed up data transfers to the GPU by pre-loading data into a special area of the CPU's memory."
+    ),
   clip_name: z
     .string()
     .default("qwen_2.5_vl_7b_fp8_scaled.safetensors")
@@ -136,9 +161,15 @@ const RequestSchema = z.object({
   vae_name: z
     .string()
     .default("Wan2.1_VAE_upscale2x_imageonly_real_v1.safetensors")
-    .describe("Name of the VAE model to load"),
-  vae_upscale: z.number().default(2).describe("VAE decode upscale factor for VAEUtils path"),
-  vae_tile: z.boolean().default(false).describe("Enable tiled VAE decoding for VAEUtils path"),
+    .describe("Name of the VAE model to load for the VAEUtils path"),
+  vae_upscale: z
+    .number()
+    .default(2)
+    .describe("VAE decode upscale factor for VAEUtils path"),
+  vae_tile: z
+    .boolean()
+    .default(false)
+    .describe("Enable tiled VAE decoding for VAEUtils path"),
   vae_tile_size: z
     .number()
     .default(512)
@@ -147,6 +178,10 @@ const RequestSchema = z.object({
     .number()
     .default(64)
     .describe("Tile overlap for VAE decoding for VAEUtils path"),
+  lora_cpu_offload: z
+    .string()
+    .default("auto")
+    .describe("Offload LoRAs to CPU to save GPU memory"),
   lora_1_name: z
     .string()
     .default("qwen-image-edit-2509-multi-angles.safetensors")
@@ -199,7 +234,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "66": {
       inputs: {
         shift: input.aura_flow_shift,
-        model: ["298", 0],
+        model: ["321", 0],
       },
       class_type: "ModelSamplingAuraFlow",
     },
@@ -257,7 +292,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         refine_foreground: input.rmbg_refine_foreground,
         background: "Alpha",
         background_color: "#ffffff",
-        image: ["254", 0],
+        image: ["325", 0],
       },
       class_type: "RMBG",
     },
@@ -287,7 +322,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     },
     "151": {
       inputs: {
-        image: ["254", 0],
+        image: ["325", 0],
       },
       class_type: "GetImageSize+",
     },
@@ -429,7 +464,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       inputs: {
         cond: ["192", 0],
         tt_value: ["152", 0],
-        ff_value: ["254", 0],
+        ff_value: ["325", 0],
       },
       class_type: "ImpactConditionalBranch",
     },
@@ -437,7 +472,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       inputs: {
         cond: ["192", 0],
         tt_value: ["123", 0],
-        ff_value: ["254", 0],
+        ff_value: ["325", 0],
       },
       class_type: "ImpactConditionalBranch",
     },
@@ -517,41 +552,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
       class_type: "VAEUtils_VAEDecodeTiled",
     },
-    "298": {
-      inputs: {
-        lora_count: 10,
-        lora_name_1: input.lora_1_name,
-        lora_strength_1: input.lora_1_strength,
-        lora_name_2: input.lora_2_name,
-        lora_strength_2: input.lora_2_strength,
-        lora_name_3: input.lora_3_name,
-        lora_strength_3: input.lora_3_strength,
-        lora_name_4: input.lora_4_name,
-        lora_strength_4: input.lora_4_strength,
-        lora_name_5: input.lora_5_name,
-        lora_strength_5: input.lora_5_strength,
-        lora_name_6: input.lora_6_name,
-        lora_strength_6: input.lora_6_strength,
-        lora_name_7: input.lora_7_name,
-        lora_strength_7: input.lora_7_strength,
-        lora_name_8: input.lora_8_name,
-        lora_strength_8: input.lora_8_strength,
-        lora_name_9: input.lora_9_name,
-        lora_strength_9: input.lora_9_strength,
-        lora_name_10: input.lora_10_name,
-        lora_strength_10: input.lora_10_strength,
-        model: ["37", 0],
-      },
-      class_type: "NunchakuQwenImageLoraStack",
-    },
-    "299": {
-      inputs: {
-        upscale_method: "lanczos",
-        scale_by: input.output_downscale,
-        image: ["286", 0],
-      },
-      class_type: "ImageScaleBy",
-    },
     "303": {
       inputs: {
         cond: ["319", 0],
@@ -576,7 +576,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "318": {
       inputs: {
         cond: ["319", 0],
-        tt_value: ["299", 0],
+        tt_value: ["320", 0],
         ff_value: ["312", 0],
       },
       class_type: "ImpactConditionalBranch",
@@ -587,6 +587,74 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
       class_type: "ImpactBoolean",
     },
+    "320": {
+      inputs: {
+        upscale_method: "lanczos",
+        scale_by: input.output_downscale,
+        image: ["286", 0],
+      },
+      class_type: "ImageScaleBy",
+    },
+    "321": {
+      inputs: {
+        lora_count: 10,
+        cpu_offload: input.lora_cpu_offload,
+        lora_name_1: input.lora_1_name,
+        lora_strength_1: input.lora_1_strength,
+        lora_name_2: input.lora_2_name,
+        lora_strength_2: input.lora_2_strength,
+        lora_name_3: input.lora_3_name,
+        lora_strength_3: input.lora_3_strength,
+        lora_name_4: input.lora_4_name,
+        lora_strength_4: input.lora_4_strength,
+        lora_name_5: input.lora_5_name,
+        lora_strength_5: input.lora_5_strength,
+        lora_name_6: input.lora_6_name,
+        lora_strength_6: input.lora_6_strength,
+        lora_name_7: input.lora_7_name,
+        lora_strength_7: input.lora_7_strength,
+        lora_name_8: input.lora_8_name,
+        lora_strength_8: input.lora_8_strength,
+        lora_name_9: input.lora_9_name,
+        lora_strength_9: input.lora_9_strength,
+        lora_name_10: input.lora_10_name,
+        lora_strength_10: input.lora_10_strength,
+        model: ["37", 0],
+      },
+      class_type: "NunchakuQwenImageLoraStack",
+    },
+    "322": {
+      inputs: {
+        prompt: input.sam_prompt,
+        sam2_model: input.sam2_model,
+        dino_model: input.dino_model,
+        device: "GPU",
+        threshold: input.sam_threshold,
+        mask_blur: input.sam_mask_blur,
+        mask_offset: input.sam_mask_offset,
+        invert_output: input.sam_invert_output,
+        background: "Color",
+        background_color: input.sam_background_color,
+        image: ["254", 0],
+      },
+      class_type: "SAM2Segment",
+    },
+    "324": {
+      inputs: {
+        sub_text: "<sam>",
+        case_insensitive: true,
+        text: ["183", 0],
+      },
+      class_type: "Text Contains",
+    },
+    "325": {
+      inputs: {
+        cond: ["324", 0],
+        tt_value: ["322", 0],
+        ff_value: ["254", 0],
+      },
+      class_type: "ImpactConditionalBranch",
+    },
   };
   return workflow;
 }
@@ -594,9 +662,9 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "Qwen Image Edit with LoRA and Conditional VAE",
+  summary: "Qwen Image Edit with SAM, LoRA, and Conditional VAE",
   description:
-    "Edits a provided image based on a text prompt using the Qwen model. The workflow supports conditional background removal, face restoration, and upscaling by including the tags <rmbg>, <restoreface>, and <upscale> in the prompt. It also supports wildcard replacements in the prompt (e.g., {option1|option2}).",
+    "Edits an image based on a text prompt using the Qwen model. This comprehensive workflow integrates SAM (Segment Anything Model) for object-based segmentation, a LoRA stack for specific style adjustments, and a conditional VAE loading system for choosing between standard and tiled decoding. It also supports optional background removal, face restoration, and upscaling via prompt tags.",
 };
 
 export default workflow;
