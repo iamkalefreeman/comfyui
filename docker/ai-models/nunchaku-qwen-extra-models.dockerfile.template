@@ -1,3 +1,9 @@
-
-# Copy extra models here
+# Download HF models
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+RUN <<EOS
+set -xe
+pip install --no-cache-dir huggingface_hub "huggingface_hub[cli]" "huggingface_hub[hf_transfer]"
+python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='google-bert/bert-base-uncased')"
+EOS
+ENV HF_HUB_OFFLINE=1
 
