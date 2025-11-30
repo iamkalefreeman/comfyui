@@ -628,7 +628,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         prompt: input.sam_prompt,
         sam2_model: input.sam2_model,
         dino_model: input.dino_model,
-        device: "GPU",
+        device: "Auto",
         threshold: input.sam_threshold,
         mask_blur: input.sam_mask_blur,
         mask_offset: input.sam_mask_offset,
