@@ -182,11 +182,11 @@ COPY ./api-workflows /workflows
 # comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --cpu --verbose --quick-test-for-ci
 # EOS
 
-RUN <<EOS
-set -xe pipefail
-pip install triton
-pip install --no-build-isolation https://huggingface.co/ModelsLab/Sage_2_plus_plus_build/resolve/main/sageattention-2.2.0-cp311-cp311-linux_x86_64.whl
-EOS
+# RUN <<EOS
+# set -xe pipefail
+# pip install triton
+# pip install --no-build-isolation https://huggingface.co/ModelsLab/Sage_2_plus_plus_build/resolve/main/sageattention-2.2.0-cp311-cp311-linux_x86_64.whl
+# EOS
 
 # Expose the ComfyUI port
 EXPOSE 8188
