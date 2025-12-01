@@ -185,7 +185,7 @@ COPY ./api-workflows /workflows
 RUN <<EOS
 set -xe pipefail
 pip install triton
-pip install sageattention==2.2.0 --no-build-isolation
+pip install --no-build-isolation https://huggingface.co/ModelsLab/Sage_2_plus_plus_build/resolve/main/sageattention-2.2.0-cp311-cp311-linux_x86_64.whl
 EOS
 
 # Expose the ComfyUI port
