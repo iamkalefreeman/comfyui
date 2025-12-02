@@ -54,6 +54,15 @@ RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=1
 # EOF
 # RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# # Download HF models
+# ENV HF_HUB_ENABLE_HF_TRANSFER=1
+# RUN <<EOS
+# set -xe
+# pip install --no-cache-dir huggingface_hub "huggingface_hub[cli]" "huggingface_hub[hf_transfer]"
+# python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='bert-base-uncased', repo_type='model', allow_patterns=['*.safetensors', '*.json', '*.txt', '*.py'])"
+# EOS
+# ENV HF_HUB_OFFLINE=1
+
 # SAM3 model for segmentation
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://huggingface.co/1038lab/sam3/resolve/main/sam3.pt?download=true
