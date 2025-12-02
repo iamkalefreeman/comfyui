@@ -17,9 +17,7 @@ const RequestSchema = z.object({
     .describe("Third input image for Qwen context (URL or base64 encoded string)"),
   prompt: z
     .string()
-    .default(
-      "将镜头向左旋转45度 (Rotate the camera 45 degrees to the left.)\n===\n将镜头转为俯视 (Turn the camera to a top-down view.)\n===\n将镜头转为广角镜头 (Turn the camera to a wide-angle lens.)\n===\n将镜头转为特写镜头 (Turn the camera to a close-up.) <sam><rmbg><restoreface><upscale>"
-    )
+    .default("remove clothes, nude, remove black areas. <sam>\n===\nshe wears transparent bikini, nude, naked.")
     .describe(
       "The editing instructions for the image generation. Use tags like <sam>, <rmbg>, <restoreface>, and <upscale> to enable those features."
     ),
@@ -58,12 +56,8 @@ const RequestSchema = z.object({
     .default("RealESRGAN_x4plus.safetensors")
     .describe("Name of the upscaler model to use"),
   sam_prompt: z.string().default("clothes").describe("Prompt for SAM segmentation"),
-  sam2_model: z.string().default("sam2.1_hiera_large").describe("SAM2 model to use"),
-  dino_model: z
-    .string()
-    .default("GroundingDINO_SwinB (938MB)")
-    .describe("DINO model for SAM grounding"),
-  sam_threshold: z.number().default(0.35).describe("Threshold for SAM segmentation"),
+  sam3_model: z.string().default("sam3").describe("SAM3 model to use"),
+  sam_threshold: z.number().default(0.35).describe("Confidence threshold for SAM segmentation"),
   sam_mask_blur: z.number().default(0).describe("Mask blur for SAM segmentation"),
   sam_mask_offset: z.number().default(-2).describe("Mask offset for SAM segmentation"),
   sam_invert_output: z
@@ -74,6 +68,12 @@ const RequestSchema = z.object({
     .string()
     .default("#000000")
     .describe("Background color of the mask for SAM segmentation"),
+  mask_enhancer_sensitivity: z.number().default(1).describe("Sensitivity for the mask enhancer"),
+  mask_enhancer_blur: z.number().default(0).describe("Mask blur for the mask enhancer"),
+  mask_enhancer_offset: z.number().default(0).describe("Mask offset for the mask enhancer"),
+  mask_enhancer_smooth: z.number().default(0).describe("Smoothing value for the mask enhancer"),
+  mask_enhancer_fill_holes: z.boolean().default(true).describe("Whether to fill holes in the enhanced mask"),
+  mask_enhancer_invert_output: z.boolean().default(true).describe("Invert the output of the mask enhancer"),
   rmbg_model: z
     .string()
     .default("RMBG-2.0")
@@ -623,22 +623,6 @@ function generateWorkflow(input: InputType): ComfyPrompt {
       },
       class_type: "NunchakuQwenImageLoraStack",
     },
-    "322": {
-      inputs: {
-        prompt: input.sam_prompt,
-        sam2_model: input.sam2_model,
-        dino_model: input.dino_model,
-        device: "Auto",
-        threshold: input.sam_threshold,
-        mask_blur: input.sam_mask_blur,
-        mask_offset: input.sam_mask_offset,
-        invert_output: input.sam_invert_output,
-        background: "Color",
-        background_color: input.sam_background_color,
-        image: ["254", 0],
-      },
-      class_type: "SAM2Segment",
-    },
     "324": {
       inputs: {
         sub_text: "<sam>",
@@ -650,10 +634,46 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "325": {
       inputs: {
         cond: ["324", 0],
-        tt_value: ["322", 0],
+        tt_value: ["336", 0],
         ff_value: ["254", 0],
       },
       class_type: "ImpactConditionalBranch",
+    },
+    "327": {
+      inputs: {
+        prompt: input.sam_prompt,
+        sam3_model: input.sam3_model,
+        device: "Auto",
+        confidence_threshold: input.sam_threshold,
+        mask_blur: input.sam_mask_blur,
+        mask_offset: input.sam_mask_offset,
+        invert_output: input.sam_invert_output,
+        background: "Color",
+        background_color: input.sam_background_color,
+        image: ["254", 0],
+      },
+      class_type: "SAM3Segment",
+    },
+    "331": {
+      inputs: {
+        sensitivity: input.mask_enhancer_sensitivity,
+        mask_blur: input.mask_enhancer_blur,
+        mask_offset: input.mask_enhancer_offset,
+        smooth: input.mask_enhancer_smooth,
+        fill_holes: input.mask_enhancer_fill_holes,
+        invert_output: input.mask_enhancer_invert_output,
+        mask: ["327", 1],
+      },
+      class_type: "AILab_MaskEnhancer",
+    },
+    "336": {
+      inputs: {
+        mask_opacity: 1,
+        mask_color: input.sam_background_color,
+        image: ["254", 0],
+        mask: ["331", 0],
+      },
+      class_type: "AILab_MaskOverlay",
     },
   };
   return workflow;
@@ -662,9 +682,9 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "Qwen Image Edit with SAM, LoRA, and Conditional VAE",
+  summary: "Qwen Image Edit with SAM3, LoRA, and Conditional VAE",
   description:
-    "Edits an image based on a text prompt using the Qwen model. This comprehensive workflow integrates SAM (Segment Anything Model) for object-based segmentation, a LoRA stack for specific style adjustments, and a conditional VAE loading system for choosing between standard and tiled decoding. It also supports optional background removal, face restoration, and upscaling via prompt tags.",
+    "Edits an image based on a text prompt using the Qwen model. This comprehensive workflow integrates SAM3 for object-based segmentation, a LoRA stack for specific style adjustments, a mask enhancer, and a conditional VAE loading system. It also supports optional background removal, face restoration, and upscaling via prompt tags.",
 };
 
 export default workflow;
