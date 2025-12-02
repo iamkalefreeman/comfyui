@@ -192,8 +192,8 @@ COPY ./api-workflows /workflows
 EXPOSE 8188
 
 # Set API to call this to launch comfy
-ENV CMD="comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --highvram --disable-metadata --disable-auto-launch --use-sage-attention"
+ENV CMD="comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --highvram --disable-metadata --disable-auto-launch"
 
 # Command to start ComfyUI
-CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --highvram --disable-metadata --disable-auto-launch --use-sage-attention"]
+CMD ["bash", "-c", "comfy --workspace /opt/ComfyUI launch -- --listen 0.0.0.0 --port 8188 --enable-cors-header --highvram --disable-metadata --disable-auto-launch"]
 ENTRYPOINT  ["/usr/bin/dumb-init", "--"]
