@@ -39,9 +39,4 @@ EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
 # Download: redKFm00NSFWEditorFP8.Wtdk.safetensors
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://tigersjay.com/static/redKFm00NSFWEditorFP8.Wtdk.safetensors
-  dir=${DIFFUSION_DIR}
-  out=redKFm00NSFWEditorFP8.Wtdk.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
