@@ -40,39 +40,6 @@ EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
 # --- Loras ---
-
-# Download: clothesTryonQwenEdit.3dlg.safetensors
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https_proxy=${HF_PROXY} https://tigersjay.com/static/clothesTryonQwenEdit.3dlg.safetensors
-  dir=${LORA_DIR}
-  out=clothesTryonQwenEdit.3dlg.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
-# Download: extractOutfitV3.xWyV.safetensors
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://tigersjay.com/static/extractOutfitV3.xWyV.safetensors
-  dir=${LORA_DIR}
-  out=extractOutfitV3.xWyV.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2IA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
-# Download: ootdColour193600.yz3z.safetensors
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://tigersjay.com/static/ootdColour193600.yz3z.safetensors
-  dir=${LORA_DIR}
-  out=ootdColour193600.yz3z.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
-# Download: consistenceEditV1.V1CW.safetensors
-COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
-https://tigersjay.com/static/consistenceEditV1.V1CW.safetensors
-  dir=${LORA_LORA_DIR}
-  out=consistenceEditV1.V1CW.safetensors
-EOF
-RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
-
 # Download: qwen-image-edit-2509-multi-angles.safetensors
 COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
 https://huggingface.co/dx8152/Qwen-Edit-2509-Multiple-angles/resolve/main/%E9%95%9C%E5%A4%B4%E8%BD%AC%E6%8D%A2.safetensors?download=true
@@ -81,5 +48,40 @@ https://huggingface.co/dx8152/Qwen-Edit-2509-Multiple-angles/resolve/main/%E9%95
 EOF
 RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
 
+# SAM2 model for segmentation
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/1038lab/sam2/resolve/main/sam2.1_hiera_large-fp16.safetensors?download=true
+  dir=${MODEL_DIR}/sam2
+  out=sam2.1_hiera_large-fp16.safetensors
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+# GroundingDino model for object detection/segmentation
+COPY --chown=root:root <<EOF "${ARIA2C_TMP_FILE}"
+https://huggingface.co/1038lab/GroundingDINO/resolve/main/groundingdino_swinb_cogcoor.safetensors?download=true
+  dir=${MODEL_DIR}/grounding-dino
+  out=groundingdino_swinb_cogcoor.safetensors
+
+https://huggingface.co/1038lab/GroundingDINO/resolve/main/GroundingDINO_SwinB.cfg.py?download=true
+  dir=${MODEL_DIR}/grounding-dino
+  out=GroundingDINO_SwinB.cfg.py
+EOF
+RUN set -xe && aria2c -i "${ARIA2C_TMP_FILE}" -j 4 --max-connection-per-server=10 && rm -f "${ARIA2C_TMP_FILE}"
+
+# Download HF models
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+RUN <<EOS
+set -xe
+pip install --no-cache-dir huggingface_hub "huggingface_hub[cli]" "huggingface_hub[hf_transfer]"
+python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='bert-base-uncased', repo_type='model', allow_patterns=['*.safetensors', '*.json', '*.txt', '*.py'])"
+EOS
+ENV HF_HUB_OFFLINE=1
+
 # Copy local models
 COPY ./models/MEXX_QWEN_TG300_23.safetensors ${LORA_DIR}/
+COPY ./models/consistenceEditV2.WOzE.safetensors ${LORA_DIR}/
+COPY ./models/qwenMysticxxxV1.rkUk.safetensors ${LORA_DIR}/
+COPY ./models/clothesTryonQwenEdit.safetensors ${LORA_DIR}/
+COPY ./models/extractOutfitV3.safetensors ${LORA_DIR}/
+COPY ./models/poseTransferV2Qwen.safetensors ${LORA_DIR}/
+
