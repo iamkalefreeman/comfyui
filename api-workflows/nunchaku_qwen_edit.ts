@@ -18,7 +18,7 @@ const RequestSchema = z.object({
   prompt: z
     .string()
     .default(
-      "remove black clothes, nude, remove black dots. <sam>\n===\nshe wears transparent bikini, nude, naked."
+      "remove black dots. <sam>\n===\nshe wears trending clothes."
     )
     .describe(
       "The editing instructions for the image generation. Use tags like <sam>, <rmbg>, <restoreface>, and <upscale> to enable those features."
