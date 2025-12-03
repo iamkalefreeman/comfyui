@@ -10,14 +10,16 @@ const RequestSchema = z.object({
   image_2: z
     .string()
     .default("")
-    .describe("Second input image for Qwen context (URL or base64 encoded string)"),
+    .describe("Second input image (URL or base64 encoded string), not used in this workflow"),
   image_3: z
     .string()
     .default("")
-    .describe("Third input image for Qwen context (URL or base64 encoded string)"),
+    .describe("Third input image (URL or base64 encoded string), not used in this workflow"),
   prompt: z
     .string()
-    .default("remove clothes, nude, remove black areas. <sam>\n===\nshe wears transparent bikini, nude, naked.")
+    .default(
+      "remove black clothes, nude, remove black dots. <sam>\n===\nshe wears transparent bikini, nude, naked."
+    )
     .describe(
       "The editing instructions for the image generation. Use tags like <sam>, <rmbg>, <restoreface>, and <upscale> to enable those features."
     ),
@@ -57,23 +59,31 @@ const RequestSchema = z.object({
     .describe("Name of the upscaler model to use"),
   sam_prompt: z.string().default("clothes").describe("Prompt for SAM segmentation"),
   sam3_model: z.string().default("sam3").describe("SAM3 model to use"),
-  sam_threshold: z.number().default(0.35).describe("Confidence threshold for SAM segmentation"),
+  sam_threshold: z.number().default(0.35).describe("Threshold for SAM segmentation"),
   sam_mask_blur: z.number().default(0).describe("Mask blur for SAM segmentation"),
-  sam_mask_offset: z.number().default(-2).describe("Mask offset for SAM segmentation"),
+  sam_mask_offset: z.number().default(0).describe("Mask offset for SAM segmentation"),
   sam_invert_output: z
     .boolean()
-    .default(true)
+    .default(false)
     .describe("Invert the output mask from SAM"),
   sam_background_color: z
     .string()
     .default("#000000")
     .describe("Background color of the mask for SAM segmentation"),
-  mask_enhancer_sensitivity: z.number().default(1).describe("Sensitivity for the mask enhancer"),
-  mask_enhancer_blur: z.number().default(0).describe("Mask blur for the mask enhancer"),
-  mask_enhancer_offset: z.number().default(0).describe("Mask offset for the mask enhancer"),
-  mask_enhancer_smooth: z.number().default(0).describe("Smoothing value for the mask enhancer"),
-  mask_enhancer_fill_holes: z.boolean().default(true).describe("Whether to fill holes in the enhanced mask"),
-  mask_enhancer_invert_output: z.boolean().default(true).describe("Invert the output of the mask enhancer"),
+  mask_fix_erode_dilate: z
+    .number()
+    .default(2)
+    .describe("Erode/dilate value for mask fixing"),
+  mask_fix_fill_holes: z
+    .number()
+    .default(20)
+    .describe("Fill holes value for mask fixing"),
+  mask_fix_remove_isolated: z
+    .number()
+    .default(0)
+    .describe("Remove isolated pixels value for mask fixing"),
+  mask_fix_smooth: z.number().default(0).describe("Smooth value for mask fixing"),
+  mask_fix_blur: z.number().default(0).describe("Blur value for mask fixing"),
   rmbg_model: z
     .string()
     .default("RMBG-2.0")
@@ -671,9 +681,28 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         mask_opacity: 1,
         mask_color: input.sam_background_color,
         image: ["254", 0],
-        mask: ["331", 0],
+        mask: ["341", 0],
       },
       class_type: "AILab_MaskOverlay",
+    },
+    "340": {
+      inputs: {
+        erode_dilate: input.mask_fix_erode_dilate,
+        fill_holes: input.mask_fix_fill_holes,
+        remove_isolated_pixels: input.mask_fix_remove_isolated,
+        smooth: input.mask_fix_smooth,
+        blur: input.mask_fix_blur,
+        mask: ["327", 1],
+      },
+      class_type: "MaskFix+",
+    },
+    "341": {
+      inputs: {
+        mode: "combine",
+        mask_1: ["327", 1],
+        mask_2: ["340", 0],
+      },
+      class_type: "AILab_MaskCombiner",
     },
   };
   return workflow;
@@ -682,9 +711,9 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "Qwen Image Edit with SAM3, LoRA, and Conditional VAE",
+  summary: "Qwen Image Edit with SAM3, LoRA, and Advanced Masking",
   description:
-    "Edits an image based on a text prompt using the Qwen model. This comprehensive workflow integrates SAM3 for object-based segmentation, a LoRA stack for specific style adjustments, a mask enhancer, and a conditional VAE loading system. It also supports optional background removal, face restoration, and upscaling via prompt tags.",
+    "Edits an image based on a text prompt using the Qwen model. This workflow integrates SAM3 for object segmentation, which can be refined with MaskFix+. It also supports a LoRA stack for style adjustments, optional background removal (RMBG), face restoration (ReActor), and upscaling, all controlled via tags in the prompt. A conditional VAE loader allows choosing between standard and tiled decoding for memory efficiency.",
 };
 
 export default workflow;
