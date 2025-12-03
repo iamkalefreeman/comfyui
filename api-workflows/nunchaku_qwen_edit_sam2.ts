@@ -657,9 +657,10 @@ function generateWorkflow(input: InputType): ComfyPrompt {
     "327": {
       inputs: {
         prompt: input.sam_prompt,
-        sam3_model: input.sam3_model,
+        sam2_model: input.sam2_model,
+        dino_model: input.dino_model,
         device: "Auto",
-        confidence_threshold: input.sam_threshold,
+        threshold: input.sam_threshold,
         mask_blur: input.sam_mask_blur,
         mask_offset: input.sam_mask_offset,
         invert_output: input.sam_invert_output,
@@ -667,7 +668,7 @@ function generateWorkflow(input: InputType): ComfyPrompt {
         background_color: input.sam_background_color,
         image: ["254", 0],
       },
-      class_type: "SAM3Segment",
+      class_type: "SAM2Segment",
     },
     "331": {
       inputs: {
