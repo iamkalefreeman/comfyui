@@ -58,6 +58,11 @@ const RequestSchema = z.object({
     .default("RealESRGAN_x4plus.safetensors")
     .describe("Name of the upscaler model to use"),
   sam_prompt: z.string().default("clothes").describe("Prompt for SAM segmentation"),
+  sam2_model: z.string().default("sam2.1_hiera_large").describe("SAM2 model to use"),
+  dino_model: z
+    .string()
+    .default("GroundingDINO_SwinB (938MB)")
+    .describe("DINO model for SAM grounding"),
   sam3_model: z.string().default("sam3").describe("SAM3 model to use"),
   sam_threshold: z.number().default(0.35).describe("Threshold for SAM segmentation"),
   sam_mask_blur: z.number().default(0).describe("Mask blur for SAM segmentation"),
