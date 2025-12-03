@@ -717,9 +717,9 @@ function generateWorkflow(input: InputType): ComfyPrompt {
 const workflow: Workflow = {
   RequestSchema,
   generateWorkflow,
-  summary: "Qwen Image Edit with SAM3, LoRA, and Advanced Masking",
+  summary: "Qwen Image Edit with SAM2, LoRA, and Advanced Masking",
   description:
-    "Edits an image based on a text prompt using the Qwen model. This workflow integrates SAM3 for object segmentation, which can be refined with MaskFix+. It also supports a LoRA stack for style adjustments, optional background removal (RMBG), face restoration (ReActor), and upscaling, all controlled via tags in the prompt. A conditional VAE loader allows choosing between standard and tiled decoding for memory efficiency.",
+    "Edits an image based on a text prompt using the Qwen model. This workflow integrates SAM2 for object segmentation, which can be refined with MaskFix+. It also supports a LoRA stack for style adjustments, optional background removal (RMBG), face restoration (ReActor), and upscaling, all controlled via tags in the prompt. A conditional VAE loader allows choosing between standard and tiled decoding for memory efficiency.",
 };
 
 export default workflow;
