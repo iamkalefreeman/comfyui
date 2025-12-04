@@ -2,7 +2,8 @@ from comfy_script.runtime import *
 load('http://127.0.0.1:8188/')
 from comfy_script.runtime.nodes import *
 
-with Workflow(wait=True):
+# Set queue=True to run with comfyui, or queue=False to maybe for exporting workflow json
+with Workflow(wait=True, queue=True) as workflow:
   prompt = 'replace background with bedroom. <sam><rmbg><upscale><restoreface>'
   prompt_lower = prompt.lower()
   prompt_clean = RegexReplace(prompt, r'\<.*\>', '', True, False, False, 0)
@@ -83,3 +84,7 @@ with Workflow(wait=True):
                                           take_start=0, take_count=10)
   
   SaveImage(images=imageout, filename_prefix='ComfyUI')
+
+# json = workflow.api_format_json()
+# with open('prompt.json', 'w') as ff:
+#   ff.write(json)
